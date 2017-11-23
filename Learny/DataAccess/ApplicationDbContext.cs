@@ -7,7 +7,7 @@ namespace Learny.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("LearnyConnection", throwIfV1Schema: false)
         {
         }
 
