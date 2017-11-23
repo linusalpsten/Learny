@@ -69,6 +69,7 @@ namespace Learny.Migrations
                 t => t.Name,
                 activityTypes
                 );
+            context.SaveChanges();
 
             //
             // required
@@ -83,6 +84,8 @@ namespace Learny.Migrations
                 courses
                 );
 
+            context.SaveChanges();
+
             var courseCode = courses[0].CourseCode;
             var courseId = context.Courses.Where(c => c.CourseCode == courseCode).FirstOrDefault().Id;
             var modules = new CourseModule[]
@@ -95,6 +98,7 @@ namespace Learny.Migrations
                 modules
                 );
 
+            context.SaveChanges();
 
             var elearningTypeId = context.ActivityTypes.Where(t => t.Name == elearning).FirstOrDefault().Id;
             var exerciseTypeId = context.ActivityTypes.Where(t => t.Name == exercise).FirstOrDefault().Id;
@@ -113,6 +117,8 @@ namespace Learny.Migrations
                 a => new { a.Name, a.CourseModuleId },
                 activities
                 );
+            context.SaveChanges();
+
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
