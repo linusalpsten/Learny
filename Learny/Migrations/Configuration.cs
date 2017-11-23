@@ -31,6 +31,10 @@ namespace Learny.Migrations
             //    );
             //
 
+            //
+            // required
+            //
+
             var roleStore = new RoleStore<IdentityRole>(context);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
 
@@ -50,6 +54,66 @@ namespace Learny.Migrations
                 }
             }
 
+            var exercise = "Övning";
+            var elearning = "E-Learning";
+            var lecture = "Föreläsning";
+            var activityTypeNames = new[] { exercise, elearning, lecture };
+            var activityTypes = new ActivityType[activityTypeNames.Length];
+
+            for (int i = 0; i < activityTypes.Length; i++)
+            {
+                activityTypes[i] = new ActivityType { Name = activityTypeNames[i] };
+            }
+
+            context.ActivityTypes.AddOrUpdate(
+                t => t.Name,
+                activityTypes
+                );
+
+            //
+            // required
+            //
+
+            var courses = new Course[]
+            {
+                new Course { CourseCode = "ND17", Name = ".NET systemutveckling", StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(4) }
+            };
+            context.Courses.AddOrUpdate(
+                c => c.CourseCode,
+                courses
+                );
+
+            var courseCode = courses[0].CourseCode;
+            var courseId = context.Courses.Where(c => c.CourseCode == courseCode).FirstOrDefault().Id;
+            var modules = new CourseModule[]
+            {
+                new CourseModule { Name = "C#", StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(1), CourseId = courseId },
+                new CourseModule { Name = "MVC", StartDate = DateTime.Now.AddMonths(1), EndDate = DateTime.Now.AddMonths(2), CourseId = courseId }
+            };
+            context.Modules.AddOrUpdate(
+                c => c.Name,
+                modules
+                );
+
+
+            var elearningTypeId = context.ActivityTypes.Where(t => t.Name == elearning).FirstOrDefault().Id;
+            var exerciseTypeId = context.ActivityTypes.Where(t => t.Name == exercise).FirstOrDefault().Id;
+            var cSharpModuleName = modules[0].Name;
+            var cSharpModuleId = context.Modules.Where(m => m.Name == cSharpModuleName).FirstOrDefault().Id;
+            var mvcModuleName = modules[1].Name;
+            var mvcModuleId = context.Modules.Where(m => m.Name == mvcModuleName).FirstOrDefault().Id;
+            var activities = new ModuleActivity[]
+            {
+                new ModuleActivity { Name = "E-learning", StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(15), ActivityTypeId = elearningTypeId, CourseModuleId = cSharpModuleId },
+                new ModuleActivity { Name = "Övning", StartDate = DateTime.Now.AddDays(16), EndDate = DateTime.Now.AddMonths(1), ActivityTypeId = exerciseTypeId, CourseModuleId = cSharpModuleId },
+                new ModuleActivity { Name = "E-learning", StartDate = DateTime.Now.AddMonths(1), EndDate = DateTime.Now.AddDays(15).AddMonths(1), ActivityTypeId = elearningTypeId, CourseModuleId = mvcModuleId }
+            };
+
+            context.Activities.AddOrUpdate(
+                a => new { a.Name, a.CourseModuleId },
+                activities
+                );
+
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
 
@@ -68,6 +132,11 @@ namespace Learny.Migrations
                 if (context.Users.Any(u => u.UserName == userUserName)) continue;
 
                 var newUser = new ApplicationUser { UserName = userUserName, Email = userEmail, Name = userName };
+                if (userRole == studentRole)
+                {
+                    newUser.CourseId = courseId;
+                }
+
                 var result = userManager.Create(newUser, userPassword);
                 if (!result.Succeeded)
                 {
