@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Learny.Settings;
 
 namespace Learny.Models
 {
@@ -37,6 +38,7 @@ namespace Learny.Models
         }
 
         // GET: Courses/Details/5
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Details(int? id)
         {
             if (id == null)
