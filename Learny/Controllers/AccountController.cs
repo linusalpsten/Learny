@@ -142,6 +142,16 @@ namespace Learny.Controllers
             return View();
         }
 
+
+
+
+
+
+
+
+
+
+
         //
         // POST: /Account/Register
         [HttpPost]
