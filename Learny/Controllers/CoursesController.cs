@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Learny.Models
 {
+    [Authorize]
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -30,7 +31,7 @@ namespace Learny.Models
 
         private CourseViewModel populateCourseVM(Course course)
         {
-            CourseViewModel viewModel = new CourseViewModel
+            CourseViewModel viewModel = new CourseDetailsViewModel
             {
                 Id = course.Id,
                 Name = course.Name,
@@ -57,7 +58,7 @@ namespace Learny.Models
             {
                 return HttpNotFound();
             }
-            return View(course);
+            return View(viewModel);
         }
 
         // GET: Courses/Create
