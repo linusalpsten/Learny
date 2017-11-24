@@ -9,6 +9,9 @@ namespace Learny.ViewModels
 {
     public class CourseDetailsViewModel : CourseViewModel
     {
+        [Display(Name = "Beskrivning")]
+        public string Description { get; set; }
+
         [Display(Name = "Elever")]
         public ICollection<ApplicationUser> Students { get; set; }
     }

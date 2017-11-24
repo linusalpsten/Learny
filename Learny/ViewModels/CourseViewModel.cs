@@ -17,10 +17,7 @@ namespace Learny.ViewModels
 
         [Required]
         [Display(Name = "Kurs kod")]
-        public string CourseCode { get; set; }
-
-        [Display(Name = "Beskrivning")]
-        public string Description { get; set; }
+        public string CourseCode { get; set; }        
 
         [Required]
         [Display(Name = "Start")]

@@ -38,7 +38,6 @@ namespace Learny.Models
                 Id = course.Id,
                 Name = course.Name,
                 CourseCode = course.CourseCode,
-                Description = course.Description,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
                 Modules = course.Modules
@@ -56,6 +55,7 @@ namespace Learny.Models
             Course course = db.Courses.Find(id);
             CourseDetailsViewModel viewModel = (CourseDetailsViewModel)populateCourseVM(course);
             viewModel.Students = course.Students;
+            viewModel.Description = course.Description;
             if (course == null)
             {
                 return HttpNotFound();
