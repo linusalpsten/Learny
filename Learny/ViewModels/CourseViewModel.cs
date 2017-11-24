@@ -31,6 +31,6 @@ namespace Learny.ViewModels
         public DateTime EndDate { get; set; }
 
         [Display(Name = "Moduler")]
-        public ICollection<ApplicationUser> Modules { get; set; }
+        public ICollection<CourseModule> Modules { get; set; }
     }
 }
