@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Learny.Models
 {
+    [Authorize]
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
