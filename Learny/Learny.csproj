@@ -203,6 +203,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
