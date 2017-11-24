@@ -27,6 +27,12 @@
                     {
                         <li>@Html.ActionLink("Kurs", "Index", "Home")</li>
                     }
+                    @if (User.IsInRole(RoleName.teacher))
+                    {
+                        <li>@Html.ActionLink("Kurser", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Elever", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Lärare", "Index", "Home")</li>
+                    }
                 </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
