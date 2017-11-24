@@ -209,6 +209,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseModule.cs" />
     <Compile Include="DataAccess\ApplicationDbContext.cs" />
+    <Compile Include="ViewModels\CourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\ModuleActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
