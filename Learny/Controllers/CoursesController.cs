@@ -1,4 +1,5 @@
 ﻿using Learny.ViewModels;
+using Learny.Settings;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,9 +18,18 @@ namespace Learny.Models
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Courses
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Index()
         {
-            return View(db.Courses.ToList());
+            var courses = db.Courses.ToList();
+            List<CourseViewModel> viewModels = new List<CourseViewModel>();
+            foreach (var course in courses)
+            {
+                viewModels.Add(populateCourseVM(course));
+            }
+
+            var sortedViewModel = viewModels.OrderBy(v => v.StartDate);
+            return View(sortedViewModel);
         }
 
         private CourseViewModel populateCourseVM(Course course)
@@ -29,7 +39,6 @@ namespace Learny.Models
                 Id = course.Id,
                 Name = course.Name,
                 CourseCode = course.CourseCode,
-                Description = course.Description,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
                 Modules = course.Modules
@@ -48,6 +57,7 @@ namespace Learny.Models
             Course course = db.Courses.Find(id);
             CourseDetailsViewModel viewModel = (CourseDetailsViewModel)populateCourseVM(course);
             viewModel.Students = course.Students;
+            viewModel.Description = course.Description;
             if (course == null)
             {
                 return HttpNotFound();
