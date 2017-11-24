@@ -17,7 +17,15 @@ namespace Learny.Models
         // GET: Courses
         public ActionResult Index()
         {
-            return View(db.Courses.ToList());
+            var courses = db.Courses.ToList();
+            List<CourseViewModel> viewModels = new List<CourseViewModel>();
+            foreach (var course in courses)
+            {
+                viewModels.Add(populateCourseVM(course));
+            }
+
+            var sortedViewModel = viewModels.OrderBy(v => v.StartDate);
+            return View(sortedViewModel);
         }
 
         private CourseViewModel populateCourseVM(Course course)
