@@ -10,6 +10,7 @@ using Learny.Models;
 
 namespace Learny.Controllers
 {
+    [Authorize]
     public class CourseModulesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
