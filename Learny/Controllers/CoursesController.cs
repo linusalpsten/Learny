@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Learny.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -19,6 +20,21 @@ namespace Learny.Models
             return View(db.Courses.ToList());
         }
 
+        private CourseViewModel populateCourseVM(Course course)
+        {
+            CourseViewModel viewModel = new CourseViewModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                CourseCode = course.CourseCode,
+                Description = course.Description,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                Modules = course.Modules
+            };
+            return viewModel;
+        }
+
         // GET: Courses/Details/5
         public ActionResult Details(int? id)
         {
@@ -27,6 +43,8 @@ namespace Learny.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = db.Courses.Find(id);
+            CourseDetailsViewModel viewModel = (CourseDetailsViewModel)populateCourseVM(course);
+            viewModel.Students = course.Students;
             if (course == null)
             {
                 return HttpNotFound();
