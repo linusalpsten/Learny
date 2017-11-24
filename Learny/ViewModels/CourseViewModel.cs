@@ -30,9 +30,6 @@ namespace Learny.ViewModels
         [Display(Name = "Slut datum")]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "Elever")]
-        public ICollection<ApplicationUser> Students { get; set; }
-
         [Display(Name = "Moduler")]
         public ICollection<ApplicationUser> Modules { get; set; }
     }
