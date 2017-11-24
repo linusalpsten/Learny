@@ -1,13 +1,27 @@
-﻿@model Learny.Models.Course
+﻿@model Learny.ViewModels.CourseDetailsViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Kurs detaljer";
+    List<Learny.Models.CourseModule> modules = Model.Modules.ToList();
+    modules.Sort(delegate (Learny.Models.CourseModule a, Learny.Models.CourseModule b) { return a.StartDate.CompareTo(b.StartDate); });
+
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.CourseCode)</h2>
+
+<p>
+    <h3>Beskrivning</h3>
+    @Html.DisplayFor(model => model.Description)
+</p>
+
+<ul>
+    @foreach (var item in modules)
+    {
+        <li>@Html.DisplayFor(model => item.Name)</li>
+    }
+</ul>
 
 <div>
-    <h4>Course</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
