@@ -8,6 +8,7 @@ namespace Learny.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Learny.Settings;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Models.ApplicationDbContext>
     {
@@ -38,10 +39,8 @@ namespace Learny.Migrations
             var roleStore = new RoleStore<IdentityRole>(context);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-            var teacherRole = "teacher";
-            var studentRole = "student";
 
-            var roleNames = new[] { teacherRole, studentRole };
+            var roleNames = new[] { RoleName.teacher, RoleName.student };
             foreach (var roleName in roleNames)
             {
                 if (context.Roles.Any(r => r.Name == roleName)) continue;
@@ -54,10 +53,7 @@ namespace Learny.Migrations
                 }
             }
 
-            var exercise = "Övning";
-            var elearning = "E-Learning";
-            var lecture = "Föreläsning";
-            var activityTypeNames = new[] { exercise, elearning, lecture };
+            var activityTypeNames = new[] { ActivityTypeName.exercise, ActivityTypeName.elearning, ActivityTypeName.lecture };
             var activityTypes = new ActivityType[activityTypeNames.Length];
 
             for (int i = 0; i < activityTypes.Length; i++)
@@ -100,8 +96,8 @@ namespace Learny.Migrations
 
             context.SaveChanges();
 
-            var elearningTypeId = context.ActivityTypes.Where(t => t.Name == elearning).FirstOrDefault().Id;
-            var exerciseTypeId = context.ActivityTypes.Where(t => t.Name == exercise).FirstOrDefault().Id;
+            var elearningTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.elearning).FirstOrDefault().Id;
+            var exerciseTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.exercise).FirstOrDefault().Id;
             var cSharpModuleName = modules[0].Name;
             var cSharpModuleId = context.Modules.Where(m => m.Name == cSharpModuleName).FirstOrDefault().Id;
             var mvcModuleName = modules[1].Name;
@@ -124,8 +120,8 @@ namespace Learny.Migrations
             var userManager = new UserManager<ApplicationUser>(userStore);
 
             var users = new List<string[]>();
-            users.Add(new[] { "teacher@learny.com", "Learny", "Tomas Svensson", teacherRole });
-            users.Add(new[] { "student@learny.com", "Learny", "Hans Karlsson", studentRole });
+            users.Add(new[] { "teacher@learny.com", "Learny", "Tomas Svensson", RoleName.teacher });
+            users.Add(new[] { "student@learny.com", "Learny", "Hans Karlsson", RoleName.student });
 
             foreach (var user in users)
             {
@@ -138,7 +134,7 @@ namespace Learny.Migrations
                 if (context.Users.Any(u => u.UserName == userUserName)) continue;
 
                 var newUser = new ApplicationUser { UserName = userUserName, Email = userEmail, Name = userName };
-                if (userRole == studentRole)
+                if (userRole == RoleName.student)
                 {
                     newUser.CourseId = courseId;
                 }
