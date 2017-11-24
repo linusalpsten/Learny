@@ -1,4 +1,5 @@
 ﻿using Learny.ViewModels;
+using Learny.Settings;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,6 +17,7 @@ namespace Learny.Models
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Courses
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Index()
         {
             var courses = db.Courses.ToList();
