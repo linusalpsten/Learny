@@ -19,6 +19,8 @@ namespace Learny.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private ApplicationDbContext db = new ApplicationDbContext();
+        
         public AccountController()
         {
         }
@@ -180,7 +182,11 @@ namespace Learny.Controllers
         [AllowAnonymous]
         public ActionResult CreateStudent()
         {
-            return View("TeacherCreateStudent");
+           // StudentVM model = new StudentVM();
+            var allCourses = db.Courses.ToList();
+            var viewModel = new StudentVM { Courses = allCourses };
+
+            return View("TeacherCreateStudent",viewModel);
         }
 
         //
@@ -195,10 +201,13 @@ namespace Learny.Controllers
                 var user = new ApplicationUser
                 {
                     CourseId = model.CourseId,
+                   // CourseName = model.CourseCode,
                     Name = model.Name,
                     UserName = model.Email,
                     Email = model.Email
                 };
+
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

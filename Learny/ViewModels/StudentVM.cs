@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Learny.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace Learny.ViewModels
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        //  public string CourseCode { get; set; }
         public int CourseId { get; set; }
+
+        public List<Course> Courses { get; set; }
     }
 }
