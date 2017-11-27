@@ -23,7 +23,7 @@ namespace Learny.ViewModels
         [Display(Name = "Start")]
         public DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Slutdatum är obligatoriskt.")]
         [Display(Name = "Slut")]
         public DateTime EndDate { get; set; }
 
