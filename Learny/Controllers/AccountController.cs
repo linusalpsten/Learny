@@ -202,10 +202,12 @@ namespace Learny.Controllers
                 // Check if email is already used by other users
                 if (db.Users.Any(u => u.Email == model.Email))
                 {
-                    ModelState.AddModelError("Email", "En användare med den emejl adressen finns redan");
+                    ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
                     model = new StudentVM { Courses = allCourses };
                     return View("TeacherCreateStudent", model);
                 }
+                var test = model.CourseId;
+                
                 var user = new ApplicationUser
                 {
                     CourseId = model.CourseId,
@@ -234,10 +236,6 @@ namespace Learny.Controllers
                 }
                 // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
                 AddErrors(result);
-
-              
-                
-
             }
 
             // Model state is invalid: I need to feel the list of courses again and post it
@@ -246,20 +244,6 @@ namespace Learny.Controllers
             // If we got this far, something failed, redisplay form
             return View("TeacherCreateStudent", model);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //

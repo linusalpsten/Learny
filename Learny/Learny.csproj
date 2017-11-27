@@ -288,9 +288,11 @@
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Index.cshtml" />
+    <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

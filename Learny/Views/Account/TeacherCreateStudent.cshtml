@@ -1,7 +1,7 @@
 ﻿
 @model Learny.ViewModels.StudentVM
 @{
-    ViewBag.Title = "Create Student";
+    ViewBag.Title = "Lägg till en ny elev";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -9,15 +9,15 @@
 @using (Html.BeginForm("CreateStudent", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Lägg till en ny elev</h4>
+    @*<h4>Lägg till en ny elev</h4>*@
     <hr />
-    @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
+    @Html.ValidationSummary("", new { @class = "text-danger" })
 
 
     <div class="form-group">
         @Html.LabelFor(model => model.Courses, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.Courses, "Id", "Name"), "---- select a course ----")
+            @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.Courses, "Id", "Name"), "---- välj en kurs från listan ----")
         </div>
     </div>
 
@@ -56,7 +56,7 @@
         </div>*@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-default" value="Spara" />
         </div>
     </div>
 }
