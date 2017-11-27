@@ -29,6 +29,7 @@ namespace Learny.ViewModels
         [Required(ErrorMessage = "Slutdatum är obligatoriskt.")]
         [GreaterThanOrEqualTo("StartDate", ErrorMessage = "Slutdatum får inte vara mindre än startdatum")]
         [Display(Name = "Slut")]
+        [DateTimeToSqlDateTime]
         public DateTime EndDate { get; set; }
 
         [Display(Name = "Moduler")]
