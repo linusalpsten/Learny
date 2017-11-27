@@ -17,7 +17,14 @@ namespace Learny.Controllers
         // GET: StudentCourse
         public ActionResult Index()
         {
-            return View(db.Courses.ToList());
+            ApplicationUser CurrentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+
+            Course course = db.Courses.Find(CurrentUser.CourseId);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+            return View(course);
         }
 
         // GET: StudentCourse/Details/5
