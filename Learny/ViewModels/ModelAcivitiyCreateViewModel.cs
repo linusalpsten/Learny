@@ -1,4 +1,5 @@
-﻿using Learny.Models;
+﻿
+using Learny.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Learny.ViewModels
 {
-    public class ModelAcivitiesCreateViewModel
+    public class ModelAcivitiyCreateViewModel
     {
 
         public int Id { get; set; }

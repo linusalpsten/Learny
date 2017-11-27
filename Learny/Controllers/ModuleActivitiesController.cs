@@ -41,7 +41,7 @@ namespace Learny.Controllers
         // GET: ModuleActivities/Create
         public ActionResult Create(int id)
         {
-            var activityViewModel = new ModelAcivitiesCreateViewModel
+            var activityViewModel = new ModelAcivitiyCreateViewModel
             {
                 CourseModuleId = id,
                 ActivityTypes = db.ActivityTypes.ToList()
@@ -56,15 +56,19 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModelAcivitiesCreateViewModel activityViewModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModelAcivitiyCreateViewModel activityViewModel)
         {
 
             if (ModelState.IsValid)
             {
-                //if (activityViewModel.StartDate == DateTime.MinValue)
-                //{
-                //    ModelState.AddModelError(string.Empty, "Startdatum måste vara större än 0");
-                //}
+                if (activityViewModel.StartDate == DateTime.MinValue)
+                {
+                    ModelState.AddModelError("StartDate", "Startdatum måste vara större än 0");
+                }
+                if (activityViewModel.EndDate == DateTime.MinValue)
+                {
+                    ModelState.AddModelError("EndDate", "Slutdatum måste vara större än 0");
+                }
 
                 var activity = new ModuleActivity
                 {
