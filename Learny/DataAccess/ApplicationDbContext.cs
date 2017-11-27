@@ -25,6 +25,7 @@ namespace Learny.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //fluent API (googla)
             modelBuilder.Entity<Course>().Property(c => c.CourseCode)
                 .HasColumnAnnotation(
                 IndexAnnotation.AnnotationName, 
