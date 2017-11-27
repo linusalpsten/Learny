@@ -36,6 +36,8 @@ namespace Learny.Controllers
             return View(moduleActivity);
         }
 
+#region Create Activity
+
         // GET: ModuleActivities/Create
         public ActionResult Create(int id)
         {
@@ -46,9 +48,14 @@ namespace Learny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            var currentDateTime = DateTime.Now;
+            var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
+
             var activityViewModel = new ModelAcivityCreateViewModel
             {
                 CourseModuleId = id,
+                StartDate = today,
+                EndDate = today,
                 ActivityTypes = db.ActivityTypes.ToList()
 
             };
@@ -92,6 +99,8 @@ namespace Learny.Controllers
 
             return View(activityViewModel);
         }
+
+#endregion
 
         // GET: ModuleActivities/Edit/5
         public ActionResult Edit(int? id)
