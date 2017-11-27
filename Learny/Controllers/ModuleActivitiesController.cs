@@ -39,13 +39,20 @@ namespace Learny.Controllers
         // GET: ModuleActivities/Create
         public ActionResult Create(int id)
         {
+
+            //checked if module id exist
+            if ( !db.Modules.Any(m => m.Id == id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var activityViewModel = new ModelAcivityCreateViewModel
             {
                 CourseModuleId = id,
                 ActivityTypes = db.ActivityTypes.ToList()
 
             };
-            
+
             return View(activityViewModel);
         }
 
