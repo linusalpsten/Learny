@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Learny.ViewModels
 {
-    public class ModelAcivitiyCreateViewModel
+    public class ModelAcivityCreateViewModel
     {
 
         public int Id { get; set; }

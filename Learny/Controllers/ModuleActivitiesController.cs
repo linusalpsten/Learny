@@ -41,7 +41,7 @@ namespace Learny.Controllers
         // GET: ModuleActivities/Create
         public ActionResult Create(int id)
         {
-            var activityViewModel = new ModelAcivitiyCreateViewModel
+            var activityViewModel = new ModelAcivityCreateViewModel
             {
                 CourseModuleId = id,
                 ActivityTypes = db.ActivityTypes.ToList()
@@ -56,7 +56,7 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModelAcivitiyCreateViewModel activityViewModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModelAcivityCreateViewModel activityViewModel)
         {
 
             if (ModelState.IsValid)
