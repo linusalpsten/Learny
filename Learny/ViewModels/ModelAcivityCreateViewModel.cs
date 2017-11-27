@@ -1,4 +1,5 @@
 ﻿
+using Learny.DataAnnotations;
 using Learny.Models;
 using System;
 using System.Collections.Generic;
@@ -13,23 +14,27 @@ namespace Learny.ViewModels
 
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Aktivitetsnamn är obligatoriskt")]
         [Display(Name="Namn")]
         public string Name { get; set; }
 
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Startdatum är obligatoriskt")]
+        [DateTimeToSqlDateTime]
         [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Slutdatum är obligatoriskt")]
+        [DateTimeToSqlDateTime]
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
-        
+
+
         public int CourseModuleId { get; set; }
 
+        [Required(ErrorMessage = "Aktivitetstyp är obligatorisk")]
         public int ActivityTypeId { get; set; }
 
         public virtual ActivityType ActivityType { get; set; }
