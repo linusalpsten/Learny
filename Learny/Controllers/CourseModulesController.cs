@@ -37,7 +37,7 @@ namespace Learny.Controllers
         }
 
         // GET: CourseModules/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             return View();
         }
