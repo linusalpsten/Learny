@@ -80,6 +80,11 @@ namespace Learny.Models
         {
             if (ModelState.IsValid)
             {
+                if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode))
+                {
+                    ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
+                    return View(courseView);
+                }
                 var course = new Course
                 {
                     Id = courseView.Id,

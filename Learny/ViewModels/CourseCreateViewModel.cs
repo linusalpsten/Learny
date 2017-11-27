@@ -11,11 +11,11 @@ namespace Learny.ViewModels
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Startdatum är obligatoriskt.")]
         [Display(Name = "Startdatum")]
         public new DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Slutdatum är obligatoriskt.")]
         [Display(Name = "Slutdatum")]
         public new DateTime EndDate { get; set; }
 
