@@ -15,7 +15,7 @@ namespace Learny.ViewModels
         [Display(Name = "Startdatum")]
         public new DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Slutdatum är nödvändig")]
         [Display(Name = "Slutdatum")]
         public new DateTime EndDate { get; set; }
 
