@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Learny.ViewModels;
+using Learny.Settings;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Learny.Settings;
 
 namespace Learny.Models
 {
@@ -15,12 +18,36 @@ namespace Learny.Models
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Courses
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Index()
         {
-            return View(db.Courses.ToList());
+            var courses = db.Courses.ToList();
+            List<CourseViewModel> viewModels = new List<CourseViewModel>();
+            foreach (var course in courses)
+            {
+                viewModels.Add(populateCourseVM(course));
+            }
+
+            var sortedViewModel = viewModels.OrderBy(v => v.StartDate);
+            return View(sortedViewModel);
+        }
+
+        private CourseViewModel populateCourseVM(Course course)
+        {
+            CourseViewModel viewModel = new CourseDetailsViewModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                CourseCode = course.CourseCode,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                Modules = course.Modules
+            };
+            return viewModel;
         }
 
         // GET: Courses/Details/5
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -28,11 +55,14 @@ namespace Learny.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = db.Courses.Find(id);
+            CourseDetailsViewModel viewModel = (CourseDetailsViewModel)populateCourseVM(course);
+            viewModel.Students = course.Students;
+            viewModel.Description = course.Description;
             if (course == null)
             {
                 return HttpNotFound();
             }
-            return View(course);
+            return View(viewModel);
         }
 
         // GET: Courses/Create

@@ -1,58 +1,36 @@
-﻿@model Learny.Models.Course
+﻿@model Learny.ViewModels.CourseDetailsViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Kurs detaljer";
+    List<Learny.Models.CourseModule> modules = Model.Modules.ToList();
+    modules.Sort(delegate (Learny.Models.CourseModule a, Learny.Models.CourseModule b) { return a.StartDate.CompareTo(b.StartDate); });
+
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.CourseCode)</h2>
 
-<div>
-    <h4>Course</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CourseCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CourseCode)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-
-    </dl>
-</div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    <h3>Beskrivning</h3>
+    @Html.DisplayFor(model => model.Description)
+</p>
+
+<p>
+    @Html.DisplayNameFor(model => model.StartDate):
+    @Html.DisplayFor(model => model.StartDate)
+    <br />
+    @Html.DisplayNameFor(model => model.EndDate):
+    @Html.DisplayFor(model => model.EndDate)
+</p>
+
+<ul>
+    @foreach (var item in modules)
+    {
+        <li>@Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null)</li>
+    }
+</ul>
+
+<p>
+    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka till listan", "Index") |
+    @Html.ActionLink("Lägg till modul", "Create", "CourseModules")
 </p>
