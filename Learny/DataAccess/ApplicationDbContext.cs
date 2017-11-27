@@ -1,5 +1,7 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.Infrastructure.Annotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Learny.Models
 {
@@ -21,5 +23,16 @@ namespace Learny.Models
             return new ApplicationDbContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //fluent API (googla)
+            modelBuilder.Entity<Course>().Property(c => c.CourseCode)
+                .HasColumnAnnotation(
+                IndexAnnotation.AnnotationName, 
+                new IndexAnnotation(
+                    new IndexAttribute("IX_CourseCode") { IsUnique = true }
+                    ));
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

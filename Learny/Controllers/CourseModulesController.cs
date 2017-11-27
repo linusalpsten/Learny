@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Learny.Models;
+using Learny.ViewModels;
 
 namespace Learny.Controllers
 {
@@ -37,9 +38,16 @@ namespace Learny.Controllers
         }
 
         // GET: CourseModules/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            return View();
+            var viewModel = new ModuleViewModel
+            {
+                CourseId = id,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now
+            };
+
+            return View(viewModel);
         }
 
         // POST: CourseModules/Create
@@ -47,16 +55,26 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId")] CourseModule courseModule)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId")] ModuleViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var courseModule = new CourseModule
+                {
+                    Id = viewModel.Id,
+                    Name = viewModel.Name,
+                    Description = viewModel.Description,
+                    StartDate = viewModel.StartDate,
+                    EndDate = viewModel.EndDate,
+                    CourseId = viewModel.CourseId
+                };
+
                 db.Modules.Add(courseModule);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Courses", new { id = viewModel.CourseId });
             }
 
-            return View(courseModule);
+            return View(viewModel);
         }
 
         // GET: CourseModules/Edit/5

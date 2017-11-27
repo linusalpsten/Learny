@@ -12,6 +12,7 @@ namespace Learny.Models
         public string Name { get; set; }
 
         [Required]
+        [StringLength(100)]
         public string CourseCode { get; set; }
 
         public string Description { get; set; }

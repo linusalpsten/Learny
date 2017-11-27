@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Learny.Settings;
+
 
 namespace Learny.Models
 {
@@ -76,16 +76,31 @@ namespace Learny.Models
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] Course course)
+        public ActionResult Create([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] CourseCreateViewModel courseView)
         {
             if (ModelState.IsValid)
             {
+                if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode))
+                {
+                    ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
+                    return View(courseView);
+                }
+                var course = new Course
+                {
+                    Id = courseView.Id,
+                    Name = courseView.Name,
+                    CourseCode = courseView.CourseCode,
+                    Description = courseView.Description,
+                    StartDate = courseView.StartDate,
+                    EndDate = courseView.EndDate
+                };
+
                 db.Courses.Add(course);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(course);
+            return View(courseView);
         }
 
         // GET: Courses/Edit/5
