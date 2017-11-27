@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Learny.Models;
+using Learny.Settings;
+using Learny.ViewModels;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Learny.Models;
-using Learny.ViewModels;
 
 namespace Learny.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = RoleName.teacher)]
     public class ModuleActivitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
