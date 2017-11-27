@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace Learny.Controllers
 {
     [Authorize(Roles = RoleName.teacher)]
-    public class ModuleActivitiesController : Controller
+    public class ModuleActivityController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
