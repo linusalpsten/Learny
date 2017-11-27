@@ -71,7 +71,7 @@ namespace Learny.Controllers
 
                 db.Modules.Add(courseModule);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Courses", new { id = viewModel.CourseId });
             }
 
             return View(viewModel);
