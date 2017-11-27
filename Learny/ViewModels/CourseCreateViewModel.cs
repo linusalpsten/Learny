@@ -11,7 +11,7 @@ namespace Learny.ViewModels
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Startdatum är nödvändig")]
         [Display(Name = "Startdatum")]
         public new DateTime StartDate { get; set; }
 
