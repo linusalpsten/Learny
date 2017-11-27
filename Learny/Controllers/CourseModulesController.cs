@@ -43,6 +43,8 @@ namespace Learny.Controllers
             var viewModel = new ModuleViewModel
             {
                 CourseId = id,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now
             };
 
             return View(viewModel);
