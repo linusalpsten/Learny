@@ -20,12 +20,12 @@ namespace Learny.Controllers
         private ApplicationUserManager _userManager;
 
         private ApplicationDbContext db = new ApplicationDbContext();
-        
+
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -37,9 +37,9 @@ namespace Learny.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -123,7 +123,7 @@ namespace Learny.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -158,8 +158,8 @@ namespace Learny.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -182,11 +182,11 @@ namespace Learny.Controllers
         [AllowAnonymous]
         public ActionResult CreateStudent()
         {
-           // StudentVM model = new StudentVM();
+            // StudentVM model = new StudentVM();
             var allCourses = db.Courses.ToList();
             var viewModel = new StudentVM { Courses = allCourses };
 
-            return View("TeacherCreateStudent",viewModel);
+            return View("TeacherCreateStudent", viewModel);
         }
 
         //
@@ -196,12 +196,20 @@ namespace Learny.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateStudent(StudentVM model)
         {
+            var allCourses = db.Courses.ToList();
             if (ModelState.IsValid)
             {
+                // Check if email is already used by other users
+                if (db.Users.Any(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "En användare med den emejl adressen finns redan");
+                    model = new StudentVM { Courses = allCourses };
+                    return View("TeacherCreateStudent", model);
+                }
                 var user = new ApplicationUser
                 {
                     CourseId = model.CourseId,
-                   // CourseName = model.CourseCode,
+                    // CourseName = model.CourseCode,
                     Name = model.Name,
                     UserName = model.Email,
                     Email = model.Email
@@ -219,14 +227,24 @@ namespace Learny.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                  //  return RedirectToAction("Index", "Home");
+                    //  return RedirectToAction("Index", "Home");
+
+
                     return RedirectToAction("CreateStudent", "Account");
                 }
+                // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
                 AddErrors(result);
+
+              
+                
+
             }
 
+            // Model state is invalid: I need to feel the list of courses again and post it
+            model = new StudentVM { Courses = allCourses };
+
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("TeacherCreateStudent", model);
         }
 
 
