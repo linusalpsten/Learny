@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Learny.Models;
+using Learny.ViewModels;
 
 namespace Learny.Controllers
 {
@@ -38,10 +39,16 @@ namespace Learny.Controllers
         }
 
         // GET: ModuleActivities/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name");
-            return View();
+            var activityViewModel = new ModelAcivitiesCreateViewModel
+            {
+                CourseModuleId = id,
+                ActivityTypes = db.ActivityTypes.ToList()
+
+            };
+            
+            return View(activityViewModel);
         }
 
         // POST: ModuleActivities/Create
@@ -49,17 +56,32 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleActivity moduleActivity)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModelAcivitiesCreateViewModel activityViewModel)
         {
+
             if (ModelState.IsValid)
             {
-                db.Activities.Add(moduleActivity);
+                //if (activityViewModel.StartDate == DateTime.MinValue)
+                //{
+                //    ModelState.AddModelError(string.Empty, "Startdatum måste vara större än 0");
+                //}
+
+                var activity = new ModuleActivity
+                {
+                    Name = activityViewModel.Name,
+                    Description = activityViewModel.Description,
+                    StartDate = activityViewModel.StartDate,
+                    EndDate = activityViewModel.EndDate,
+                    CourseModuleId = activityViewModel.CourseModuleId,
+                    ActivityTypeId = activityViewModel.ActivityTypeId,
+                };
+
+                db.Activities.Add(activity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
-            return View(moduleActivity);
+            return View(activityViewModel);
         }
 
         // GET: ModuleActivities/Edit/5
