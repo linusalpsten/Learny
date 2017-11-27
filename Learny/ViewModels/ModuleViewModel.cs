@@ -19,11 +19,11 @@ namespace Learny.ViewModels
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Start")]
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
         [Required]
-        [Display(Name = "Slut")]
+        [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
         public int CourseId { get; set; }
