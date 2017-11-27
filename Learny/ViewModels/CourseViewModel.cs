@@ -19,7 +19,7 @@ namespace Learny.ViewModels
         [Display(Name = "Kurskod")]
         public string CourseCode { get; set; }        
 
-        [Required]
+        [Required(ErrorMessage = "Startdatum är obligatoriskt.")]
         [Display(Name = "Start")]
         public DateTime StartDate { get; set; }
 
