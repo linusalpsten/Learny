@@ -41,7 +41,7 @@ namespace Learny.Controllers
         {
 
             //checked if module id exist
-            if ( !db.Modules.Any(m => m.Id == id))
+            if (!db.Modules.Any(m => m.Id == id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
