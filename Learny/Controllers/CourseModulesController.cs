@@ -24,6 +24,7 @@ namespace Learny.Controllers
         }
 
         // GET: CourseModules/Details/5
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Details(int? id)
         {
             if (id == null)
