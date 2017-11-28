@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Learny.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,13 +9,20 @@ namespace Learny.Controllers
 {
     [Authorize]
     public class HomeController : Controller
-    {
-        
+    {        
         public ActionResult Index()
         {
-            return View();
-        }
+            if (User.IsInRole(RoleName.student))
+            {
+                return RedirectToAction("Index", "StudentCourse");
+            }
+            if (User.IsInRole(RoleName.teacher))
+            {
+                return RedirectToAction("Index", "Courses");
+            }
 
-        
+            return RedirectToAction("Login", "AccountController");
+        }
+                
     }
 }
