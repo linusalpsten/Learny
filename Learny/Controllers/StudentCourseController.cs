@@ -70,21 +70,20 @@ namespace Learny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CourseModule courseModule = db.Modules.Find(id);
-            if (courseModule == null)
+            ModuleActivity moduleActivity = db.Activities.Find(id);
+            if (moduleActivity == null)
             {
                 return HttpNotFound();
             }
-            var courseModuleViewModel = new StudentCourseModuleViewModel
+            var activityViewModel = new StudentModuleActivity
             {
-                Id = courseModule.Id,
-                Name = courseModule.Name,
-                Description = courseModule.Description,
-                StartDate = courseModule.StartDate,
-                EndDate = courseModule.EndDate,
-                Activities = db.Activities.Where(a => a.CourseModuleId == courseModule.Id).OrderBy(a => a.StartDate).ToList()
+                Id = moduleActivity.Id,
+                Name = moduleActivity.Name,
+                Description = moduleActivity.Description,
+                StartDate = moduleActivity.StartDate,
+                EndDate = moduleActivity.EndDate,
             };
-            return View(new StudentModuleActivity());
+            return View(activityViewModel);
         }
 
         protected override void Dispose(bool disposing)

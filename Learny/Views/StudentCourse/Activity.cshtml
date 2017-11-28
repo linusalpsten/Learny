@@ -1,8 +1,19 @@
 ﻿@model Learny.ViewModels.StudentModuleActivity
 
 @{
-    ViewBag.Title = "Activity";
+    ViewBag.Title = Model.Name;
 }
 
-<h2>Activity</h2>
+<h2>@Html.DisplayFor(model => model.Name)</h2>
 
+<p>
+    @Html.DisplayFor(model => model.Description)
+</p>
+
+<p>
+    @Html.DisplayNameFor(model => model.StartDate):
+    @Html.DisplayFor(model => model.StartDate)
+    <br />
+    @Html.DisplayNameFor(model => model.EndDate):
+    @Html.DisplayFor(model => model.EndDate)
+</p>
