@@ -30,6 +30,7 @@ namespace Learny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CourseModule courseModule = db.Modules.Find(id);
+            courseModule.Activities = courseModule.Activities.OrderBy(a => a.StartDate).ToList();
             if (courseModule == null)
             {
                 return HttpNotFound();
