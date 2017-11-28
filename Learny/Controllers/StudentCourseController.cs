@@ -43,21 +43,6 @@ namespace Learny.Controllers
 
         }
 
-        // GET: StudentCourse/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-            return View(course);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
