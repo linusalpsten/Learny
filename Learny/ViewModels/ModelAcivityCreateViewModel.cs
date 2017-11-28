@@ -39,8 +39,6 @@ namespace Learny.ViewModels
         [Required(ErrorMessage = "Aktivitetstyp är obligatorisk")]
         public int ActivityTypeId { get; set; }
 
-        public virtual ActivityType ActivityType { get; set; }
-
         [Display(Name = "Aktivitetstyp")]
         public List<ActivityType> ActivityTypes { get; set; }
 
