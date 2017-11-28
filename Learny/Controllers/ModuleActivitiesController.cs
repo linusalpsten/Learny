@@ -33,7 +33,17 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            return View(moduleActivity);
+            var activity = new ModelAcivityCreateViewModel
+            {
+                Id = moduleActivity.Id,
+                Name = moduleActivity.Name,
+                Description = moduleActivity.Description,
+                StartDate = moduleActivity.StartDate,
+                EndDate = moduleActivity.EndDate,
+                CourseModuleId = moduleActivity.CourseModuleId,
+                ActivityTypeId = moduleActivity.ActivityTypeId
+            };
+            return View(activity);
         }
 
 #region Create Activity
