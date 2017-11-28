@@ -314,11 +314,7 @@
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Index.cshtml" />
-    <Content Include="Views\StudentCourseModules\Create.cshtml" />
-    <Content Include="Views\StudentCourseModules\Delete.cshtml" />
     <Content Include="Views\StudentCourseModules\Index.cshtml" />
-    <Content Include="Views\StudentCourseModules\Edit.cshtml" />
-    <Content Include="Views\StudentCourseModules\OldIndex.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
