@@ -198,7 +198,6 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModuleActivitiesController.cs" />
     <Compile Include="Controllers\StudentCourseController.cs" />
-    <Compile Include="Controllers\StudentCourseModulesController.cs" />
     <Compile Include="DataAnnotations\DateTimeToSqlDateTime.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -316,8 +315,8 @@
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Index.cshtml" />
-    <Content Include="Views\StudentCourseModules\Index.cshtml" />
     <Content Include="Views\StudentCourse\Index.cshtml" />
+    <Content Include="Views\StudentCourse\Module.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

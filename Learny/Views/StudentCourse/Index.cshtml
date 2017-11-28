@@ -21,7 +21,7 @@
 <ul>
     @foreach (var item in Model.Modules)
     {
-        <li>@Html.ActionLink(item.Name, "Index", "StudentCourseModules", new { id = item.Id }, null)</li>
+        <li>@Html.ActionLink(item.Name, "Module", new { id = item.Id })</li>
     }
 </ul>
 

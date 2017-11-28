@@ -33,7 +33,7 @@
     @foreach (var item in Model.Activities)
     {
         <tr>
-            <td>                @Html.DisplayFor(modelItem => item.Name)            </td>
+            <td>           @Html.ActionLink(Html.DisplayFor(modelItem => item.Name).ToString(), "Details", "ModuleActivities", new { id = item.Id }, null)     </td>
             <td>                @Html.DisplayFor(modelItem => item.Description)            </td>
             <td>                @Html.DisplayFor(modelItem => item.StartDate)            </td>
             <td>                @Html.DisplayFor(modelItem => item.EndDate)            </td>
