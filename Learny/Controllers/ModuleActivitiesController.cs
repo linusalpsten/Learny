@@ -33,7 +33,7 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            var activity = new ModelAcivityCreateViewModel
+            var activity = new ModuleAcivityCreateViewModel
             {
                 Id = moduleActivity.Id,
                 Name = moduleActivity.Name,
@@ -61,7 +61,7 @@ namespace Learny.Controllers
             var currentDateTime = DateTime.Now;
             var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
 
-            var activityViewModel = new ModelAcivityCreateViewModel
+            var activityViewModel = new ModuleAcivityCreateViewModel
             {
                 CourseModuleId = id,
                 StartDate = today,
@@ -78,7 +78,7 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModelAcivityCreateViewModel activityViewModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleAcivityCreateViewModel activityViewModel)
         {
 
             if (ModelState.IsValid)

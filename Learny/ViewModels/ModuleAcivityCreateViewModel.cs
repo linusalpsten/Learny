@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Learny.ViewModels
 {
-    public class ModelAcivityCreateViewModel
+    public class ModuleAcivityCreateViewModel
     {
 
         public int Id { get; set; }
