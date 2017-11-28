@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Learny.Models;
+using Learny.Settings;
+using Learny.ViewModels;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Learny.Models;
 
 namespace Learny.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = RoleName.teacher)]
     public class ModuleActivitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -37,11 +36,31 @@ namespace Learny.Controllers
             return View(moduleActivity);
         }
 
+#region Create Activity
+
         // GET: ModuleActivities/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name");
-            return View();
+
+            //checked if module id exist
+            if (!db.Modules.Any(m => m.Id == id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var currentDateTime = DateTime.Now;
+            var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
+
+            var activityViewModel = new ModelAcivityCreateViewModel
+            {
+                CourseModuleId = id,
+                StartDate = today,
+                EndDate = today,
+                ActivityTypes = db.ActivityTypes.ToList()
+
+            };
+
+            return View(activityViewModel);
         }
 
         // POST: ModuleActivities/Create
@@ -49,18 +68,40 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleActivity moduleActivity)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModelAcivityCreateViewModel activityViewModel)
         {
+
             if (ModelState.IsValid)
             {
-                db.Activities.Add(moduleActivity);
+                if (activityViewModel.StartDate == DateTime.MinValue)
+                {
+                    ModelState.AddModelError("StartDate", "Startdatum måste vara större än 0");
+                }
+                if (activityViewModel.EndDate == DateTime.MinValue)
+                {
+                    ModelState.AddModelError("EndDate", "Slutdatum måste vara större än 0");
+                }
+
+                var activity = new ModuleActivity
+                {
+                    Name = activityViewModel.Name,
+                    Description = activityViewModel.Description,
+                    StartDate = activityViewModel.StartDate,
+                    EndDate = activityViewModel.EndDate,
+                    CourseModuleId = activityViewModel.CourseModuleId,
+                    ActivityTypeId = activityViewModel.ActivityTypeId,
+                };
+
+                db.Activities.Add(activity);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "CourseModules",new { id = activityViewModel.CourseModuleId });
             }
 
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
-            return View(moduleActivity);
+            activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
+            return View(activityViewModel);
         }
+
+#endregion
 
         // GET: ModuleActivities/Edit/5
         public ActionResult Edit(int? id)

@@ -1,0 +1,43 @@
+﻿@model Learny.ViewModels.StudentCourseModuleViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>            @Html.DisplayNameFor(model => model.Description)        </dt>
+        <dd>            @Html.DisplayFor(model => model.Description)        </dd>
+
+        <dt>            @Html.DisplayNameFor(model => model.StartDate)        </dt>
+        <dd>            @Html.DisplayFor(model => model.StartDate)        </dd>
+
+        <dt>            @Html.DisplayNameFor(model => model.EndDate)        </dt>
+        <dd>            @Html.DisplayFor(model => model.EndDate)        </dd>
+
+    </dl>
+</div>
+<table class="table">
+    <tr>
+        <th>            Aktivitet       </th>
+        <th>            @Html.DisplayNameFor(model => model.Description)        </th>
+        <th>            @Html.DisplayNameFor(model => model.StartDate)        </th>
+        <th>            @Html.DisplayNameFor(model => model.EndDate)        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Activities)
+    {
+        <tr>
+            <td>                @Html.DisplayFor(modelItem => item.Name)            </td>
+            <td>                @Html.DisplayFor(modelItem => item.Description)            </td>
+            <td>                @Html.DisplayFor(modelItem => item.StartDate)            </td>
+            <td>                @Html.DisplayFor(modelItem => item.EndDate)            </td>
+        </tr>
+    }
+
+</table>

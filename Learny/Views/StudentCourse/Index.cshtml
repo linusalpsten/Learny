@@ -1,7 +1,6 @@
-﻿@model Learny.ViewModels.CourseDetailsViewModel
-
+﻿@model Learny.ViewModels.StudentCourseViewModel
 @{
-    ViewBag.Title = "Kurs detaljer";
+    ViewBag.Title = "Kurs";
 }
 
 <h2>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.CourseCode)</h2>
@@ -22,11 +21,7 @@
 <ul>
     @foreach (var item in Model.Modules)
     {
-        <li>@Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null)</li>
+        <li>@Html.ActionLink(item.Name, "Index", "StudentCourseModules", new { id = item.Id }, null)</li>
     }
 </ul>
 
-<p>
-    @Html.ActionLink("Tillbaka till listan", "Index") |
-    @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
-</p>
