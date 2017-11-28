@@ -24,8 +24,9 @@ namespace Learny.ViewModels
         public DateTime EndDate { get; set; }
 
         public int CourseModuleId { get; set; }
-        
-        public int ActivityTypeId { get; set; }
-        
+
+        [Display(Name="Activitetstyp")]
+        public string ActivityTypeName { get; set; }
+
     }
 }

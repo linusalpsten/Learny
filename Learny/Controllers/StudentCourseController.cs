@@ -82,6 +82,7 @@ namespace Learny.Controllers
                 Description = moduleActivity.Description,
                 StartDate = moduleActivity.StartDate,
                 EndDate = moduleActivity.EndDate,
+                ActivityTypeName = moduleActivity.ActivityType.Name
             };
             return View(activityViewModel);
         }
