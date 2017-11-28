@@ -46,7 +46,7 @@ namespace Learny.Controllers
                 CourseId = courseModule.CourseId,
                 Activities = courseModule.Activities.OrderBy(a => a.StartDate).ToList()
             };
-            return View(courseModule);
+            return View(module);
         }
 
         // GET: CourseModules/Create
