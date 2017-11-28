@@ -34,7 +34,7 @@ namespace Learny.Controllers
                 Description = course.Description,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
-                Modules = course.Modules,
+                Modules = course.Modules.OrderBy(m => m.StartDate).ToList(),
                 Students = course.Students
             };
 
