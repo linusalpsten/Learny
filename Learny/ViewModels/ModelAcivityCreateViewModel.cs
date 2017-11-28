@@ -1,4 +1,5 @@
 ﻿
+using Foolproof;
 using Learny.DataAnnotations;
 using Learny.Models;
 using System;
@@ -27,6 +28,7 @@ namespace Learny.ViewModels
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Slutdatum är obligatoriskt")]
+        [GreaterThanOrEqualTo("StartDate", ErrorMessage = "Slutdatum får inte vara mindre än startdatum")]
         [DateTimeToSqlDateTime]
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
