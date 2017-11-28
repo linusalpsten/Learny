@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Learny.Models;
 using Learny.ViewModels;
+using Learny.Settings;
 
 namespace Learny.Controllers
 {
@@ -30,11 +31,20 @@ namespace Learny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CourseModule courseModule = db.Modules.Find(id);
-            courseModule.Activities = courseModule.Activities.OrderBy(a => a.StartDate).ToList();
             if (courseModule == null)
             {
                 return HttpNotFound();
             }
+            var module = new ModuleViewModel
+            {
+                Id = courseModule.Id,
+                Name = courseModule.Name,
+                Description = courseModule.Description,
+                StartDate = courseModule.StartDate,
+                EndDate = courseModule.EndDate,
+                CourseId = courseModule.CourseId,
+                Activities = courseModule.Activities.OrderBy(a => a.StartDate).ToList()
+            };
             return View(courseModule);
         }
 
