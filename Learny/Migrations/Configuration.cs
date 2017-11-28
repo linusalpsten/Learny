@@ -104,9 +104,9 @@ namespace Learny.Migrations
             var mvcModuleId = context.Modules.Where(m => m.Name == mvcModuleName).FirstOrDefault().Id;
             var activities = new ModuleActivity[]
             {
-                new ModuleActivity { Name = "E-learning", StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(15), ActivityTypeId = elearningTypeId, CourseModuleId = cSharpModuleId },
-                new ModuleActivity { Name = "Övning", StartDate = DateTime.Now.AddDays(16), EndDate = DateTime.Now.AddMonths(1), ActivityTypeId = exerciseTypeId, CourseModuleId = cSharpModuleId },
-                new ModuleActivity { Name = "E-learning", StartDate = DateTime.Now.AddMonths(1), EndDate = DateTime.Now.AddDays(15).AddMonths(1), ActivityTypeId = elearningTypeId, CourseModuleId = mvcModuleId }
+                new ModuleActivity { Name = "C# Fundamentals with Visual Studio 2015", Description="Kapitel 1.1, 1.2",StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(15), ActivityTypeId = elearningTypeId, CourseModuleId = cSharpModuleId },
+                new ModuleActivity { Name = "Övning 2", Description="C# övning - Flöde via loopar och strängmanipulation", StartDate = DateTime.Now.AddDays(16), EndDate = DateTime.Now.AddMonths(1), ActivityTypeId = exerciseTypeId, CourseModuleId = cSharpModuleId },
+                new ModuleActivity { Name = "Building Applications with ASP.NET MVC 4", Description="Kapitel 7.1 – 7.3", StartDate = DateTime.Now.AddMonths(1), EndDate = DateTime.Now.AddDays(15).AddMonths(1), ActivityTypeId = elearningTypeId, CourseModuleId = mvcModuleId }
             };
 
             context.Activities.AddOrUpdate(
