@@ -227,6 +227,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
+    <Compile Include="ViewModels\StudentCourseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LearnyConnection.mdf" />
