@@ -11,7 +11,6 @@ using Microsoft.Owin.Security;
 using Learny.Models;
 using Learny.ViewModels;
 using Learny.Settings;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Learny.Controllers
 {
@@ -196,13 +195,8 @@ namespace Learny.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateStudent(StudentVM model)
+        public ActionResult CreateStudent(StudentVM model)
         {
-            var context = new ApplicationDbContext();
-            var userStore = new UserStore<ApplicationUser>( context);
-            var userManager = new UserManager<ApplicationUser>(userStore);
-
-
             var allCourses = db.Courses.ToList();
             if (ModelState.IsValid)
             {
@@ -213,8 +207,7 @@ namespace Learny.Controllers
                     model = new StudentVM { Courses = allCourses };
                     return View("TeacherCreateStudent", model);
                 }
-                var test = model.CourseId;
-
+                
                 var user = new ApplicationUser
                 {
                     CourseId = model.CourseId,
@@ -225,10 +218,15 @@ namespace Learny.Controllers
                 };
 
 
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var existingUser = UserManager.FindByName(model.Email);
+                    if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
+                    {
+                        UserManager.AddToRole(existingUser.Id, RoleName.student);
+                    }
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -237,16 +235,13 @@ namespace Learny.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     //  return RedirectToAction("Index", "Home");
-                    var existingUser = userManager.FindByName(user.UserName);
-                    //if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
-                    //{
-                    userManager.AddToRole(existingUser.Id, RoleName.student);
-                    //}
+
 
                     return RedirectToAction("CreateStudent", "Account");
                 }
                 // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
                 AddErrors(result);
+
             }
 
             // Model state is invalid: I need to feel the list of courses again and post it
