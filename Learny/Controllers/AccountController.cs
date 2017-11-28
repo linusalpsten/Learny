@@ -9,21 +9,34 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Learny.Models;
+using Learny.ViewModels;
+using Learny.Settings;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace Learny.Controllers
 {
+
+
+
+
+
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
+            //Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("sv-Sv");
+            //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -34,9 +47,9 @@ namespace Learny.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -120,7 +133,7 @@ namespace Learny.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -155,8 +168,8 @@ namespace Learny.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -171,6 +184,97 @@ namespace Learny.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+
+
+        // Student CREATE
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult CreateStudent()
+        {
+            // StudentVM model = new StudentVM();
+            var allCourses = db.Courses.ToList();
+            var viewModel = new StudentVM { Courses = allCourses };
+
+            return View("TeacherCreateStudent", viewModel);
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateStudent(StudentVM model)
+        {
+            var allCourses = db.Courses.ToList();
+            if (ModelState.IsValid)
+            {
+                // Check if email is already used by other users
+                if (db.Users.Any(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
+                    model = new StudentVM { Courses = allCourses };
+                    return View("TeacherCreateStudent", model);
+                }
+
+                var user = new ApplicationUser
+                {
+                    CourseId = model.CourseId,
+                    // CourseName = model.CourseCode,
+                    Name = model.Name,
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+
+                var errorsInSwedish = new List<string>();
+
+                var result = UserManager.Create(user, model.Password);
+
+                foreach (var error in result.Errors)
+                {
+                    if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
+                    {
+                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, ett tal, en versal('A' - 'Z') och bestå av minst 6 tecken.");
+                    }
+                    else
+                    {
+                        errorsInSwedish.Add(error);
+                    }
+                }
+                
+                if (result.Succeeded)
+                {
+                    //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var existingUser = UserManager.FindByName(model.Email);
+                    if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
+                    {
+                        UserManager.AddToRole(existingUser.Id, RoleName.student);
+                    }
+
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    //  return RedirectToAction("Index", "Home");
+
+
+                    return RedirectToAction("CreateStudent", "Account");
+                }
+                // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
+                // AddErrors(result);
+                var resultModified = new IdentityResult(errorsInSwedish);
+                AddErrors(resultModified);
+            }
+
+            // Model state is invalid: I need to feel the list of courses again and post it
+            model = new StudentVM { Courses = allCourses };
+
+            // If we got this far, something failed, redisplay form
+            return View("TeacherCreateStudent", model);
+        }
+
 
         //
         // GET: /Account/ConfirmEmail

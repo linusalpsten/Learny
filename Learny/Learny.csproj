@@ -231,6 +231,7 @@
     <Compile Include="ViewModels\ModuleViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
+    <Compile Include="ViewModels\StudentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LearnyConnection.mdf" />
@@ -319,8 +320,12 @@
     <Content Include="Views\StudentCourseModules\Index.cshtml" />
     <Content Include="Views\StudentCourse\Details.cshtml" />
     <Content Include="Views\StudentCourse\Index.cshtml" />
+    <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Student\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
