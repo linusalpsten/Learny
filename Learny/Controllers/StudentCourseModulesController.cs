@@ -11,6 +11,7 @@ using Learny.ViewModels;
 
 namespace Learny.Controllers
 {
+    [Authorize]
     public class StudentCourseModulesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
