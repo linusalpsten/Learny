@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FoolproofValidation, Version=0.9.5851.39121, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Foolproof.0.9.4518\lib\net45\FoolproofValidation.dll</HintPath>
+      <HintPath>..\packages\FoolproofValidation.0.9.4518\lib\net45\FoolproofValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -198,6 +198,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModuleActivitiesController.cs" />
     <Compile Include="Controllers\StudentCourseController.cs" />
+    <Compile Include="Controllers\StudentCourseModulesController.cs" />
     <Compile Include="DataAnnotations\DateTimeToSqlDateTime.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -226,8 +227,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\ModelAcivityCreateViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseViewModel.cs" />
+    <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LearnyConnection.mdf" />
@@ -313,6 +316,7 @@
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Index.cshtml" />
+    <Content Include="Views\StudentCourseModules\Index.cshtml" />
     <Content Include="Views\StudentCourse\Details.cshtml" />
     <Content Include="Views\StudentCourse\Index.cshtml" />
   </ItemGroup>
