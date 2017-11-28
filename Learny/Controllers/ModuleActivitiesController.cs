@@ -97,6 +97,7 @@ namespace Learny.Controllers
                 return RedirectToAction("Details", "CourseModules",new { id = activityViewModel.CourseModuleId });
             }
 
+            activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
             return View(activityViewModel);
         }
 
