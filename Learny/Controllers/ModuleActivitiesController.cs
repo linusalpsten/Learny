@@ -33,7 +33,7 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            var activity = new ModuleAcivityCreateViewModel
+            var activity = new ModuleActivityViewModel
             {
                 Id = moduleActivity.Id,
                 Name = moduleActivity.Name,
@@ -41,7 +41,7 @@ namespace Learny.Controllers
                 StartDate = moduleActivity.StartDate,
                 EndDate = moduleActivity.EndDate,
                 CourseModuleId = moduleActivity.CourseModuleId,
-                ActivityTypeId = moduleActivity.ActivityTypeId
+                ActivityTypeName = moduleActivity.ActivityType.Name
             };
             return View(activity);
         }
