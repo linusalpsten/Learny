@@ -21,7 +21,7 @@
 <ul>
     @foreach (var item in Model.Activities)
     {
-        <li>@Html.ActionLink(item.Name, "Activity", new { id = item.Id })</li>
+        <li>@Html.DisplayFor(modelItem => item.ActivityType.Name): @Html.ActionLink(item.Name, "Activity", new { id = item.Id })</li>
     }
 </ul>
 
