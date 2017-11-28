@@ -2,9 +2,6 @@
 
 @{
     ViewBag.Title = "Kurs detaljer";
-    List<Learny.Models.CourseModule> modules = Model.Modules.ToList();
-    modules.Sort(delegate (Learny.Models.CourseModule a, Learny.Models.CourseModule b) { return a.StartDate.CompareTo(b.StartDate); });
-
 }
 
 <h2>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.CourseCode)</h2>
@@ -23,7 +20,7 @@
 </p>
 
 <ul>
-    @foreach (var item in modules)
+    @foreach (var item in Model.Modules)
     {
         <li>@Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null)</li>
     }

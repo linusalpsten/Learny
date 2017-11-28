@@ -41,7 +41,7 @@ namespace Learny.Models
                 CourseCode = course.CourseCode,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
-                Modules = course.Modules
+                Modules = course.Modules.OrderBy(m => m.StartDate).ToList()
             };
             return viewModel;
         }
