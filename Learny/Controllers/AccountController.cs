@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Learny.Models;
 using Learny.ViewModels;
+using Learny.Settings;
 
 namespace Learny.Controllers
 {
@@ -194,7 +195,7 @@ namespace Learny.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateStudent(StudentVM model)
+        public ActionResult CreateStudent(StudentVM model)
         {
             var allCourses = db.Courses.ToList();
             if (ModelState.IsValid)
@@ -206,7 +207,6 @@ namespace Learny.Controllers
                     model = new StudentVM { Courses = allCourses };
                     return View("TeacherCreateStudent", model);
                 }
-                var test = model.CourseId;
                 
                 var user = new ApplicationUser
                 {
@@ -218,10 +218,15 @@ namespace Learny.Controllers
                 };
 
 
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var existingUser = UserManager.FindByName(model.Email);
+                    if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
+                    {
+                        UserManager.AddToRole(existingUser.Id, RoleName.student);
+                    }
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -236,6 +241,7 @@ namespace Learny.Controllers
                 }
                 // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
                 AddErrors(result);
+
             }
 
             // Model state is invalid: I need to feel the list of courses again and post it
