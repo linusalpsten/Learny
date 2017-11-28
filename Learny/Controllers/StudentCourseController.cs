@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Learny.Models;
+using Learny.ViewModels;
 
 namespace Learny.Controllers
 {
@@ -24,7 +25,21 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            return View(course);
+
+            StudentCourseViewModel ViewModel = new StudentCourseViewModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                CourseCode = course.CourseCode,
+                Description = course.Description,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                Modules = course.Modules,
+                Students = course.Students
+            };
+
+            return View(ViewModel);
+
         }
 
         // GET: StudentCourse/Details/5
