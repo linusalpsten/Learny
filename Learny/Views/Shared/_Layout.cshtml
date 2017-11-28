@@ -30,7 +30,7 @@
                     @if (User.IsInRole(RoleName.teacher))
                     {
                         <li>@Html.ActionLink("Kurser", "Index", "Courses")</li>
-                        <li>@Html.ActionLink("Elever", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Elever", "CreateStudent", "Account")</li>
                         <li>@Html.ActionLink("Lärare", "Index", "Home")</li>
                     }
                 </ul>
