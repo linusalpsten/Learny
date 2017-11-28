@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Learny.Models;
 using Learny.ViewModels;
+using Learny.Settings;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Learny.Controllers
 {
@@ -196,6 +198,11 @@ namespace Learny.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateStudent(StudentVM model)
         {
+            var context = new ApplicationDbContext();
+            var userStore = new UserStore<ApplicationUser>( context);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+
             var allCourses = db.Courses.ToList();
             if (ModelState.IsValid)
             {
@@ -207,7 +214,7 @@ namespace Learny.Controllers
                     return View("TeacherCreateStudent", model);
                 }
                 var test = model.CourseId;
-                
+
                 var user = new ApplicationUser
                 {
                     CourseId = model.CourseId,
@@ -230,7 +237,11 @@ namespace Learny.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     //  return RedirectToAction("Index", "Home");
-
+                    var existingUser = userManager.FindByName(user.UserName);
+                    //if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
+                    //{
+                    userManager.AddToRole(existingUser.Id, RoleName.student);
+                    //}
 
                     return RedirectToAction("CreateStudent", "Account");
                 }
