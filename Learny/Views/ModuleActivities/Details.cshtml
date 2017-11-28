@@ -10,5 +10,13 @@
 <p>@Model.Description</p>
 
 <p>
+    @Html.DisplayNameFor(model => model.StartDate):
+    @Html.DisplayFor(model => model.StartDate)
+    <br />
+    @Html.DisplayNameFor(model => model.EndDate):
+    @Html.DisplayFor(model => model.EndDate)
+</p>
+
+<p>
     @Html.ActionLink("Tillbaka till modulen", "Details", "CourseModules", new { Id = Model.CourseModuleId }, null)
 </p>
