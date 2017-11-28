@@ -11,9 +11,16 @@ using Microsoft.Owin.Security;
 using Learny.Models;
 using Learny.ViewModels;
 using Learny.Settings;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace Learny.Controllers
 {
+
+
+
+
+
     [Authorize]
     public class AccountController : Controller
     {
@@ -28,6 +35,8 @@ namespace Learny.Controllers
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
+            //Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("sv-Sv");
+            //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -207,7 +216,7 @@ namespace Learny.Controllers
                     model = new StudentVM { Courses = allCourses };
                     return View("TeacherCreateStudent", model);
                 }
-                
+
                 var user = new ApplicationUser
                 {
                     CourseId = model.CourseId,
@@ -217,8 +226,22 @@ namespace Learny.Controllers
                     Email = model.Email
                 };
 
+                var errorsInSwedish = new List<string>();
 
                 var result = UserManager.Create(user, model.Password);
+
+                foreach (var error in result.Errors)
+                {
+                    if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
+                    {
+                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, ett tal, en versal('A' - 'Z') och bestå av minst 6 tecken.");
+                    }
+                    else
+                    {
+                        errorsInSwedish.Add(error);
+                    }
+                }
+                
                 if (result.Succeeded)
                 {
                     //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -240,8 +263,9 @@ namespace Learny.Controllers
                     return RedirectToAction("CreateStudent", "Account");
                 }
                 // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
-                AddErrors(result);
-
+                // AddErrors(result);
+                var resultModified = new IdentityResult(errorsInSwedish);
+                AddErrors(resultModified);
             }
 
             // Model state is invalid: I need to feel the list of courses again and post it
