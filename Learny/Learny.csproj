@@ -230,6 +230,7 @@
     <Compile Include="ViewModels\ModuleViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
+    <Compile Include="ViewModels\StudentModuleActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LearnyConnection.mdf" />
@@ -317,6 +318,7 @@
     <Content Include="Views\ModuleActivities\Index.cshtml" />
     <Content Include="Views\StudentCourse\Index.cshtml" />
     <Content Include="Views\StudentCourse\Module.cshtml" />
+    <Content Include="Views\StudentCourse\Activity.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

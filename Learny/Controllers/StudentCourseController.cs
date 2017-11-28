@@ -61,6 +61,30 @@ namespace Learny.Controllers
                 Activities = db.Activities.Where(a => a.CourseModuleId == courseModule.Id).OrderBy(a => a.StartDate).ToList()
             };
             return View(courseModuleViewModel);
+        } 
+
+        // GET: StudentCourse/Activity/5
+        public ActionResult Activity(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CourseModule courseModule = db.Modules.Find(id);
+            if (courseModule == null)
+            {
+                return HttpNotFound();
+            }
+            var courseModuleViewModel = new StudentCourseModuleViewModel
+            {
+                Id = courseModule.Id,
+                Name = courseModule.Name,
+                Description = courseModule.Description,
+                StartDate = courseModule.StartDate,
+                EndDate = courseModule.EndDate,
+                Activities = db.Activities.Where(a => a.CourseModuleId == courseModule.Id).OrderBy(a => a.StartDate).ToList()
+            };
+            return View(new StudentModuleActivity());
         }
 
         protected override void Dispose(bool disposing)
