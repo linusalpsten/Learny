@@ -228,6 +228,7 @@
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\ModelAcivityCreateViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
+    <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LearnyConnection.mdf" />
@@ -315,9 +316,9 @@
     <Content Include="Views\ModuleActivities\Index.cshtml" />
     <Content Include="Views\StudentCourseModules\Create.cshtml" />
     <Content Include="Views\StudentCourseModules\Delete.cshtml" />
-    <Content Include="Views\StudentCourseModules\Details.cshtml" />
-    <Content Include="Views\StudentCourseModules\Edit.cshtml" />
     <Content Include="Views\StudentCourseModules\Index.cshtml" />
+    <Content Include="Views\StudentCourseModules\Edit.cshtml" />
+    <Content Include="Views\StudentCourseModules\OldIndex.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
