@@ -10,6 +10,5 @@
 <p>@Model.Description</p>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka till modulen", "Details", "CourseModules", new { Id = Model.CourseModuleId }, null)
 </p>
