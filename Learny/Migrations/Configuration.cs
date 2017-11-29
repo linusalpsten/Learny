@@ -15,6 +15,13 @@ namespace Learny.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+
+            // THIS CODE IS FOR DEBUGGING Migrations
+
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //{
+            //    System.Diagnostics.Debugger.Launch();
+            //}
         }
 
         protected override void Seed(Models.ApplicationDbContext context)
