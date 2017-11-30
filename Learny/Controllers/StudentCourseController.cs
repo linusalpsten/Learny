@@ -26,8 +26,7 @@ namespace Learny.Controllers
             StudentCourseViewModel ViewModel = new StudentCourseViewModel
             {
                 Id = course.Id,
-                Name = course.Name,
-                CourseCode = course.CourseCode,
+                FullCourseName = course.FullCourseName,
                 Description = course.Description,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
