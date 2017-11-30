@@ -1,18 +1,14 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+﻿using Learny.Models;
+using Learny.Settings;
+using Learny.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Learny.Models;
-using Learny.ViewModels;
-using Learny.Settings;
-using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Learny.Controllers
 {
@@ -185,7 +181,7 @@ namespace Learny.Controllers
             return View(model);
         }
 
-
+        #region Student
 
         // Student CREATE
         // GET: /Account/Register
@@ -275,6 +271,15 @@ namespace Learny.Controllers
             return View("TeacherCreateStudent", model);
         }
 
+        public ActionResult Students(int id)
+        {
+            var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            var students = course.Students.ToList();
+            
+            return View(students);
+        }
+
+#endregion
 
         //
         // GET: /Account/ConfirmEmail

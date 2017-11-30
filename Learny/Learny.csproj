@@ -232,6 +232,7 @@
     <Compile Include="ViewModels\StudentCourseViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
     <Compile Include="ViewModels\StudentModuleActivity.cs" />
+    <Compile Include="ViewModels\StudentsViewModel.cs" />
     <Compile Include="ViewModels\StudentVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +319,7 @@
     <Content Include="Views\StudentCourse\Module.cshtml" />
     <Content Include="Views\StudentCourse\Activity.cshtml" />
     <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
+    <Content Include="Views\Account\Students.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
