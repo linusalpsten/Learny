@@ -319,7 +319,7 @@
     <Content Include="Views\StudentCourse\Module.cshtml" />
     <Content Include="Views\StudentCourse\Activity.cshtml" />
     <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
-    <Content Include="Views\Account\Students.cshtml" />
+    <Content Include="Views\Account\_StudentsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
