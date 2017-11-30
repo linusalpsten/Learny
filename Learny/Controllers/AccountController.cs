@@ -190,13 +190,33 @@ namespace Learny.Controllers
         // Student CREATE
         // GET: /Account/Register
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult CreateStudent()
+        public ActionResult CreateStudent(int? id)
         {
-            // StudentVM model = new StudentVM();
-            var allCourses = db.Courses.ToList();
-            var viewModel = new StudentVM { Courses = allCourses };
+            if (id == null)
+            {
+                var allCourses = db.Courses.ToList();
+                var viewModel = new StudentVM {
+                    Courses = allCourses,
+                    CourseSelected = false                    
+                };
 
-            return View("TeacherCreateStudent", viewModel);
+                return View(viewModel);
+            }
+
+            var course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModelSelectedCourse = new StudentVM {
+                AttendingCourse = course.Name,
+                CourseId = course.Id,
+                CourseSelected = true
+            };
+
+            return View(viewModelSelectedCourse);
+
         }
 
         //
@@ -241,7 +261,7 @@ namespace Learny.Controllers
                         errorsInSwedish.Add(error);
                     }
                 }
-                
+
                 if (result.Succeeded)
                 {
                     //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
