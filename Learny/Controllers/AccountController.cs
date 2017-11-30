@@ -276,7 +276,7 @@ namespace Learny.Controllers
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
             var students = course.Students.ToList();
             
-            return View(students);
+            return PartialView("_StudentsPartial",students);
         }
 
 #endregion
