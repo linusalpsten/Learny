@@ -234,7 +234,7 @@ namespace Learny.Controllers
                 {
                     if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
                     {
-                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, ett tal, en versal('A' - 'Z') och bestå av minst 6 tecken.");
+                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, en siffra, en versal('A' - 'Z') och bestå av minst 6 tecken.");
                     }
                     else
                     {
