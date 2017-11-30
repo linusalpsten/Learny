@@ -317,7 +317,7 @@
     <Content Include="Views\StudentCourse\Index.cshtml" />
     <Content Include="Views\StudentCourse\Module.cshtml" />
     <Content Include="Views\StudentCourse\Activity.cshtml" />
-    <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
+    <Content Include="Views\Account\CreateStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
