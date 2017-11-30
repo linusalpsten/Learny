@@ -189,7 +189,7 @@ namespace Learny.Controllers
 
         // Student CREATE
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult CreateStudent()
         {
             // StudentVM model = new StudentVM();
@@ -202,7 +202,7 @@ namespace Learny.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
         public ActionResult CreateStudent(StudentVM model)
         {
