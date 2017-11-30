@@ -19,7 +19,10 @@ namespace Learny.ViewModels
 
         [Required(ErrorMessage = "Kurskod är obligatoriskt.")]
         [Display(Name = "Kurskod")]
-        public string CourseCode { get; set; }        
+        public string CourseCode { get; set; }
+
+        [Display(Name = "Kursnamn och kurskod")]
+        public string FullCourseName { get; set; }
 
         [Required(ErrorMessage = "Startdatum är obligatoriskt.")]
         [Display(Name = "Start")]
