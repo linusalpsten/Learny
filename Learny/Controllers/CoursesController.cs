@@ -39,6 +39,7 @@ namespace Learny.Models
                 Id = course.Id,
                 Name = course.Name,
                 CourseCode = course.CourseCode,
+                FullCourseName = course.FullCourseName,
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
                 Modules = course.Modules.OrderBy(m => m.StartDate).ToList()
