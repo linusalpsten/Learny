@@ -274,7 +274,7 @@ namespace Learny.Controllers
         public ActionResult Students(int id)
         {
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
-            var students = course.Students.ToList();
+            var students = course.Students.OrderBy(s => s.Name).ToList();
             
             return PartialView("_StudentsPartial",students);
         }
