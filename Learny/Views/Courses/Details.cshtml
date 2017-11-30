@@ -39,6 +39,7 @@
             <h2>Elever</h2>
             <p>@Html.ActionLink("Lägg till elev", "CreateStudent", "Account")</p>
 
+            @Html.Action("Students", "Account", new { id = Model.Id })
         </div>
 
     </div>
