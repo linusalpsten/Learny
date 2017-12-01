@@ -54,7 +54,7 @@ namespace Learny.Models
 
             if (User.IsInRole(RoleName.student))
             {
-                ApplicationUser currentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                ApplicationUser currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 id = currentUser.CourseId;
             }
 
