@@ -140,11 +140,32 @@ namespace Learny.Models
         {
             if (ModelState.IsValid)
             {
-                if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode))
+                // If I change the code of the current course (=the courseCode retrieved from the DB is different from the one I just filled in)
+                // I need to check this code does not exist already in the DB!
+
+                // OBS! If we use db.Courses.Find(courseViewId).CourseCode .... Entity Framework will retrieve a whole new object from DB
+                // This will cause a conflict in the ' db.Entry(course).State = EntityState.Modified;' below.
+                // Therefore I nned to use following alternatives:
+                // 1. db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode 
+                // 2. db.Courses.Where(c => c.Id == courseView.Id).Select (c => c.CourseCode)
+
+                if (db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode != courseView.CourseCode)
                 {
-                    ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
-                    return View(courseView);
+                    if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode && c.Id != courseView.Id))
+                    {
+                        // I found a course in the DB with exactly the SAME course code than I inserted.
+                        // This is not allowed
+                        ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
+                        return View(courseView);
+                    }
                 }
+
+                //if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode))
+                //{
+                //    ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
+                //    return View(courseView);
+                //}
+
                 var course = new Course
                 {
                     Id = courseView.Id,
