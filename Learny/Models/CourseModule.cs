@@ -22,5 +22,7 @@ namespace Learny.Models
         public int CourseId { get; set; }
 
         public virtual ICollection<ModuleActivity> Activities { get; set; }
+
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }
