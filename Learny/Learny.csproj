@@ -212,6 +212,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Models\Document.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ActivityType.cs" />
