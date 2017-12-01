@@ -22,41 +22,60 @@ namespace Learny.Controllers
             return File(documentBytes, document.ContentType, document.DisplayName);
         }
 
-        public void Upload(HttpPostedFileBase document)
+        public bool Upload(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0)
             {
-                var documentName = document.FileName;
-                var now = DateTime.Now;
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
-                document.SaveAs(path);
-                var file = new Document
+                try
                 {
-                    Path = path,
-                    ContentType = document.ContentType,
-                    TimeStamp = now,
-                    FileName = documentName
-                };
-                db.Documents.Add(file);
-                db.SaveChanges();
+                    var documentName = document.FileName;
+                    var now = DateTime.Now;
+                    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
+                    document.SaveAs(path);
+                    var file = new Document
+                    {
+                        Path = path,
+                        ContentType = document.ContentType,
+                        TimeStamp = now,
+                        FileName = documentName
+                    };
+                    db.Documents.Add(file);
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                
             }
+            return false;
         }
 
-        public void Upload(HttpPostedFileBase documentFile, Document document)
+        public bool Upload(HttpPostedFileBase documentFile, Document document)
         {
             if (documentFile != null && documentFile.ContentLength > 0 && document != null)
             {
-                var now = DateTime.Now;
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
-                documentFile.SaveAs(path);
-                document.Path = path;
-                document.ContentType = documentFile.ContentType;
-                document.TimeStamp = now;
-                document.FileName = documentFile.FileName;
+                try
+                {
+                    var now = DateTime.Now;
+                    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
+                    documentFile.SaveAs(path);
+                    document.Path = path;
+                    document.ContentType = documentFile.ContentType;
+                    document.TimeStamp = now;
+                    document.FileName = documentFile.FileName;
 
-                db.Documents.Add(document);
-                db.SaveChanges();
+                    db.Documents.Add(document);
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
+            return false;
         }
 
         public static byte[] GetHash(string inputString)
