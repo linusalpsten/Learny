@@ -194,6 +194,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CourseModulesController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModuleActivitiesController.cs" />
@@ -210,8 +211,13 @@
     <Compile Include="Migrations\201711271026413_coursecode_is_unique.Designer.cs">
       <DependentUpon>201711271026413_coursecode_is_unique.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712011008541_add_document_entity.cs" />
+    <Compile Include="Migrations\201712011008541_add_document_entity.Designer.cs">
+      <DependentUpon>201712011008541_add_document_entity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Models\Document.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ActivityType.cs" />
@@ -318,11 +324,12 @@
     <Content Include="Views\StudentCourse\Index.cshtml" />
     <Content Include="Views\StudentCourse\Module.cshtml" />
     <Content Include="Views\StudentCourse\Activity.cshtml" />
-    <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
     <Content Include="Views\Account\_StudentsPartial.cshtml" />
+    <Content Include="Views\Account\CreateStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Document\" />
     <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711271026413_coursecode_is_unique.resx">
       <DependentUpon>201711271026413_coursecode_is_unique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712011008541_add_document_entity.resx">
+      <DependentUpon>201712011008541_add_document_entity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

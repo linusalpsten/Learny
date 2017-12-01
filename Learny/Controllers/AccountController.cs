@@ -182,23 +182,49 @@ namespace Learny.Controllers
         }
 
         #region Student
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult CreateStudentFromNavBar()
+        {
+            return RedirectToAction("CreateStudent");
+        }
+
 
         // Student CREATE
         // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult CreateStudent()
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult CreateStudent(int? id)
         {
-            // StudentVM model = new StudentVM();
-            var allCourses = db.Courses.ToList();
-            var viewModel = new StudentVM { Courses = allCourses };
+            if (id == null)
+            {
+                var allCourses = db.Courses.ToList();
+                var viewModel = new StudentVM {
+                    Courses = allCourses,
+                    CourseSelected = false                    
+                };
 
-            return View("TeacherCreateStudent", viewModel);
+                return View(viewModel);
+            }
+
+            var course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModelSelectedCourse = new StudentVM {
+                AttendingCourse = course.FullCourseName,
+                CourseId = course.Id,
+                CourseSelected = true
+            };
+
+            return View(viewModelSelectedCourse);
+
         }
 
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
         public ActionResult CreateStudent(StudentVM model)
         {
@@ -209,8 +235,9 @@ namespace Learny.Controllers
                 if (db.Users.Any(u => u.Email == model.Email))
                 {
                     ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
-                    model = new StudentVM { Courses = allCourses };
-                    return View("TeacherCreateStudent", model);
+                    // model = new StudentVM { Courses = allCourses };
+                    model.Courses = allCourses;
+                    return View("CreateStudent", model);
                 }
 
                 var user = new ApplicationUser
@@ -237,7 +264,7 @@ namespace Learny.Controllers
                         errorsInSwedish.Add(error);
                     }
                 }
-                
+
                 if (result.Succeeded)
                 {
                     //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -265,10 +292,11 @@ namespace Learny.Controllers
             }
 
             // Model state is invalid: I need to feel the list of courses again and post it
-            model = new StudentVM { Courses = allCourses };
+            //model = new StudentVM { Courses = allCourses };
+            model.Courses = allCourses;
 
             // If we got this far, something failed, redisplay form
-            return View("TeacherCreateStudent", model);
+            return View("CreateStudent", model);
         }
 
         public ActionResult Students(int id)

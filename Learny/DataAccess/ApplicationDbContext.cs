@@ -12,6 +12,7 @@ namespace Learny.Models
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseModule> Modules { get; set; }
         public DbSet<ModuleActivity> Activities { get; set; }
+        public DbSet<Document> Documents { get; set; }
 
         public ApplicationDbContext()
             : base("LearnyConnection", throwIfV1Schema: false)
