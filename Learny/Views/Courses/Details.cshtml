@@ -4,28 +4,43 @@
     ViewBag.Title = "Kurs detaljer";
 }
 
-<h2>@Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.CourseCode)</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
 
-<p>
-    @Html.DisplayFor(model => model.Description)
-</p>
+            <h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
 
-<p>
-    @Html.DisplayNameFor(model => model.StartDate):
-    @Html.DisplayFor(model => model.StartDate)
-    <br />
-    @Html.DisplayNameFor(model => model.EndDate):
-    @Html.DisplayFor(model => model.EndDate)
-</p>
+            <p>
+                @Html.DisplayFor(model => model.Description)
+            </p>
 
-<ul>
-    @foreach (var item in Model.Modules)
-    {
-        <li>@Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null)</li>
-    }
-</ul>
+            <p>
+                @Html.DisplayNameFor(model => model.StartDate):
+                @Html.DisplayFor(model => model.StartDate)
+                <br />
+                @Html.DisplayNameFor(model => model.EndDate):
+                @Html.DisplayFor(model => model.EndDate)
+            </p>
 
-<p>
-    @Html.ActionLink("Tillbaka till listan", "Index") |
-    @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
-</p>
+            <ul>
+                @foreach (var item in Model.Modules)
+                {
+                    <li>@Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null)</li>
+                }
+            </ul>
+
+            <p>
+                @Html.ActionLink("Tillbaka till listan", "Index") |
+                @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
+            </p>
+        </div>
+        <div class="col-sm-4">
+
+            <h2>Elever</h2>
+            <p>@Html.ActionLink("Lägg till elev", "CreateStudent", "Account")</p>
+
+        </div>
+
+    </div>
+</div>
+

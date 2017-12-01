@@ -39,6 +39,7 @@ namespace Learny.Migrations
             //    );
             //
 
+            #region Required
             //
             // required
             //
@@ -60,7 +61,11 @@ namespace Learny.Migrations
                 }
             }
 
-            var activityTypeNames = new[] { ActivityTypeName.exercise, ActivityTypeName.elearning, ActivityTypeName.lecture };
+            var activityTypeNames = new[] {
+                ActivityTypeName.exercise,
+                ActivityTypeName.elearning,
+                ActivityTypeName.lecture
+            };
             var activityTypes = new ActivityType[activityTypeNames.Length];
 
             for (int i = 0; i < activityTypes.Length; i++)
@@ -78,9 +83,18 @@ namespace Learny.Migrations
             // required
             //
 
+            #endregion
+
+            #region example data
+
+            var courseCode = "ND17";
+            var startDate = new DateTime(2017, 08, 28);
+
+
             var courses = new Course[]
             {
-                new Course { CourseCode = "ND17", Name = ".NET systemutveckling", StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(4) }
+                new Course { CourseCode = courseCode, Name = ".NET systemutveckling",
+                    StartDate = startDate, EndDate = startDate.AddMonths(4) }
             };
             context.Courses.AddOrUpdate(
                 c => c.CourseCode,
@@ -89,15 +103,26 @@ namespace Learny.Migrations
 
             context.SaveChanges();
 
-            var courseCode = courses[0].CourseCode;
             var courseId = context.Courses.Where(c => c.CourseCode == courseCode).FirstOrDefault().Id;
             var modules = new CourseModule[]
             {
-                new CourseModule { Name = "C#", StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(1), CourseId = courseId },
-                new CourseModule { Name = "MVC", StartDate = DateTime.Now.AddMonths(1), EndDate = DateTime.Now.AddMonths(2), CourseId = courseId }
+                new CourseModule { Name = "C#", StartDate = startDate.AddDays(0),
+                    EndDate = startDate.AddDays(21), CourseId = courseId },
+                new CourseModule { Name = "Testning", StartDate = startDate.AddDays(22),
+                    EndDate = startDate.AddDays(22), CourseId = courseId },
+                new CourseModule { Name = "C#", StartDate = startDate.AddDays(23),
+                    EndDate = startDate.AddDays(29), CourseId = courseId },
+                new CourseModule { Name = "Webb", StartDate = startDate.AddDays(30),
+                    EndDate = startDate.AddDays(44), CourseId = courseId },
+                new CourseModule { Name = "MVC", StartDate = startDate.AddDays(45),
+                    EndDate = startDate.AddDays(52), CourseId = courseId },
+                new CourseModule { Name = "Webb", StartDate = startDate.AddDays(53),
+                    EndDate = startDate.AddDays(53), CourseId = courseId },
+                new CourseModule { Name = "MVC", StartDate = startDate.AddDays(54),
+                    EndDate =startDate.AddDays(62), CourseId = courseId }
             };
             context.Modules.AddOrUpdate(
-                c => c.Name,
+                c => new { c.Name, c.StartDate },
                 modules
                 );
 
@@ -105,15 +130,114 @@ namespace Learny.Migrations
 
             var elearningTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.elearning).FirstOrDefault().Id;
             var exerciseTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.exercise).FirstOrDefault().Id;
-            var cSharpModuleName = modules[0].Name;
-            var cSharpModuleId = context.Modules.Where(m => m.Name == cSharpModuleName).FirstOrDefault().Id;
-            var mvcModuleName = modules[1].Name;
-            var mvcModuleId = context.Modules.Where(m => m.Name == mvcModuleName).FirstOrDefault().Id;
+            var lectureTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.exercise).FirstOrDefault().Id;
+            var cSharpModuleName1 = modules[0].Name;
+            var cSharpModuleStartDate1 = modules[0].StartDate;
+            var cSharpModuleId1 = context.Modules.Where(m => m.Name == cSharpModuleName1 && m.StartDate == cSharpModuleStartDate1).FirstOrDefault().Id;
+            var testModuleName1 = modules[1].Name;
+            var testModuleStartDate1 = modules[1].StartDate;
+            var testModuleId1 = context.Modules.Where(m => m.Name == testModuleName1 && m.StartDate == testModuleStartDate1).FirstOrDefault().Id;
+
             var activities = new ModuleActivity[]
             {
-                new ModuleActivity { Name = "C# Fundamentals with Visual Studio 2015", Description="Kapitel 1.1, 1.2",StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(15), ActivityTypeId = elearningTypeId, CourseModuleId = cSharpModuleId },
-                new ModuleActivity { Name = "Övning 2", Description="C# övning - Flöde via loopar och strängmanipulation", StartDate = DateTime.Now.AddDays(16), EndDate = DateTime.Now.AddMonths(1), ActivityTypeId = exerciseTypeId, CourseModuleId = cSharpModuleId },
-                new ModuleActivity { Name = "Building Applications with ASP.NET MVC 4", Description="Kapitel 7.1 – 7.3", StartDate = DateTime.Now.AddMonths(1), EndDate = DateTime.Now.AddDays(15).AddMonths(1), ActivityTypeId = elearningTypeId, CourseModuleId = mvcModuleId }
+                new ModuleActivity {
+                    Name = "Intro + E-L 1.1, 1.2", Description ="C# Fundamentals with Visual Studio 2015 med Scott Allen",
+                    StartDate = startDate.AddDays(0), EndDate = startDate.AddDays(0),
+                    ActivityTypeId = elearningTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "E-L 1.3", Description ="C# Fundamentals with Visual Studio 2015 med Scott Allen",
+                    StartDate = startDate.AddDays(1), EndDate = startDate.AddDays(1),
+                    ActivityTypeId = elearningTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "E-L 1.4 + 1.5", Description ="C# Fundamentals with Visual Studio 2015 med Scott Allen",
+                    StartDate = startDate.AddDays(1), EndDate = startDate.AddDays(1),
+                    ActivityTypeId = elearningTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "Frl C# Intro", Description ="Adrian",
+                    StartDate = startDate.AddDays(2), EndDate = startDate.AddDays(2),
+                    ActivityTypeId = lectureTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "Övning 2", Description ="Flow Control",
+                    StartDate = startDate.AddDays(3), EndDate = startDate.AddDays(3),
+                    ActivityTypeId = exerciseTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "Frl C# Grund", Description ="Adrian",
+                    StartDate = startDate.AddDays(4), EndDate = startDate.AddDays(4),
+                    ActivityTypeId = lectureTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "E-L 1.6 + 1.7", Description ="C# Fundamentals with Visual Studio 2015 med Scott Allen",
+                    StartDate = startDate.AddDays(7), EndDate = startDate.AddDays(7),
+                    ActivityTypeId = elearningTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "E-L 1.8", Description ="C# Fundamentals with Visual Studio 2015 med Scott Allen",
+                    StartDate = startDate.AddDays(7), EndDate = startDate.AddDays(7),
+                    ActivityTypeId = elearningTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "E-L 1.7 + 1.8", Description ="C# Fundamentals with Visual Studio 2015 med Scott Allen",
+                    StartDate = startDate.AddDays(8), EndDate = startDate.AddDays(8),
+                    ActivityTypeId = elearningTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "Övning 2", Description ="Flow Control",
+                    StartDate = startDate.AddDays(8), EndDate = startDate.AddDays(8),
+                    ActivityTypeId = exerciseTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "FRL: OOP", Description ="Adrian",
+                    StartDate = startDate.AddDays(9), EndDate = startDate.AddDays(9),
+                    ActivityTypeId = lectureTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "Övning 3", Description =" Inkapsling, arv och polymorfism Nytt utkast",
+                    StartDate = startDate.AddDays(10), EndDate = startDate.AddDays(10),
+                    ActivityTypeId = exerciseTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "FRL OOP 2", Description ="Adrian",
+                    StartDate = startDate.AddDays(11), EndDate = startDate.AddDays(11),
+                    ActivityTypeId = lectureTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "FRL Generics", Description ="Adrian",
+                    StartDate = startDate.AddDays(21), EndDate = startDate.AddDays(21),
+                    ActivityTypeId = lectureTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "FRL LINQ", Description ="Adrian",
+                    StartDate = startDate.AddDays(21), EndDate = startDate.AddDays(21),
+                    ActivityTypeId = lectureTypeId,
+                    CourseModuleId = cSharpModuleId1 },
+
+                new ModuleActivity {
+                    Name = "Unit Test E-L", Description ="C# Best Practices: Improving on the Basics med Deborah Kurata",
+                    StartDate = startDate.AddDays(22), EndDate = startDate.AddDays(22),
+                    ActivityTypeId = elearningTypeId,
+                    CourseModuleId = testModuleId1 },
+
+                //new ModuleActivity { Name = "Övning 2", Description="C# övning - Flöde via loopar och strängmanipulation", StartDate = DateTime.Now.AddDays(16), EndDate = DateTime.Now.AddMonths(1), ActivityTypeId = exerciseTypeId, CourseModuleId = cSharpModuleId },
+                //new ModuleActivity { Name = "Building Applications with ASP.NET MVC 4", Description="Kapitel 7.1 – 7.3", StartDate = DateTime.Now.AddMonths(1), EndDate = DateTime.Now.AddDays(15).AddMonths(1), ActivityTypeId = elearningTypeId, CourseModuleId = mvcModuleId }
             };
 
             context.Activities.AddOrUpdate(
@@ -160,7 +284,7 @@ namespace Learny.Migrations
                 }
             }
 
-
+            #endregion
         }
     }
 }

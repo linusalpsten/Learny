@@ -235,10 +235,6 @@
     <Compile Include="ViewModels\StudentVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\LearnyConnection.mdf" />
-    <Content Include="App_Data\LearnyConnection_log.ldf">
-      <DependentUpon>LearnyConnection.mdf</DependentUpon>
-    </Content>
     <Content Include="Client Scripts\mvcfoolproof.unobtrusive.js" />
     <Content Include="Client Scripts\mvcfoolproof.unobtrusive.min.js" />
     <Content Include="Client Scripts\MvcFoolproofJQueryValidation.js" />
@@ -324,6 +320,7 @@
     <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>

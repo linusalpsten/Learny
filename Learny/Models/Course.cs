@@ -23,6 +23,8 @@ namespace Learny.Models
         [Required]
         public DateTime EndDate { get; set; }
 
+        public string FullCourseName => (CourseCode + " - " + Name).Trim();
+
         public virtual ICollection<ApplicationUser> Students { get; set; }
 
         public virtual ICollection<CourseModule> Modules { get; set; }
