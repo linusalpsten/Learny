@@ -104,6 +104,9 @@ namespace Learny.Models
             return View(courseView);
         }
 
+
+        // Egidio: below is Edit for Courses
+
         // GET: Courses/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -116,7 +119,16 @@ namespace Learny.Models
             {
                 return HttpNotFound();
             }
-            return View(course);
+            var courseView = new CourseCreateViewModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                CourseCode = course.CourseCode,
+                Description = course.Description,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate
+            };
+            return View(courseView);
         }
 
         // POST: Courses/Edit/5
@@ -124,16 +136,33 @@ namespace Learny.Models
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] Course course)
+        public ActionResult Edit([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] CourseCreateViewModel courseView)
         {
             if (ModelState.IsValid)
             {
+                if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode))
+                {
+                    ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
+                    return View(courseView);
+                }
+                var course = new Course
+                {
+                    Id = courseView.Id,
+                    Name = courseView.Name,
+                    CourseCode = courseView.CourseCode,
+                    Description = courseView.Description,
+                    StartDate = courseView.StartDate,
+                    EndDate = courseView.EndDate
+                };
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(course);
+            return View(courseView);
         }
+
+
+
 
         // GET: Courses/Delete/5
         public ActionResult Delete(int? id)
