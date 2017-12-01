@@ -182,6 +182,12 @@ namespace Learny.Controllers
         }
 
         #region Student
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult CreateStudentFromNavBar()
+        {
+            return RedirectToAction("CreateStudent");
+        }
+
 
         // Student CREATE
         // GET: /Account/Register
@@ -229,7 +235,8 @@ namespace Learny.Controllers
                 if (db.Users.Any(u => u.Email == model.Email))
                 {
                     ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
-                    model = new StudentVM { Courses = allCourses };
+                    // model = new StudentVM { Courses = allCourses };
+                    model.Courses = allCourses;
                     return View("CreateStudent", model);
                 }
 
@@ -276,7 +283,7 @@ namespace Learny.Controllers
                     //  return RedirectToAction("Index", "Home");
 
 
-                    return RedirectToAction("CreateStudent", "Account", new {id = model.CourseId});
+                    return RedirectToAction("CreateStudent", "Account");
                 }
                 // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
                 // AddErrors(result);
@@ -285,7 +292,8 @@ namespace Learny.Controllers
             }
 
             // Model state is invalid: I need to feel the list of courses again and post it
-            model = new StudentVM { Courses = allCourses };
+            //model = new StudentVM { Courses = allCourses };
+            model.Courses = allCourses;
 
             // If we got this far, something failed, redisplay form
             return View("CreateStudent", model);
