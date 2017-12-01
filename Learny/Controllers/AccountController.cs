@@ -210,7 +210,7 @@ namespace Learny.Controllers
             }
 
             var viewModelSelectedCourse = new StudentVM {
-                AttendingCourse = course.Name,
+                AttendingCourse = course.FullCourseName,
                 CourseId = course.Id,
                 CourseSelected = true
             };
