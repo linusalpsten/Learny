@@ -14,7 +14,7 @@ namespace Learny.Controllers
         {
             if (User.IsInRole(RoleName.student))
             {
-                return RedirectToAction("Index", "StudentCourse");
+                return RedirectToAction("Details", "Courses");
             }
             if (User.IsInRole(RoleName.teacher))
             {

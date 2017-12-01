@@ -28,6 +28,18 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)
         {
+            //Student may not view module from other courses
+            if (User.IsInRole(RoleName.student))
+            {
+                ApplicationUser currentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                Course userCourse = db.Courses.Find(currentUser.CourseId);
+                CourseModule userModule = db.Modules.Where(m => m.CourseId == userCourse.Id && m.Id == id).FirstOrDefault();
+                if (userModule == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
