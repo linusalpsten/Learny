@@ -43,7 +43,7 @@
             <h2>Elever</h2>
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
             {
-                <p>@Html.ActionLink("Lägg till elev", "CreateStudent", "Account", new { id = Model.Id }, null)</p>
+                <p>@Html.ActionLink("Lägg till elev", "CreateStudent", "Account", new { id = Model.Id}, null)</p>
             }
             @Html.Action("Students", "Account", new { id = Model.Id })
         </div>
