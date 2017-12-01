@@ -44,7 +44,7 @@ namespace Learny.Controllers
 
         public void Upload(HttpPostedFileBase documentFile, Document document)
         {
-            if (documentFile != null && documentFile.ContentLength > 0)
+            if (documentFile != null && documentFile.ContentLength > 0 && document != null)
             {
                 var now = DateTime.Now;
                 var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
