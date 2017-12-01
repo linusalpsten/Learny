@@ -14,9 +14,9 @@ namespace Learny.Controllers
         // GET: Document
         public FileResult Download(int id)
         {
-            var file = db.Documents.FirstOrDefault(d => d.Id == id);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(file.Path);
-            return File(fileBytes, file.ContentType, file.Name);
+            var document = db.Documents.FirstOrDefault(d => d.Id == id);
+            byte[] documentBytes = System.IO.File.ReadAllBytes(document.Path);
+            return File(documentBytes, document.ContentType, document.DisplayName);
         }
     }
 }
