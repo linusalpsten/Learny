@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Learny.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,14 @@ namespace Learny.Controllers
 {
     public class DocumentController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         // GET: Document
-        public ActionResult Index()
+        public FileResult Download(int id)
         {
-            return View();
+            var file = db.Documents.FirstOrDefault(d => d.Id == id);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(file.Path);
+            return File(fileBytes, file.ContentType, file.Name);
         }
     }
 }
