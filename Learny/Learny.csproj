@@ -210,6 +210,10 @@
     <Compile Include="Migrations\201711271026413_coursecode_is_unique.Designer.cs">
       <DependentUpon>201711271026413_coursecode_is_unique.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712011008541_add_document_entity.cs" />
+    <Compile Include="Migrations\201712011008541_add_document_entity.Designer.cs">
+      <DependentUpon>201712011008541_add_document_entity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
@@ -345,6 +349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711271026413_coursecode_is_unique.resx">
       <DependentUpon>201711271026413_coursecode_is_unique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712011008541_add_document_entity.resx">
+      <DependentUpon>201712011008541_add_document_entity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
