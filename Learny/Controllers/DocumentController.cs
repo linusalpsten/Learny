@@ -42,6 +42,23 @@ namespace Learny.Controllers
             }
         }
 
+        public void Upload(HttpPostedFileBase documentFile, Document document)
+        {
+            if (documentFile != null && documentFile.ContentLength > 0)
+            {
+                var now = DateTime.Now;
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
+                documentFile.SaveAs(path);
+                document.Path = path;
+                document.ContentType = documentFile.ContentType;
+                document.TimeStamp = now;
+                document.FileName = documentFile.FileName;
+
+                db.Documents.Add(document);
+                db.SaveChanges();
+            }
+        }
+
         public static byte[] GetHash(string inputString)
         {
             HashAlgorithm algorithm = MD5.Create();  //or use SHA256.Create();
