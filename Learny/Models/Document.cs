@@ -24,6 +24,22 @@ namespace Learny.Models
         [Required]
         public string FileName { get; set; }
 
+        public int? CourseId { get; set; }
+
+        public int? CourseModuleId { get; set; }
+
+        public int? ModuleActivityId { get; set; }
+
+        public int ApplicationUserId { get; set; }
+
+        public virtual Course Course { get; set; }
+
+        public virtual CourseModule Module { get; set; }
+
+        public virtual ModuleActivity Activity { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         //Display name returns FileName if Name is null, else it returns Name
