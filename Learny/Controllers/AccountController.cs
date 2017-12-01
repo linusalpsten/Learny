@@ -230,7 +230,7 @@ namespace Learny.Controllers
                 {
                     ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
                     model = new StudentVM { Courses = allCourses };
-                    return View("TeacherCreateStudent", model);
+                    return View("CreateStudent", model);
                 }
 
                 var user = new ApplicationUser
@@ -288,7 +288,7 @@ namespace Learny.Controllers
             model = new StudentVM { Courses = allCourses };
 
             // If we got this far, something failed, redisplay form
-            return View("TeacherCreateStudent", model);
+            return View("CreateStudent", model);
         }
 
         public ActionResult Students(int id)

@@ -10,54 +10,59 @@
 {
     @Html.AntiForgeryToken()
     @*<h4>Lägg till en ny elev</h4>*@
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
 
-    if (Model.CourseSelected == true)
-    {
+    @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
 
-        
-            <h4> @Html.DisplayFor(model => model.AttendingCourse)</h4>
+if (Model.CourseSelected == true)
+{
+
+
+    <h4> @Html.DisplayFor(model => model.AttendingCourse)</h4>
             @Html.HiddenFor(model => model.CourseId) @*Http post courseId to createStudent action *@
-        
-    }
-    else
-    {
-        <div class="form-group">
-            @Html.LabelFor(model => model.Courses, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.Courses, "Id", "Name"), "---- välj en kurs från listan ----", new { @class = "form-control" })
+            @Html.HiddenFor(model => model.CourseSelected)
+            <hr />
+
+}
+else
+{
+    <hr />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Courses, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.Courses, "Id", "Name"), "---- välj en kurs från listan ----", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-    }
+
+}
 
 
 
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-            @* @Html.ValidationMessageFor(m => m.Name, "En student med samma namn är redan registrerad!", new { @class = "text-danger" })*@
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    @* @Html.ValidationMessageFor(m => m.Name, "En student med samma namn är redan registrerad!", new { @class = "text-danger" })*@
+                </div>
+            </div>
 
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             @*<div class="form-group">
                     @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
@@ -71,6 +76,19 @@
                 </div>
             </div>
 }
+
+@if (Model.CourseSelected == true)
+{
+    <hr />
+    <h4>Elever</h4>
+    @Html.Action("Students", "Account", new { id = Model.CourseId })
+
+}
+@if (Model.CourseSelected == false)
+{
+
+}
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
