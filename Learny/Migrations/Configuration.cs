@@ -234,7 +234,7 @@ namespace Learny.Migrations
             };
 
             context.Activities.AddOrUpdate(
-                a => new { a.Name, a.CourseModuleId },
+                a => new { a.Name, a.CourseModuleId, a.StartDate, a.EndDate, a.Description },
                 activities
                 );
             context.SaveChanges();
