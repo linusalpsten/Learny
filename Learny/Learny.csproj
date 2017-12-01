@@ -326,7 +326,7 @@
     <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\uploads\" />
     <Folder Include="Views\Document\" />
     <Folder Include="Views\Student\" />
   </ItemGroup>
