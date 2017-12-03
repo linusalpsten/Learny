@@ -61,7 +61,7 @@ namespace Learny.Controllers
             var currentDateTime = DateTime.Now;
             var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
 
-            var activityViewModel = new ModuleAcivityCreateViewModel
+            var activityViewModel = new ModuleActivityCreateViewModel
             {
                 CourseModuleId = id,
                 StartDate = today,
@@ -78,7 +78,7 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleAcivityCreateViewModel activityViewModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleActivityCreateViewModel activityViewModel)
         {
 
             if (ModelState.IsValid)
@@ -113,6 +113,8 @@ namespace Learny.Controllers
 
 #endregion
 
+        // Egidio: below is Edit for Activities
+
         // GET: ModuleActivities/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -125,8 +127,21 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
-            return View(moduleActivity);
+
+            var activityViewModel = new ModuleActivityCreateViewModel
+            {
+                Id = moduleActivity.Id,
+                Name = moduleActivity.Name,
+                Description = moduleActivity.Description,
+                StartDate = moduleActivity.StartDate,
+                EndDate = moduleActivity.EndDate,
+                CourseModuleId = moduleActivity.CourseModuleId,
+                ActivityTypes = db.ActivityTypes.ToList()
+            };
+
+         //   ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
+
+            return View(activityViewModel);
         }
 
         // POST: ModuleActivities/Edit/5
@@ -134,17 +149,42 @@ namespace Learny.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleActivity moduleActivity)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleActivityCreateViewModel activityViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(moduleActivity).State = EntityState.Modified;
+                if (activityViewModel.StartDate == DateTime.MinValue)
+                {
+                    ModelState.AddModelError("StartDate", "Startdatum måste vara större än 0");
+                }
+                if (activityViewModel.EndDate == DateTime.MinValue)
+                {
+                    ModelState.AddModelError("EndDate", "Slutdatum måste vara större än 0");
+                }
+
+                var activity = new ModuleActivity
+                {
+                    Id = activityViewModel.Id,
+                    Name = activityViewModel.Name,
+                    Description = activityViewModel.Description,
+                    StartDate = activityViewModel.StartDate,
+                    EndDate = activityViewModel.EndDate,
+                    CourseModuleId = activityViewModel.CourseModuleId,
+                    ActivityTypeId = activityViewModel.ActivityTypeId,
+                };
+
+                db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details","CourseModules", new { id = activityViewModel.CourseModuleId });
             }
-            ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
-            return View(moduleActivity);
+
+            activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
+
+            // ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", activityViewModel.ActivityTypeId);
+
+            return View(activityViewModel);
         }
+
 
         // GET: ModuleActivities/Delete/5
         public ActionResult Delete(int? id)
