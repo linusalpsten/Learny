@@ -239,7 +239,7 @@
     <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
     <Compile Include="ViewModels\StudentModuleActivity.cs" />
     <Compile Include="ViewModels\StudentListViewModel.cs" />
-    <Compile Include="ViewModels\StudentVM.cs" />
+    <Compile Include="ViewModels\StudentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client Scripts\mvcfoolproof.unobtrusive.js" />

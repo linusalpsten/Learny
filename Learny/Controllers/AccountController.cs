@@ -206,7 +206,7 @@ namespace Learny.Controllers
             if (id == null)
             {
                 var allCourses = db.Courses.ToList();
-                var viewModel = new StudentVM {
+                var viewModel = new StudentViewModel {
                     Courses = allCourses,
                     CourseSelected = false                    
                 };
@@ -220,7 +220,7 @@ namespace Learny.Controllers
                 return HttpNotFound();
             }
 
-            var viewModelSelectedCourse = new StudentVM {
+            var viewModelSelectedCourse = new StudentViewModel {
                 AttendingCourse = course.FullCourseName,
                 CourseId = course.Id,
                 CourseSelected = true
@@ -235,7 +235,7 @@ namespace Learny.Controllers
         [HttpPost]
         [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateStudent(StudentVM model)
+        public ActionResult CreateStudent(StudentViewModel model)
         {
             var allCourses = db.Courses.ToList();
             if (ModelState.IsValid)
@@ -365,7 +365,7 @@ namespace Learny.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditStudent(StudentVM student)
+        public ActionResult EditStudent(StudentViewModel student)
         {
             if (student == null)
             {

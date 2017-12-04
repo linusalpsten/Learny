@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Learny.ViewModels
 {
-    public class StudentVM
+    public class StudentViewModel
     {
+        
+
         [Required(ErrorMessage = "Namn är obligatoriskt")]
         [Display(Name = "Namn")]
         public string Name { get; set; }
