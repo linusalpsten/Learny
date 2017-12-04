@@ -242,7 +242,7 @@ namespace Learny.Controllers
                     }
 
 
-
+                    TempData["Feedback"] = "Läraren: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
                     return RedirectToAction("CreateTeacher", "Account");
                 }
                 // Add swedish error message
@@ -260,7 +260,17 @@ namespace Learny.Controllers
 
             List<ApplicationUser> allUsers = db.Users.ToList();
 
-            var teachers = allUsers.Except(students).OrderBy(t => t.Name).ToList();
+            var allTeachers = allUsers.Except(students).OrderBy(t => t.Name).ToList();
+
+            List<TeacherViewModel> teachers = new List<TeacherViewModel>();
+
+            foreach (var teacher in allTeachers)
+            {
+                teachers.Add(new TeacherViewModel{
+                    Name = teacher.Name,
+                    Email = teacher.Email
+                });
+            }
 
             return PartialView("_TeachersPartial", teachers);
         }

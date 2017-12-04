@@ -7,12 +7,12 @@
 <h2>@ViewBag.Title</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-       
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -46,11 +46,20 @@
         </div>
     </div>
 }
-<hr />
-<h4>Lärare</h4>
-@Html.Action("ListTeachers", "Account")
 
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@if (TempData["Feedback"] != null)
+{
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Feedback"]
+    </div>
 }
+
+    <hr />
+    <h4>Lärare</h4>
+    @Html.Action("ListTeachers", "Account")
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
