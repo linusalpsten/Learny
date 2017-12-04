@@ -18,8 +18,8 @@
                 @Html.DisplayNameFor(model => model.Email):
                 @Html.DisplayFor(model => model.Email)
                 <br />
-                @Html.DisplayNameFor(model => model.AttendingCourse):
-                @Html.DisplayFor(model => model.AttendingCourse)
+                @Html.DisplayNameFor(model => model.CourseName):
+                @Html.DisplayFor(model => model.CourseName)
             </p>
             
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))

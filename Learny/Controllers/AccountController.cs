@@ -371,14 +371,14 @@ namespace Learny.Controllers
 
         public ActionResult ListStudents()
         {
-            var students = new List<StudentCreateViewModel>();
+            var students = new List<StudentViewModel>();
             foreach (var student in AllStudents().OrderBy(s => s.Name))
             {
-                students.Add(new StudentCreateViewModel
+                students.Add(new StudentViewModel
                 {
                     Name = student.Name,
                     Email = student.Email,
-                    AttendingCourse = student.Course.Name
+                    CourseName = student.Course.Name
                 });
             }
 
@@ -400,12 +400,12 @@ namespace Learny.Controllers
         public ActionResult StudentDetails(string email)
         {
             var student  = UserManager.FindByEmail(email);
-            var studentViewModel = new StudentCreateViewModel
+            var studentViewModel = new StudentViewModel
             {
                 Id = student.Id,
                 Name = student.Name,
                 Email = student.Email,
-                AttendingCourse = student.Course.Name
+                CourseName = student.Course.Name
             };
 
             return View(studentViewModel);
@@ -426,7 +426,7 @@ namespace Learny.Controllers
         {
 
             var student = UserManager.FindByEmail(email);
-            var studentViewModel = new StudentCreateViewModel
+            var studentViewModel = new StudentViewModel
             {
                 Id = student.Id,
                 Name = student.Name,
@@ -440,7 +440,7 @@ namespace Learny.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditStudent(StudentCreateViewModel studentViewModel)
+        public ActionResult EditStudent(StudentViewModel studentViewModel)
         {
 
             if (ModelState.IsValid)
