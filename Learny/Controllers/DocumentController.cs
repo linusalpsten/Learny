@@ -1,8 +1,10 @@
 ﻿using Learny.Models;
+using Learny.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -10,9 +12,47 @@ using System.Web.Mvc;
 
 namespace Learny.Controllers
 {
+    [Authorize]
     public class DocumentController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        [HttpGet]
+        public ActionResult UploadDocument(int? courseId = null, int? moduleId = null, int? activityId = null)
+        {
+            var viewModel = new DocumentViewModel
+            {
+                CourseId = courseId,
+                CourseModuleId = moduleId,
+                ModuleActivityId = activityId,
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult UploadDocument(DocumentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var now = DateTime.Now;
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
+                if (model.Document == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var document = new Document
+                {
+                    CourseId = model.CourseId,
+                    CourseModuleId = model.CourseModuleId,
+                    ModuleActivityId = model.ModuleActivityId,
+                    Name = model.Name,
+                    Description = model.Description
+                };
+                Upload(model.Document, document);
+                return RedirectToAction("Index", "Home");
+            }
+            return View(model);
+        }
 
         // GET: Document
         public FileResult Download(int id)
@@ -22,60 +62,43 @@ namespace Learny.Controllers
             return File(documentBytes, document.ContentType, document.DisplayName);
         }
 
-        public bool Upload(HttpPostedFileBase document)
+        public void Upload(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0)
             {
-                try
+                var documentName = document.FileName;
+                var now = DateTime.Now;
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
+                document.SaveAs(path);
+                var file = new Document
                 {
-                    var documentName = document.FileName;
-                    var now = DateTime.Now;
-                    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
-                    document.SaveAs(path);
-                    var file = new Document
-                    {
-                        Path = path,
-                        ContentType = document.ContentType,
-                        TimeStamp = now,
-                        FileName = documentName
-                    };
-                    db.Documents.Add(file);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                
+                    Path = path,
+                    ContentType = document.ContentType,
+                    TimeStamp = now,
+                    FileName = documentName,
+                    UserId = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).Id
+                };
+                db.Documents.Add(file);
+                db.SaveChanges();
             }
-            return false;
         }
 
-        public bool Upload(HttpPostedFileBase documentFile, Document document)
+        public void Upload(HttpPostedFileBase documentFile, Document document)
         {
             if (documentFile != null && documentFile.ContentLength > 0 && document != null)
             {
-                try
-                {
-                    var now = DateTime.Now;
-                    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
-                    documentFile.SaveAs(path);
-                    document.Path = path;
-                    document.ContentType = documentFile.ContentType;
-                    document.TimeStamp = now;
-                    document.FileName = documentFile.FileName;
+                var now = DateTime.Now;
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), GetHashString(now.ToString()));
+                documentFile.SaveAs(path);
+                document.Path = path;
+                document.ContentType = documentFile.ContentType;
+                document.TimeStamp = now;
+                document.FileName = documentFile.FileName;
+                document.UserId = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).Id;
 
-                    db.Documents.Add(document);
-                    db.SaveChanges();
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                db.Documents.Add(document);
+                db.SaveChanges();
             }
-            return false;
         }
 
         public static byte[] GetHash(string inputString)
