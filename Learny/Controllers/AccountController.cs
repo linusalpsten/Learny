@@ -195,15 +195,15 @@ namespace Learny.Controllers
         [HttpPost]
         [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateTeacher(TeacherViewModel model)
+        public ActionResult CreateTeacher(TeacherViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                   // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -306,7 +306,7 @@ namespace Learny.Controllers
                 }
 
                 if (result.Succeeded)
-                {
+                 {
                     //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     var existingUser = UserManager.FindByName(model.Email);
                     if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
