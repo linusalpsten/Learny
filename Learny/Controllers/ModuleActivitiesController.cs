@@ -136,7 +136,8 @@ namespace Learny.Controllers
                 StartDate = moduleActivity.StartDate,
                 EndDate = moduleActivity.EndDate,
                 CourseModuleId = moduleActivity.CourseModuleId,
-                ActivityTypes = db.ActivityTypes.ToList()
+                ActivityTypes = db.ActivityTypes.ToList(),
+                ActivityTypeId = moduleActivity.ActivityTypeId
             };
 
          //   ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
