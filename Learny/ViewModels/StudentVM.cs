@@ -24,12 +24,22 @@ namespace Learny.ViewModels
         [Display(Name = "Lösenord")]
         public string Password { get; set; }
 
-        //  public string CourseCode { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "Bekräfta lösenord")]
+        [Compare("Password", ErrorMessage = "Det bekräftade lösenordet och lösenordet matchar inte.")]
+        public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Kurs id")]
         [Required(ErrorMessage ="Välj en kurs från kurslistan.")]
         public int CourseId { get; set; }
 
+        [Display(Name = "Kurs")]
+        public string AttendingCourse { get; set; }
+
+        public Boolean CourseSelected { get; set; }
 
         [Display(Name = "Kurser")]
         public List<Course> Courses { get; set; }
+
     }
 }

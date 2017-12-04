@@ -28,5 +28,7 @@ namespace Learny.Models
         public virtual ICollection<ApplicationUser> Students { get; set; }
 
         public virtual ICollection<CourseModule> Modules { get; set; }
+
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }

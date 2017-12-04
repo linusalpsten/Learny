@@ -48,7 +48,7 @@ namespace Learny.Models
         }
 
         // GET: Courses/Details/5
-        [Authorize(Roles = RoleName.teacher)]
+        [Authorize(Roles = RoleName.teacher +","+  RoleName.student)]
         public ActionResult Details(int? id)
         {
             if (id == null)

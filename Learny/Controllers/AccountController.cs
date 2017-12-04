@@ -1,18 +1,14 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+﻿using Learny.Models;
+using Learny.Settings;
+using Learny.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Learny.Models;
-using Learny.ViewModels;
-using Learny.Settings;
-using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Learny.Controllers
 {
@@ -99,7 +95,7 @@ namespace Learny.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Ogiltigt inloggnings försök.");
                     return View(model);
             }
         }
@@ -147,62 +143,50 @@ namespace Learny.Controllers
             }
         }
 
-        //
-        //// GET: /Account/Register
-        //[AllowAnonymous]
-        //public ActionResult Register()
-        //{
-        //    return View();
-        //}
-
-        ////
-        //// POST: /Account/Register
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Register(RegisterViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-        //        var result = await UserManager.CreateAsync(user, model.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-        //            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-        //            // Send an email with this link
-        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        AddErrors(result);
-        //    }
-
-        //    // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
-
+        #region Student
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult CreateStudentFromNavBar()
+        {
+            return RedirectToAction("CreateStudent");
+        }
 
 
         // Student CREATE
-        // GET: /Account/CreateStudent (former Register)
-        [AllowAnonymous]
-        public ActionResult CreateStudent()
+        // GET: /Account/Register
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult CreateStudent(int? id)
         {
-            // StudentVM model = new StudentVM();
-            var allCourses = db.Courses.ToList();
-            var viewModel = new StudentVM { Courses = allCourses };
+            if (id == null)
+            {
+                var allCourses = db.Courses.ToList();
+                var viewModel = new StudentVM {
+                    Courses = allCourses,
+                    CourseSelected = false                    
+                };
 
-            return View("TeacherCreateStudent", viewModel);
+                return View(viewModel);
+            }
+
+            var course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModelSelectedCourse = new StudentVM {
+                AttendingCourse = course.FullCourseName,
+                CourseId = course.Id,
+                CourseSelected = true
+            };
+
+            return View(viewModelSelectedCourse);
+
         }
 
         //
         // POST: /Account/CreateStudent (former Register)
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
         public ActionResult CreateStudent(StudentVM model)
         {
@@ -213,8 +197,8 @@ namespace Learny.Controllers
                 if (db.Users.Any(u => u.Email == model.Email))
                 {
                     ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
-                    model = new StudentVM { Courses = allCourses };
-                    return View("TeacherCreateStudent", model);
+                    model.Courses = allCourses;
+                    return View("CreateStudent", model);
                 }
 
                 var user = new ApplicationUser
@@ -241,7 +225,7 @@ namespace Learny.Controllers
                         errorsInSwedish.Add(error);
                     }
                 }
-                
+
                 if (result.Succeeded)
                 {
                     //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -269,12 +253,22 @@ namespace Learny.Controllers
             }
 
             // Model state is invalid: I need to feel the list of courses again and post it
-            model = new StudentVM { Courses = allCourses };
+            //model = new StudentVM { Courses = allCourses };
+            model.Courses = allCourses;
 
             // If we got this far, something failed, redisplay form
-            return View("TeacherCreateStudent", model);
+            return View("CreateStudent", model);
         }
 
+        public ActionResult Students(int id)
+        {
+            var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            var students = course.Students.OrderBy(s => s.Name).ToList();
+            
+            return PartialView("_StudentsPartial",students);
+        }
+
+#endregion
 
         //
         // GET: /Account/ConfirmEmail
