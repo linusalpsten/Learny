@@ -48,9 +48,16 @@ namespace Learny.Models
         }
 
         // GET: Courses/Details/5
-        [Authorize(Roles = RoleName.teacher +","+  RoleName.student)]
+        [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)
         {
+
+            if (User.IsInRole(RoleName.student))
+            {
+                ApplicationUser currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                id = currentUser.CourseId;
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -67,6 +74,7 @@ namespace Learny.Models
         }
 
         // GET: Courses/Create
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Create()
         {
             return View();
@@ -77,6 +85,7 @@ namespace Learny.Models
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Create([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] CourseCreateViewModel courseView)
         {
             if (ModelState.IsValid)
@@ -105,6 +114,7 @@ namespace Learny.Models
         }
 
         // GET: Courses/Edit/5
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -124,6 +134,7 @@ namespace Learny.Models
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Edit([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] Course course)
         {
             if (ModelState.IsValid)
@@ -136,6 +147,7 @@ namespace Learny.Models
         }
 
         // GET: Courses/Delete/5
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -153,6 +165,7 @@ namespace Learny.Models
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);

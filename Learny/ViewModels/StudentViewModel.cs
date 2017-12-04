@@ -7,8 +7,11 @@ using System.Web;
 
 namespace Learny.ViewModels
 {
-    public class StudentVM
+    public class StudentViewModel
     {
+
+        public string Id { get; set; }
+
         [Required(ErrorMessage = "Namn är obligatoriskt")]
         [Display(Name = "Namn")]
         public string Name { get; set; }

@@ -9,12 +9,13 @@ using System.Web.Mvc;
 
 namespace Learny.Controllers
 {
-    [Authorize(Roles = RoleName.teacher)]
+    [Authorize]
     public class ModuleActivitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ModuleActivities
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Index()
         {
             var activities = db.Activities.Include(m => m.ActivityType);
@@ -22,8 +23,25 @@ namespace Learny.Controllers
         }
 
         // GET: ModuleActivities/Details/5
+        [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)
         {
+
+            //Student may not view activity from other courses
+            if (User.IsInRole(RoleName.student))
+            {
+                ApplicationUser currentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+
+                ModuleActivity userActivity = db.Activities.Where(a => a.Id == id).FirstOrDefault();
+                CourseModule userModule = db.Modules.Where(m => m.Id == userActivity.CourseModuleId && m.CourseId==currentUser.CourseId).FirstOrDefault();
+                
+                if (userModule == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -46,9 +64,10 @@ namespace Learny.Controllers
             return View(activity);
         }
 
-#region Create Activity
+        #region Create Activity
 
         // GET: ModuleActivities/Create
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Create(int id)
         {
 
@@ -76,6 +95,7 @@ namespace Learny.Controllers
         // POST: ModuleActivities/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleAcivityCreateViewModel activityViewModel)
@@ -111,9 +131,10 @@ namespace Learny.Controllers
             return View(activityViewModel);
         }
 
-#endregion
+        #endregion
 
         // GET: ModuleActivities/Edit/5
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -132,6 +153,7 @@ namespace Learny.Controllers
         // POST: ModuleActivities/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId")] ModuleActivity moduleActivity)
@@ -147,6 +169,7 @@ namespace Learny.Controllers
         }
 
         // GET: ModuleActivities/Delete/5
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -162,6 +185,7 @@ namespace Learny.Controllers
         }
 
         // POST: ModuleActivities/Delete/5
+        [Authorize(Roles = RoleName.teacher)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
