@@ -30,7 +30,8 @@ namespace Learny.Models
 
         public int? ModuleActivityId { get; set; }
 
-        public int ApplicationUserId { get; set; }
+        [Required]
+        public string UserId { get; set; }
 
         public virtual Course Course { get; set; }
 
