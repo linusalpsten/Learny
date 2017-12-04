@@ -203,13 +203,36 @@ namespace Learny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {
+                // Check if email is already used by other users
+                if (db.Users.Any(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
+                    return View();
+                }
+
+                var user = new ApplicationUser
+                {
                     Name = model.Name,
                     UserName = model.Email,
                     Email = model.Email
                 };
 
                 var result = UserManager.Create(user, model.Password);
+
+                var errorsInSwedish = new List<string>();
+
+                foreach (var error in result.Errors)
+                {
+                    if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
+                    {
+                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, en siffra, en versal('A' - 'Z') och bestå av minst 6 tecken.");
+                    }
+                    else
+                    {
+                        errorsInSwedish.Add(error);
+                    }
+                }
+
                 if (result.Succeeded)
                 {
                     var existingUser = UserManager.FindByName(model.Email);
@@ -222,7 +245,9 @@ namespace Learny.Controllers
 
                     return RedirectToAction("CreateTeacher", "Account");
                 }
-                AddErrors(result);
+                // Add swedish error message
+                var resultModified = new IdentityResult(errorsInSwedish);
+                AddErrors(resultModified);
             }
 
             // If we got this far, something failed, redisplay form
@@ -260,9 +285,10 @@ namespace Learny.Controllers
             if (id == null)
             {
                 var allCourses = db.Courses.ToList();
-                var viewModel = new StudentViewModel {
+                var viewModel = new StudentViewModel
+                {
                     Courses = allCourses,
-                    CourseSelected = false                    
+                    CourseSelected = false
                 };
 
                 return View(viewModel);
@@ -274,7 +300,8 @@ namespace Learny.Controllers
                 return HttpNotFound();
             }
 
-            var viewModelSelectedCourse = new StudentViewModel {
+            var viewModelSelectedCourse = new StudentViewModel
+            {
                 AttendingCourse = course.FullCourseName,
                 CourseId = course.Id,
                 CourseSelected = true
@@ -329,7 +356,7 @@ namespace Learny.Controllers
                 }
 
                 if (result.Succeeded)
-                 {
+                {
                     //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     var existingUser = UserManager.FindByName(model.Email);
                     if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
@@ -368,8 +395,8 @@ namespace Learny.Controllers
         {
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
             var students = course.Students.OrderBy(s => s.Name).ToList();
-            
-            return PartialView("_StudentsPartial",students);
+
+            return PartialView("_StudentsPartial", students);
         }
 
 
@@ -411,7 +438,7 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult EditStudent(string email)
         {
-            
+
             var student = UserManager.FindByEmail(email);
 
             return View(student);
@@ -459,7 +486,7 @@ namespace Learny.Controllers
             appUser = UserManager.FindByEmail(email);
             UserEdit user = new UserEdit();
             user.Name = appUser.Name;
-            user.Email= appUser.Email;
+            user.Email = appUser.Email;
 
             return View(user);
         }
@@ -514,7 +541,7 @@ namespace Learny.Controllers
                 return RedirectToAction("ManageEditors");
             }
         }
-        
+
 
 
 
@@ -842,7 +869,7 @@ namespace Learny.Controllers
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        
+
     }
 
 }
