@@ -215,6 +215,10 @@
     <Compile Include="Migrations\201712011008541_add_document_entity.Designer.cs">
       <DependentUpon>201712011008541_add_document_entity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712011331411_add_relations_to_document.cs" />
+    <Compile Include="Migrations\201712011331411_add_relations_to_document.Designer.cs">
+      <DependentUpon>201712011331411_add_relations_to_document.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
@@ -227,6 +231,7 @@
     <Compile Include="DataAccess\ApplicationDbContext.cs" />
     <Compile Include="ViewModels\CourseCreateViewModel.cs" />
     <Compile Include="ViewModels\CourseDetailsViewModel.cs" />
+    <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\ModuleActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -240,6 +245,7 @@
     <Compile Include="ViewModels\StudentModuleActivity.cs" />
     <Compile Include="ViewModels\StudentListViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
+    <Compile Include="ViewModels\TeacherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client Scripts\mvcfoolproof.unobtrusive.js" />
@@ -291,7 +297,6 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
@@ -324,15 +329,18 @@
     <Content Include="Views\StudentCourse\Index.cshtml" />
     <Content Include="Views\StudentCourse\Module.cshtml" />
     <Content Include="Views\StudentCourse\Activity.cshtml" />
+    <Content Include="Views\Document\UploadDocument.cshtml" />
+    <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Account\_StudentsPartial.cshtml" />
     <Content Include="Views\Account\CreateStudent.cshtml" />
     <Content Include="Views\Account\ListStudents.cshtml" />
     <Content Include="Views\Account\StudentDetails.cshtml" />
     <Content Include="Views\Account\EditStudent.cshtml" />
+    <Content Include="Views\Account\CreateTeacher.cshtml" />
+    <Content Include="Views\Account\_TeachersPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Views\Document\" />
+    <Folder Include="App_Data\uploads\" />
     <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>
@@ -359,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712011008541_add_document_entity.resx">
       <DependentUpon>201712011008541_add_document_entity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712011331411_add_relations_to_document.resx">
+      <DependentUpon>201712011331411_add_relations_to_document.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

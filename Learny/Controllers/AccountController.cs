@@ -99,7 +99,7 @@ namespace Learny.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Ogiltigt inloggnings försök.");
                     return View(model);
             }
         }
@@ -147,50 +147,99 @@ namespace Learny.Controllers
             }
         }
 
+       
         //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
+        // GET: /Account/CreateTeacher
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult CreateTeacher()
         {
-            return View();
+            var viewModel = new TeacherViewModel { };
+            return View(viewModel);
         }
 
         //
-        // POST: /Account/Register
+        // POST: /Account/CreateTeacher
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult CreateTeacher(TeacherViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                // Check if email is already used by other users
+                if (db.Users.Any(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
+                    return View();
+                }
+
+                var user = new ApplicationUser
+                {
+                    Name = model.Name,
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+
+                var result = UserManager.Create(user, model.Password);
+
+                var errorsInSwedish = new List<string>();
+
+                foreach (var error in result.Errors)
+                {
+                    if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
+                    {
+                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, en siffra, en versal('A' - 'Z') och bestå av minst 6 tecken.");
+                    }
+                    else
+                    {
+                        errorsInSwedish.Add(error);
+                    }
+                }
+
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var existingUser = UserManager.FindByName(model.Email);
+                    if (!UserManager.IsInRole(existingUser.Id, RoleName.teacher))
+                    {
+                        UserManager.AddToRole(existingUser.Id, RoleName.teacher);
+                    }
 
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    TempData["Feedback"] = "Läraren: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
+                    return RedirectToAction("CreateTeacher", "Account");
                 }
-                AddErrors(result);
+                // Add swedish error message
+                var resultModified = new IdentityResult(errorsInSwedish);
+                AddErrors(resultModified);
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
         }
 
+        public ActionResult ListTeachers()
+        {
+            List<ApplicationUser> students = AllStudents();
+
+            List<ApplicationUser> allUsers = db.Users.ToList();
+
+            var allTeachers = allUsers.Except(students).OrderBy(t => t.Name).ToList();
+
+            List<TeacherViewModel> teachers = new List<TeacherViewModel>();
+
+            foreach (var teacher in allTeachers)
+            {
+                teachers.Add(new TeacherViewModel{
+                    Name = teacher.Name,
+                    Email = teacher.Email
+                });
+            }
+
+            return PartialView("_TeachersPartial", teachers);
+        }
 
 
         #region Student
-        
-       
-
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult CreateStudentFromNavBar()
         {
@@ -206,9 +255,10 @@ namespace Learny.Controllers
             if (id == null)
             {
                 var allCourses = db.Courses.ToList();
-                var viewModel = new StudentViewModel {
+                var viewModel = new StudentViewModel
+                {
                     Courses = allCourses,
-                    CourseSelected = false                    
+                    CourseSelected = false
                 };
 
                 return View(viewModel);
@@ -220,7 +270,8 @@ namespace Learny.Controllers
                 return HttpNotFound();
             }
 
-            var viewModelSelectedCourse = new StudentViewModel {
+            var viewModelSelectedCourse = new StudentViewModel
+            {
                 AttendingCourse = course.FullCourseName,
                 CourseId = course.Id,
                 CourseSelected = true
@@ -231,7 +282,7 @@ namespace Learny.Controllers
         }
 
         //
-        // POST: /Account/Register
+        // POST: /Account/CreateStudent (former Register)
         [HttpPost]
         [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
@@ -244,7 +295,6 @@ namespace Learny.Controllers
                 if (db.Users.Any(u => u.Email == model.Email))
                 {
                     ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
-                    // model = new StudentVM { Courses = allCourses };
                     model.Courses = allCourses;
                     return View("CreateStudent", model);
                 }
@@ -314,8 +364,8 @@ namespace Learny.Controllers
         {
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
             var students = course.Students.OrderBy(s => s.Name).ToList();
-            
-            return PartialView("_StudentsPartial",students);
+
+            return PartialView("_StudentsPartial", students);
         }
 
 
@@ -374,7 +424,7 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult EditStudent(string email)
         {
-            
+
             var student = UserManager.FindByEmail(email);
             var studentViewModel = new StudentViewModel
             {
@@ -430,7 +480,7 @@ namespace Learny.Controllers
             appUser = UserManager.FindByEmail(email);
             UserEdit user = new UserEdit();
             user.Name = appUser.Name;
-            user.Email= appUser.Email;
+            user.Email = appUser.Email;
 
             return View(user);
         }
@@ -485,7 +535,7 @@ namespace Learny.Controllers
                 return RedirectToAction("ManageEditors");
             }
         }
-        
+
 
 
 
@@ -813,7 +863,7 @@ namespace Learny.Controllers
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        
+
     }
 
 }

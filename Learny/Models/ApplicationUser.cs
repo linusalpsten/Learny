@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace Learny.Models
 {
@@ -15,6 +16,7 @@ namespace Learny.Models
 
         public int? CourseId { get; set; }
         public virtual Course Course { get; set; }
+        public virtual ICollection<Document> Documents { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

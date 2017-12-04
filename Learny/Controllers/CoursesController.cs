@@ -113,6 +113,9 @@ namespace Learny.Models
             return View(courseView);
         }
 
+
+        // Egidio: below is Edit for Courses
+
         // GET: Courses/Edit/5
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult Edit(int? id)
@@ -126,7 +129,16 @@ namespace Learny.Models
             {
                 return HttpNotFound();
             }
-            return View(course);
+            var courseView = new CourseCreateViewModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                CourseCode = course.CourseCode,
+                Description = course.Description,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate
+            };
+            return View(courseView);
         }
 
         // POST: Courses/Edit/5
@@ -135,16 +147,54 @@ namespace Learny.Models
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Edit([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] Course course)
+        public ActionResult Edit([Bind(Include = "Id,Name,CourseCode,Description,StartDate,EndDate")] CourseCreateViewModel courseView)
         {
             if (ModelState.IsValid)
             {
+                // If I change the code of the current course (=the courseCode retrieved from the DB is different from the one I just filled in)
+                // I need to check this code does not exist already in the DB!
+
+                // OBS! If we use db.Courses.Find(courseViewId).CourseCode .... Entity Framework will retrieve a whole new object from DB
+                // This will cause a conflict in the ' db.Entry(course).State = EntityState.Modified;' below.
+                // Therefore I nned to use following alternatives:
+                // 1. db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode 
+                // 2. db.Courses.Where(c => c.Id == courseView.Id).Select (c => c.CourseCode)
+
+                if (db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode != courseView.CourseCode)
+                {
+                    if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode && c.Id != courseView.Id))
+                    {
+                        // I found a course in the DB with exactly the SAME course code than I inserted.
+                        // This is not allowed
+                        ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
+                        return View(courseView);
+                    }
+                }
+
+                //if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode))
+                //{
+                //    ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
+                //    return View(courseView);
+                //}
+
+                var course = new Course
+                {
+                    Id = courseView.Id,
+                    Name = courseView.Name,
+                    CourseCode = courseView.CourseCode,
+                    Description = courseView.Description,
+                    StartDate = courseView.StartDate,
+                    EndDate = courseView.EndDate
+                };
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = courseView.Id });
             }
-            return View(course);
+            return View(courseView);
         }
+
+
+
 
         // GET: Courses/Delete/5
         [Authorize(Roles = RoleName.teacher)]
