@@ -1,20 +1,26 @@
-﻿@model Learny.ViewModels.ModuleViewModel
+﻿@model Learny.ViewModels.DocumentViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "UploadDocument";
 }
 
-<h2>Redigera</h2>
+<h2>Upload Document @Model.UploadTo</h2>
 
-@using (Html.BeginForm())
+
+@using (Html.BeginForm("UploadDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Kurs modul</h4>
+        <h4>Document</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+
+        @Html.HiddenFor(model => model.CourseId)
+
+        @Html.HiddenFor(model => model.CourseModuleId)
+
+        @Html.HiddenFor(model => model.ModuleActivityId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -33,33 +39,22 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Document, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                <input type="file" name="Document" id="Document"/>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @Html.HiddenFor(model => model.CourseId, new { @class = "control-label col-md-2" })
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Spara" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Tillbaka till modul översikt", "Details", "CourseModules", new { id = Model.Id }, null)
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {

@@ -104,6 +104,9 @@ namespace Learny.Controllers
             return View(viewModel);
         }
 
+
+        // Egidio: below is Edit for Modules
+
         // GET: CourseModules/Edit/5
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult Edit(int? id)
@@ -117,8 +120,18 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            return View(courseModule);
+            var moduleView = new ModuleViewModel
+            {
+                Id = courseModule.Id,
+                Name = courseModule.Name,
+                StartDate = courseModule.StartDate,
+                EndDate = courseModule.EndDate,
+                Description = courseModule.Description,
+                CourseId = courseModule.CourseId
+            };
+            return View(moduleView);
         }
+
 
         // POST: CourseModules/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -126,15 +139,24 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId")] CourseModule courseModule)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId")] ModuleViewModel moduleView)
         {
             if (ModelState.IsValid)
             {
+                var courseModule = new CourseModule
+                {
+                    Id = moduleView.Id,
+                    Name = moduleView.Name,
+                    Description = moduleView.Description,
+                    StartDate = moduleView.StartDate,
+                    EndDate = moduleView.EndDate,
+                    CourseId = moduleView.CourseId
+                };
                 db.Entry(courseModule).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = moduleView.Id });
             }
-            return View(courseModule);
+            return View(moduleView);
         }
 
         // GET: CourseModules/Delete/5
