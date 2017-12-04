@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Learny.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace Learny.Models
 {
@@ -44,6 +45,8 @@ namespace Learny.Models
         public string Name { get; set; }
         public string Description { get; set; }
         //Display name returns FileName if Name is null, else it returns Name
-        public string DisplayName { get { return Name ?? FileName; } }
+        public string Extension { get { return new Regex(@"\.[^.]+$").Match(FileName).Value; } } // takes the last characters after the last dot (including the dot)
+        public string FileNameWithoutExtension { get { return new Regex(@"(^.+)(?:\.[^.]+$)").Match(FileName).Captures[0].Value; } } // takes the first characters before the last dot (excluding the last dot)
+        public string DisplayName { get { return Name ?? FileNameWithoutExtension; } }
     }
 }
