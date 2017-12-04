@@ -154,15 +154,6 @@ namespace Learny.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (activityViewModel.StartDate == DateTime.MinValue)
-                {
-                    ModelState.AddModelError("StartDate", "Startdatum måste vara större än 0");
-                }
-                if (activityViewModel.EndDate == DateTime.MinValue)
-                {
-                    ModelState.AddModelError("EndDate", "Slutdatum måste vara större än 0");
-                }
-
                 var activity = new ModuleActivity
                 {
                     Id = activityViewModel.Id,
