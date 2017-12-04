@@ -27,5 +27,6 @@
 
 <p>
     @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { Id = Model.CourseId}, null) |
-    @Html.ActionLink("Lägg till aktivitet", "Create", "ModuleActivities", new { Id = Model.Id }, null)
+    @Html.ActionLink("Lägg till aktivitet", "Create", "ModuleActivities", new { Id = Model.Id }, null) |
+    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
 </p>
