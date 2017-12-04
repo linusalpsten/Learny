@@ -1,4 +1,5 @@
 ﻿@model Learny.ViewModels.CourseDetailsViewModel
+@using Learny.Settings
 
 @{
     ViewBag.Title = "Kurs detaljer";
@@ -29,18 +30,23 @@
                 }
             </ul>
 
-            <p>
-                @Html.ActionLink("Tillbaka till listan", "Index") |
-                @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
-            </p>
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>
+                    @Html.ActionLink("Tillbaka till listan", "Index") |
+                    @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
+                </p>
+            }
         </div>
         <div class="col-sm-4">
 
             <h2>Elever</h2>
-            <p>@Html.ActionLink("Lägg till elev", "CreateStudent", "Account")</p>
-
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>@Html.ActionLink("Lägg till elev", "CreateStudent", "Account", new { id = Model.Id}, null)</p>
+            }
+            @Html.Action("Students", "Account", new { id = Model.Id })
         </div>
 
     </div>
 </div>
-
