@@ -341,7 +341,7 @@ namespace Learny.Controllers
 
                     //  return RedirectToAction("Index", "Home");
 
-
+                    TempData["Feedback"] = "Elev: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
                     return RedirectToAction("CreateStudent", "Account");
                 }
                 // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
