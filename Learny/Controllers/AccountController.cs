@@ -186,7 +186,8 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult CreateTeacher()
         {
-            return View();
+            var viewModel = new TeacherViewModel { };
+            return View(viewModel);
         }
 
         //
@@ -194,7 +195,7 @@ namespace Learny.Controllers
         [HttpPost]
         [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateTeacher(RegisterViewModel model)
+        public async Task<ActionResult> CreateTeacher(TeacherViewModel model)
         {
             if (ModelState.IsValid)
             {
