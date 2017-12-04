@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Learny.Models.ApplicationUser>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            @Html.DisplayFor(modelItem => item.Name)
+        </li>
+    }
+</ul>
+
