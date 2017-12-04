@@ -177,7 +177,7 @@ namespace Learny.Models
                 };
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = courseView.Id });
             }
             return View(courseView);
         }
