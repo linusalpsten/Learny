@@ -175,7 +175,7 @@ namespace Learny.Controllers
 
                 db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details","CourseModules", new { id = activityViewModel.CourseModuleId });
+                return RedirectToAction("Details", new { id = activityViewModel.Id });
             }
 
             activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
