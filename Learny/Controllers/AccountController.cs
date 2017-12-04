@@ -349,9 +349,16 @@ namespace Learny.Controllers
 
         public ActionResult StudentDetails(string email)
         {
-            var student = UserManager.FindByEmail(email);
+            var student  = UserManager.FindByEmail(email);
+            var studentViewModel = new StudentViewModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                AttendingCourse = student.Course.Name
+            };
 
-            return View(student);
+            return View(studentViewModel);
         }
 
         #endregion
