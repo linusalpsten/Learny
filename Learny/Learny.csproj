@@ -328,7 +328,6 @@
     <Content Include="Views\StudentCourse\Index.cshtml" />
     <Content Include="Views\StudentCourse\Module.cshtml" />
     <Content Include="Views\StudentCourse\Activity.cshtml" />
-    <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
     <Content Include="Views\Document\UploadDocument.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Account\_StudentsPartial.cshtml" />
