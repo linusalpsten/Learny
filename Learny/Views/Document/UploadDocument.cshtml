@@ -4,7 +4,7 @@
     ViewBag.Title = "UploadDocument";
 }
 
-<h2>UploadDocument</h2>
+<h2>UploadDocument @Model.UploadTo</h2>
 
 
 @using (Html.BeginForm("UploadDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" })) 

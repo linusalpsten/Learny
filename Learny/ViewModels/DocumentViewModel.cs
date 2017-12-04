@@ -18,5 +18,7 @@ namespace Learny.ViewModels
         public string Description { get; set; }
 
         public HttpPostedFileBase Document { get; set; }
+
+        public string UploadTo { get; set; }
     }
 }

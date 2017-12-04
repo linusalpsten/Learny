@@ -26,6 +26,18 @@ namespace Learny.Controllers
                 CourseModuleId = moduleId,
                 ModuleActivityId = activityId,
             };
+            if (courseId != null)
+            {
+                viewModel.UploadTo = " to " + db.Courses.FirstOrDefault(c => c.Id == courseId).FullCourseName;
+            }
+            else if (moduleId != null)
+            {
+                viewModel.UploadTo = " to " + db.Modules.FirstOrDefault(m => m.Id == moduleId).Name;
+            }
+            else if (activityId != null)
+            {
+                viewModel.UploadTo = " to " + db.Activities.FirstOrDefault(a => a.Id == activityId).Name;
+            }
             return View(viewModel);
         }
 
