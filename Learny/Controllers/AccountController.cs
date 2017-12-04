@@ -321,9 +321,18 @@ namespace Learny.Controllers
 
         public ActionResult ListStudents()
         {
-            List<ApplicationUser> students = AllStudents();
+            var students = new List<StudentViewModel>();
+            foreach (var student in AllStudents().OrderBy(s => s.Name))
+            {
+                students.Add(new StudentViewModel
+                {
+                    Name = student.Name,
+                    Email = student.Email,
+                    AttendingCourse = student.Course.Name
+                });
+            }
 
-            return View(students.Distinct().OrderBy(s => s.Name));
+            return View(students);
         }
 
         private List<ApplicationUser> AllStudents()
@@ -333,6 +342,7 @@ namespace Learny.Controllers
             {
                 students.AddRange(course.Students.ToList());
             }
+            students = students.Distinct().ToList();
 
             return students;
         }
