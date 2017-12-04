@@ -229,10 +229,21 @@ namespace Learny.Controllers
             return View(model);
         }
 
+        public ActionResult ListTeachers()
+        {
+            List<ApplicationUser> students = AllStudents();
+
+            List<ApplicationUser> allUsers = db.Users.ToList();
+
+            var teachers = allUsers.Except(students).OrderBy(t => t.Name).ToList();
+
+            return View(students.Distinct().OrderBy(s => s.Name));
+        }
+
 
         #region Student
-        
-       
+
+
 
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult CreateStudentFromNavBar()
