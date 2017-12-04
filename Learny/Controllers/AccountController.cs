@@ -202,7 +202,8 @@ namespace Learny.Controllers
                 var user = new ApplicationUser {
                     Name = model.Name,
                     UserName = model.Email,
-                    Email = model.Email };
+                    Email = model.Email
+                };
 
                 var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
@@ -215,7 +216,7 @@ namespace Learny.Controllers
 
 
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Courses");
                 }
                 AddErrors(result);
             }
