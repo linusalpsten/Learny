@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Learny.ViewModels
 {
-    public class StudentsViewModel
+    public class StudentListViewModel
     {
 
         [Display(Name = "Elever")]

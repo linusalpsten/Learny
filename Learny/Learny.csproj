@@ -238,7 +238,7 @@
     <Compile Include="ViewModels\StudentCourseViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
     <Compile Include="ViewModels\StudentModuleActivity.cs" />
-    <Compile Include="ViewModels\StudentsViewModel.cs" />
+    <Compile Include="ViewModels\StudentListViewModel.cs" />
     <Compile Include="ViewModels\StudentVM.cs" />
   </ItemGroup>
   <ItemGroup>
