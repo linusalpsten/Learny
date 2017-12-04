@@ -220,7 +220,7 @@ namespace Learny.Controllers
 
 
 
-                    return RedirectToAction("Index", "Courses");
+                    return RedirectToAction("CreateTeacher", "Account");
                 }
                 AddErrors(result);
             }
