@@ -1,11 +1,28 @@
-﻿@model IEnumerable<Learny.Models.ApplicationUser>
+﻿@model IEnumerable<Learny.ViewModels.TeacherViewModel>
 
-<ul>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+
     @foreach (var item in Model)
     {
-        <li>
-            @Html.DisplayFor(modelItem => item.Name)
-        </li>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+        </tr>
     }
-</ul>
 
+</table>
