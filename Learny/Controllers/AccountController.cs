@@ -237,7 +237,7 @@ namespace Learny.Controllers
 
             var teachers = allUsers.Except(students).OrderBy(t => t.Name).ToList();
 
-            return View(students.Distinct().OrderBy(s => s.Name));
+            return PartialView("_TeachersPartial", teachers);
         }
 
 
