@@ -255,7 +255,7 @@ namespace Learny.Controllers
             if (id == null)
             {
                 var allCourses = db.Courses.ToList();
-                var viewModel = new StudentViewModel
+                var viewModel = new StudentCreateViewModel
                 {
                     Courses = allCourses,
                     CourseSelected = false
@@ -270,7 +270,7 @@ namespace Learny.Controllers
                 return HttpNotFound();
             }
 
-            var viewModelSelectedCourse = new StudentViewModel
+            var viewModelSelectedCourse = new StudentCreateViewModel
             {
                 AttendingCourse = course.FullCourseName,
                 CourseId = course.Id,
@@ -286,7 +286,7 @@ namespace Learny.Controllers
         [HttpPost]
         [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateStudent(StudentViewModel model)
+        public ActionResult CreateStudent(StudentCreateViewModel model)
         {
             var allCourses = db.Courses.ToList();
             if (ModelState.IsValid)
@@ -371,10 +371,10 @@ namespace Learny.Controllers
 
         public ActionResult ListStudents()
         {
-            var students = new List<StudentViewModel>();
+            var students = new List<StudentCreateViewModel>();
             foreach (var student in AllStudents().OrderBy(s => s.Name))
             {
-                students.Add(new StudentViewModel
+                students.Add(new StudentCreateViewModel
                 {
                     Name = student.Name,
                     Email = student.Email,
@@ -400,7 +400,7 @@ namespace Learny.Controllers
         public ActionResult StudentDetails(string email)
         {
             var student  = UserManager.FindByEmail(email);
-            var studentViewModel = new StudentViewModel
+            var studentViewModel = new StudentCreateViewModel
             {
                 Id = student.Id,
                 Name = student.Name,
@@ -426,46 +426,58 @@ namespace Learny.Controllers
         {
 
             var student = UserManager.FindByEmail(email);
-            var studentViewModel = new StudentViewModel
+            var studentViewModel = new StudentCreateViewModel
             {
                 Id = student.Id,
                 Name = student.Name,
                 Email = student.Email,
                 CourseId = (int)student.CourseId,
-                Courses = db.Courses.ToList()
-            };
+                Courses = CoursesOrderedByName()
+        };
 
             return View(studentViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditStudent(StudentViewModel student)
+        public ActionResult EditStudent(StudentCreateViewModel studentViewModel)
         {
-            if (student == null)
+
+            if (ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //Check if email is not used by another user
+                var idOfUserWithChoosenEmail = UserManager.FindByEmail(studentViewModel.Email).Id;
+                if (studentViewModel.Id != idOfUserWithChoosenEmail)
+                {
+                    ModelState.AddModelError("Email", "E-post adressen används redan");
+                    studentViewModel.Courses = CoursesOrderedByName();
+                    return View(studentViewModel);
+                }
+
+                // Get the existing student from the db
+                var studentToUpdate = UserManager.FindById(studentViewModel.Id);
+
+                // Update it with the values from the view model
+                studentToUpdate.Name = studentViewModel.Name;
+                studentToUpdate.Email = studentViewModel.Email;
+
+                // Apply the changes if any to the db
+                UserManager.Update(studentToUpdate);
+
+                //Get updated student from database
+                var updatedStudent = UserManager.FindById(studentViewModel.Id);
+
+                return View("StudentDetails", updatedStudent);
             }
-
-            // Get the existing student from the db
-            var studentToUpdate = UserManager.FindById(student.Id);
-
-
-            // Update it with the values from the view model
-            studentToUpdate.Name = student.Name;
-            studentToUpdate.Email = student.Email;
-
-            // Apply the changes if any to the db
-            UserManager.Update(studentToUpdate);
-
-            //Get updated student from database
-            var updatedStudent = UserManager.FindById(student.Id);
-
-            return View("StudentDetails", updatedStudent);
+            studentViewModel.Courses = CoursesOrderedByName();
+            return View(studentViewModel);
 
         }
 
-
+        public List<Course> CoursesOrderedByName()
+        {
+            return db.Courses.OrderBy(c => c.Name).ToList();
+        }
 
 
         public ActionResult ListUsers()

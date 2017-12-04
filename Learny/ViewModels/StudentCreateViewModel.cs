@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Learny.ViewModels
 {
-    public class StudentViewModel
+    public class StudentCreateViewModel
     {
 
         public string Id { get; set; }
