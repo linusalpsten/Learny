@@ -376,8 +376,16 @@ namespace Learny.Controllers
         {
             
             var student = UserManager.FindByEmail(email);
+            var studentViewModel = new StudentViewModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                CourseId = (int)student.CourseId,
+                Courses = db.Courses.ToList()
+            };
 
-            return View(student);
+            return View(studentViewModel);
         }
 
         [HttpPost]
