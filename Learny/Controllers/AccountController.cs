@@ -321,12 +321,12 @@ namespace Learny.Controllers
 
         public ActionResult ListStudents()
         {
-            List<ApplicationUser> students = StudentsList();
+            List<ApplicationUser> students = AllStudents();
 
             return View(students.Distinct().OrderBy(s => s.Name));
         }
 
-        private List<ApplicationUser> StudentsList()
+        private List<ApplicationUser> AllStudents()
         {
             var students = new List<ApplicationUser>();
             foreach (var course in db.Courses)
