@@ -205,7 +205,7 @@ namespace Learny.Controllers
                     }
 
 
-                    TempData["Feedback"] = "Läraren: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
+                    TempData["Feedback"] = "Lärare: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
                     return RedirectToAction("CreateTeacher", "Account");
                 }
                 // Add swedish error message
