@@ -17,6 +17,12 @@ namespace Learny.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public ActionResult Index()
+        {
+            var documents = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).Documents.ToList();
+            return View(documents);
+        }
+
         [HttpGet]
         public ActionResult UploadDocument(int? courseId = null, int? moduleId = null, int? activityId = null)
         {

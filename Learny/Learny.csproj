@@ -330,6 +330,7 @@
     <Content Include="Views\StudentCourse\Activity.cshtml" />
     <Content Include="Views\Account\TeacherCreateStudent.cshtml" />
     <Content Include="Views\Document\UploadDocument.cshtml" />
+    <Content Include="Views\Document\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
