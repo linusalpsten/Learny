@@ -2,10 +2,14 @@
 using Learny.Settings;
 using Learny.ViewModels;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -181,7 +185,12 @@ namespace Learny.Controllers
             return View(model);
         }
 
+
+
         #region Student
+        
+       
+
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult CreateStudentFromNavBar()
         {
@@ -299,6 +308,8 @@ namespace Learny.Controllers
             return View("CreateStudent", model);
         }
 
+
+
         public ActionResult Students(int id)
         {
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
@@ -307,7 +318,148 @@ namespace Learny.Controllers
             return PartialView("_StudentsPartial",students);
         }
 
-#endregion
+
+        public ActionResult ListStudents()
+        {
+            var students = new List<ApplicationUser>();
+            foreach (var course in db.Courses)
+            {
+                students.AddRange(course.Students.ToList());
+            }
+
+            return View(students.Distinct().OrderBy(s => s.Name));
+        }
+
+        public ActionResult StudentDetails(string email)
+        {
+            var student = UserManager.FindByEmail(email);
+
+            return View(student);
+        }
+
+        #endregion
+
+
+
+        //
+
+
+
+
+
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult EditStudent(string email)
+        {
+            
+            var student = UserManager.FindByEmail(email);
+
+            return View(student);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditStudent(StudentVM student)
+        {
+            if (student == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            // Get the existing student from the db
+            var studentToUpdate = UserManager.FindById(student.Id);
+
+
+            // Update it with the values from the view model
+            studentToUpdate.Name = student.Name;
+            studentToUpdate.Email = student.Email;
+
+            // Apply the changes if any to the db
+            UserManager.Update(studentToUpdate);
+
+            //Get updated student from database
+            var updatedStudent = UserManager.FindById(student.Id);
+
+            return View("StudentDetails", updatedStudent);
+
+        }
+
+
+
+
+        public ActionResult ListUsers()
+        {
+            return View(db.Users.ToList());
+        }
+
+        public ActionResult EditUser(string email)
+        {
+
+            ApplicationUser appUser = new ApplicationUser();
+            appUser = UserManager.FindByEmail(email);
+            UserEdit user = new UserEdit();
+            user.Name = appUser.Name;
+            user.Email= appUser.Email;
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditUser(UserEdit model)
+        {
+
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
+            var manager = new UserManager<ApplicationUser>(store);
+            var currentUser = manager.FindByEmail(model.Email);
+            currentUser.Name = model.Name;
+            currentUser.Email = model.Email;
+            await manager.UpdateAsync(currentUser);
+            var ctx = store.Context;
+            ctx.SaveChanges();
+            TempData["msg"] = "Profile Changes Saved !";
+            return RedirectToAction("ListUser");
+        }
+        public ActionResult DeleteUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(db.Users.Find(id));
+        }
+
+        public async Task<ActionResult> UserDeleteConfirmed(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+
+            var result = await UserManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["UserDeleted"] = "User Successfully Deleted";
+                return RedirectToAction("ManageEditors");
+            }
+            else
+            {
+                TempData["UserDeleted"] = "Error Deleting User";
+                return RedirectToAction("ManageEditors");
+            }
+        }
+        
+
+
+
+        //
+
+
 
         //
         // GET: /Account/ConfirmEmail
@@ -619,4 +771,17 @@ namespace Learny.Controllers
         }
         #endregion
     }
+
+    public class UserEdit
+    {
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        
+    }
+
 }
