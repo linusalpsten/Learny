@@ -49,6 +49,12 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
+
+            var course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
             var module = new ModuleViewModel
             {
                 Id = courseModule.Id,
@@ -57,6 +63,7 @@ namespace Learny.Controllers
                 StartDate = courseModule.StartDate,
                 EndDate = courseModule.EndDate,
                 CourseId = courseModule.CourseId,
+                FullCourseName = course.FullCourseName,
                 Activities = courseModule.Activities.OrderBy(a => a.StartDate).ToList()
             };
             return View(module);
