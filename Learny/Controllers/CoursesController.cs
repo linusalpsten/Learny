@@ -133,6 +133,7 @@ namespace Learny.Models
             {
                 Id = course.Id,
                 Name = course.Name,
+                FullCourseName = course.FullCourseName,
                 CourseCode = course.CourseCode,
                 Description = course.Description,
                 StartDate = course.StartDate,
