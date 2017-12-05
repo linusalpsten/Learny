@@ -33,6 +33,8 @@ namespace Learny.ViewModels
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
+        [Display(Name = "Modul")]
+        public string ModuleName { get; set; }
 
         public int CourseModuleId { get; set; }
 
