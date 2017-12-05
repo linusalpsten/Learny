@@ -81,11 +81,13 @@ namespace Learny.Controllers
             var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
 
             var module = db.Modules.Where(m => m.Id == id).FirstOrDefault();
+            var course = db.Courses.Where(c => c.Id == module.CourseId).FirstOrDefault();
 
             var activityViewModel = new ModuleActivityCreateViewModel
             {
                 ModuleName = module.Name,
                 CourseModuleId = id,
+                CourseName = course.Name,
                 StartDate = today,
                 EndDate = today,
                 ActivityTypes = db.ActivityTypes.ToList()
