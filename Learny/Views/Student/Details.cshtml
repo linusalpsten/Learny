@@ -25,8 +25,8 @@
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
             {
                 <p>
-                    @Html.ActionLink("Visa alla elever", "ListStudents") |
-                    @Html.ActionLink("Ändra", "EditStudent", new { email = Model.Email })
+                    @Html.ActionLink("Visa alla elever", "Index") |
+                    @Html.ActionLink("Ändra", "Edit", new { email = Model.Email })
                 </p>
             }
         </div>

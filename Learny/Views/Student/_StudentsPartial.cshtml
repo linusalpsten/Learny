@@ -1,11 +1,10 @@
 ﻿@model IEnumerable<Learny.Models.ApplicationUser>
-@using Learny.Settings
 
 <ul>
     @foreach (var item in Model)
     {
         <li>
-            @Html.ActionLink(item.Name, "StudentDetails", new { email = item.Email })
+            @Html.ActionLink(item.Name, "Details", new { email = item.Email })
         </li>
     }
 </ul>

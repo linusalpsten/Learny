@@ -7,7 +7,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("EditStudent", "Account",new { email = Model.Email}, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Edit", "Student",new { email = Model.Email}, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
 
