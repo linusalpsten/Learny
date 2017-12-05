@@ -19,7 +19,7 @@
                 @Html.DisplayFor(model => model.Email)
                 <br />
                 @Html.DisplayNameFor(model => model.CourseName):
-                @Html.DisplayFor(model => model.CourseName)
+                @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId }, null)
             </p>
             
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
