@@ -66,8 +66,11 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult Create(int id)
         {
+            var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+
             var viewModel = new ModuleViewModel
             {
+                FullCourseName = course.FullCourseName,
                 CourseId = id,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now
