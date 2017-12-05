@@ -405,6 +405,7 @@ namespace Learny.Controllers
                 Id = student.Id,
                 Name = student.Name,
                 Email = student.Email,
+                CourseId = (int)student.CourseId,
                 CourseName = student.Course.Name
             };
 
@@ -471,6 +472,7 @@ namespace Learny.Controllers
                 {
                     Name = updatedStudent.Name,
                     Email = updatedStudent.Email,
+                    CourseId = (int)updatedStudent.CourseId,
                     CourseName = updatedStudent.Course.FullCourseName
                 };
 
