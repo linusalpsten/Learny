@@ -218,12 +218,9 @@ namespace Learny.Controllers
         }
 
         public ActionResult ListTeachers()
-        {
-            List<ApplicationUser> students = AllStudents();
-
-            List<ApplicationUser> allUsers = db.Users.ToList();
-
-            var allTeachers = allUsers.Except(students).OrderBy(t => t.Name).ToList();
+        {           
+            var role = db.Roles.SingleOrDefault(m => m.Name == RoleName.teacher);
+            var allTeachers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).OrderBy(t => t.Name).ToList();
 
             List<TeacherViewModel> teachers = new List<TeacherViewModel>();
 
@@ -383,6 +380,14 @@ namespace Learny.Controllers
             {
                 students.AddRange(course.Students.ToList());
             }
+
+            return students;
+        }
+
+        private List<ApplicationUser> AllStudentsByRole()
+        {
+            var role = db.Roles.SingleOrDefault(m => m.Name == RoleName.student);
+            var students = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).ToList();
 
             return students;
         }
