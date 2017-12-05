@@ -5,8 +5,8 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<h4>Modul: @Html.DisplayFor(model => model.ModuleName)</h4>
-<h4>Kurs: @Html.DisplayFor(model => model.CourseName)</h4>
+<h4>Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h4>
+<h4>Kurs: @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h4>
 
 
 @using (Html.BeginForm())
