@@ -72,7 +72,9 @@ namespace Learny.Controllers
                 CourseModuleId = moduleActivity.CourseModuleId,
                 ActivityTypeName = moduleActivity.ActivityType.Name,
                 ModuleName = module.Name,
-                CourseName = course.Name
+                CourseName = course.Name,
+                CourseId = course.Id
+                
             };
             return View(activity);
         }
