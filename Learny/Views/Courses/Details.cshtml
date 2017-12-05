@@ -7,7 +7,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
 
             <h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
 
@@ -39,6 +39,20 @@
                 </p>
             }
         </div>
+
+
+        <div class="col-sm-4">
+
+            <h2>Dokument</h2>
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)</p>
+            }
+            @Html.Action("Documents", "Document", new { courseId = Model.Id })
+        </div>
+
+
+
         <div class="col-sm-4">
 
             <h2>Elever</h2>

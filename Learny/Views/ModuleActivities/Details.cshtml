@@ -1,23 +1,44 @@
 ﻿@model Learny.ViewModels.ModuleActivityViewModel
+@using Learny.Settings
+
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Aktivitet";
 }
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
 
-<h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
-<h2>@Html.DisplayFor(model => model.Name)</h2>
+            <h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
+            <h2>@Html.DisplayFor(model => model.Name)</h2>
 
-<p>@Model.Description</p>
+            <p>@Model.Description</p>
 
-<p>
-    @Html.DisplayNameFor(model => model.StartDate):
-    @Html.DisplayFor(model => model.StartDate)
-    <br />
-    @Html.DisplayNameFor(model => model.EndDate):
-    @Html.DisplayFor(model => model.EndDate)
-</p>
+            <p>
+                @Html.DisplayNameFor(model => model.StartDate):
+                @Html.DisplayFor(model => model.StartDate)
+                <br />
+                @Html.DisplayNameFor(model => model.EndDate):
+                @Html.DisplayFor(model => model.EndDate)
+            </p>
 
-<p>
-    @Html.ActionLink("Tillbaka till modulen", "Details", "CourseModules", new { Id = Model.CourseModuleId }, null) |
-    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
-</p>
+            <p>
+                @Html.ActionLink("Tillbaka till modulen", "Details", "CourseModules", new { Id = Model.CourseModuleId }, null) |
+                @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
+            </p>
+
+
+        </div>
+            <div class="col-sm-6">
+
+                <h2>Dokument</h2>
+                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                    <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { activityId = Model.Id }, null)</p>
+                }
+                @Html.Action("Documents", "Document", new { activityId = Model.Id })
+            </div>
+
+
+        </div>
+    </div>

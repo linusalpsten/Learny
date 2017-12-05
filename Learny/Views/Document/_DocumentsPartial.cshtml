@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Learny.Models.Document>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            @Html.ActionLink(item.Name, "Download", new { id = item.Id })
+        </li>
+    }
+</ul>

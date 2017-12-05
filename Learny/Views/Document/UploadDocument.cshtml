@@ -1,10 +1,11 @@
 ﻿@model Learny.ViewModels.DocumentViewModel
 
 @{
-    ViewBag.Title = "UploadDocument";
+    ViewBag.Title = "Lägg till dokument";
 }
 
-<h2>Upload Document @Model.UploadTo</h2>
+@Model.UploadTo
+<h2>Lägg till dokument</h2>
 
 
 @using (Html.BeginForm("UploadDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" })) 
@@ -12,7 +13,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Document</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -41,20 +41,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Document, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" name="Document" id="Document"/>
+                <input type="file" name="Document" id="Document" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Spara" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @*@Html.ActionLink("Back to List", "Index")*@
 </div>
 
 @section Scripts {

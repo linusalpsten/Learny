@@ -5,38 +5,55 @@
     ViewBag.Title = "Details";
 }
 
-<h2>@Html.DisplayFor(model => model.Name)</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>@Html.DisplayFor(model => model.Name)</h2>
 
-<p>
-    @Html.DisplayFor(model => model.Description)
-</p>
+            <p>
+                @Html.DisplayFor(model => model.Description)
+            </p>
 
-<p>
-    @Html.DisplayNameFor(model => model.StartDate):
-    @Html.DisplayFor(model => model.StartDate)
-    <br />
-    @Html.DisplayNameFor(model => model.EndDate):
-    @Html.DisplayFor(model => model.EndDate)
-</p>
+            <p>
+                @Html.DisplayNameFor(model => model.StartDate):
+                @Html.DisplayFor(model => model.StartDate)
+                <br />
+                @Html.DisplayNameFor(model => model.EndDate):
+                @Html.DisplayFor(model => model.EndDate)
+            </p>
 
-<ul>
-    @foreach (var item in Model.Activities)
-    {
-        <li>@Html.DisplayFor(modelItem => item.ActivityType.Name):  @Html.ActionLink(item.Name, "Details", "ModuleActivities", new { id = item.Id }, null)</li>
-    }
-</ul>
+            <ul>
+                @foreach (var item in Model.Activities)
+                {
+                    <li>@Html.DisplayFor(modelItem => item.ActivityType.Name):  @Html.ActionLink(item.Name, "Details", "ModuleActivities", new { id = item.Id }, null)</li>
+                }
+            </ul>
 
-    @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-    {
-        <p>
-            @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { Id = Model.CourseId }, null)
-            |
-            @Html.ActionLink("Lägg till aktivitet", "Create", "ModuleActivities", new { Id = Model.Id }, null)
-        </p>
-    }
-    else
-    {
-        <p>
-            @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { Id = Model.CourseId }, null)
-        </p>
-    }
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>
+                    @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { Id = Model.CourseId }, null)
+                    |
+                    @Html.ActionLink("Lägg till aktivitet", "Create", "ModuleActivities", new { Id = Model.Id }, null)
+                </p>
+            }
+            else
+            {
+                <p>
+                    @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { Id = Model.CourseId }, null)
+                </p>
+            }
+        </div>
+        <div class="col-sm-6">
+
+            <h2>Dokument</h2>
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { moduleId = Model.Id }, null)</p>
+            }
+            @Html.Action("Documents", "Document", new { moduleId = Model.Id })
+        </div>
+
+
+    </div>
+</div>
