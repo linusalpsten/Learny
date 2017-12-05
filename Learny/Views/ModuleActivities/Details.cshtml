@@ -27,8 +27,7 @@
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
             {
                 <p>
-                    @Html.ActionLink("Tillbaka till modulen", "Details", "CourseModules", new { Id = Model.CourseModuleId }, null)
-                    |
+                    @Html.ActionLink("Tillbaka till modulen", "Details", "CourseModules", new { Id = Model.CourseModuleId }, null) |
                     @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
                 </p>
             }
