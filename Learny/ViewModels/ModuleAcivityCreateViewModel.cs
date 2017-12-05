@@ -41,6 +41,8 @@ namespace Learny.ViewModels
 
         public int CourseModuleId { get; set; }
 
+        public int CourseId { get; set; }
+
         [Required(ErrorMessage = "Aktivitetstyp är obligatorisk")]
         public int ActivityTypeId { get; set; }
 
