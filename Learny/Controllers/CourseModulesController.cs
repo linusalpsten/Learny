@@ -50,7 +50,7 @@ namespace Learny.Controllers
                 return HttpNotFound();
             }
 
-            var course = db.Courses.Find(id);
+            var course = db.Courses.Find(courseModule.CourseId);
             if (course == null)
             {
                 return HttpNotFound();
