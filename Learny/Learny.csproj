@@ -198,7 +198,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModuleActivitiesController.cs" />
-    <Compile Include="Controllers\StudentCourseController.cs" />
     <Compile Include="DataAnnotations\DateTimeToSqlDateTime.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -240,9 +239,6 @@
     <Compile Include="ViewModels\ModuleAcivityCreateViewModel.cs" />
     <Compile Include="ViewModels\ModuleActivityViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
-    <Compile Include="ViewModels\StudentCourseViewModel.cs" />
-    <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
-    <Compile Include="ViewModels\StudentModuleActivity.cs" />
     <Compile Include="ViewModels\StudentListViewModel.cs" />
     <Compile Include="ViewModels\StudentCreateViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
@@ -325,11 +321,6 @@
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Index.cshtml" />
-    <Content Include="Views\StudentCourseModules\Index.cshtml" />
-    <Content Include="Views\StudentCourse\Details.cshtml" />
-    <Content Include="Views\StudentCourse\Index.cshtml" />
-    <Content Include="Views\StudentCourse\Module.cshtml" />
-    <Content Include="Views\StudentCourse\Activity.cshtml" />
     <Content Include="Views\Document\UploadDocument.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Account\_StudentsPartial.cshtml" />
@@ -342,7 +333,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
-    <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
