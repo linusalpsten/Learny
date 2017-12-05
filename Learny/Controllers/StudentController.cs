@@ -157,12 +157,8 @@ namespace Learny.Controllers
 
         private List<ApplicationUser> AllStudents()
         {
-            var students = new List<ApplicationUser>();
-            foreach (var course in db.Courses)
-            {
-                students.AddRange(course.Students.ToList());
-            }
-            students = students.Distinct().ToList();
+            var role = db.Roles.SingleOrDefault(m => m.Name == RoleName.student);
+            var students = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).ToList();
 
             return students;
         }
