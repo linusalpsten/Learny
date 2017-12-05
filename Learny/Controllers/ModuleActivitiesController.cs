@@ -88,6 +88,7 @@ namespace Learny.Controllers
                 ModuleName = module.Name,
                 CourseModuleId = id,
                 CourseName = course.Name,
+                CourseId = course.Id,
                 StartDate = today,
                 EndDate = today,
                 ActivityTypes = db.ActivityTypes.ToList()
