@@ -3,8 +3,9 @@
     ViewBag.Title = "Skapa modul";
 }
 
+<h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
+
 <h2>Ny modul</h2>
-<h4>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h4>
 
 
 @using (Html.BeginForm())
