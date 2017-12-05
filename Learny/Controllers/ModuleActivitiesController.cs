@@ -51,6 +51,17 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
+            CourseModule module = db.Modules.Find(moduleActivity.CourseModuleId);
+            if (module == null)
+            {
+                return HttpNotFound();
+            }
+            Course course = db.Courses.Find(module.CourseId);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+            
             var activity = new ModuleActivityViewModel
             {
                 Id = moduleActivity.Id,
@@ -59,7 +70,9 @@ namespace Learny.Controllers
                 StartDate = moduleActivity.StartDate,
                 EndDate = moduleActivity.EndDate,
                 CourseModuleId = moduleActivity.CourseModuleId,
-                ActivityTypeName = moduleActivity.ActivityType.Name
+                ActivityTypeName = moduleActivity.ActivityType.Name,
+                ModuleName = module.Name,
+                CourseName = course.Name
             };
             return View(activity);
         }
