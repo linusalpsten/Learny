@@ -5,6 +5,8 @@
     ViewBag.Title = "Details";
 }
 
+<h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6">

@@ -4,7 +4,11 @@
     ViewBag.Title = "Ny aktivitet";
 }
 
+<h5>Kurs: @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId }, null) Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+
 <h2>@ViewBag.Title</h2>
+
+
 
 
 @using (Html.BeginForm())

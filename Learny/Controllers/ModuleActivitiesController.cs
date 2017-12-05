@@ -51,6 +51,17 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
+            CourseModule module = db.Modules.Find(moduleActivity.CourseModuleId);
+            if (module == null)
+            {
+                return HttpNotFound();
+            }
+            Course course = db.Courses.Find(module.CourseId);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+            
             var activity = new ModuleActivityViewModel
             {
                 Id = moduleActivity.Id,
@@ -59,7 +70,11 @@ namespace Learny.Controllers
                 StartDate = moduleActivity.StartDate,
                 EndDate = moduleActivity.EndDate,
                 CourseModuleId = moduleActivity.CourseModuleId,
-                ActivityTypeName = moduleActivity.ActivityType.Name
+                ActivityTypeName = moduleActivity.ActivityType.Name,
+                ModuleName = module.Name,
+                CourseName = course.Name,
+                CourseId = course.Id
+                
             };
             return View(activity);
         }
@@ -80,9 +95,15 @@ namespace Learny.Controllers
             var currentDateTime = DateTime.Now;
             var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
 
+            var module = db.Modules.Where(m => m.Id == id).FirstOrDefault();
+            var course = db.Courses.Where(c => c.Id == module.CourseId).FirstOrDefault();
+
             var activityViewModel = new ModuleActivityCreateViewModel
             {
+                ModuleName = module.Name,
                 CourseModuleId = id,
+                CourseName = course.Name,
+                CourseId = course.Id,
                 StartDate = today,
                 EndDate = today,
                 ActivityTypes = db.ActivityTypes.ToList()
