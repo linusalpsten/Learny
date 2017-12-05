@@ -5,6 +5,8 @@
     ViewBag.Title = "Details";
 }
 
+<h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
+
 <h2>@Html.DisplayFor(model => model.Name)</h2>
 
 <p>
