@@ -93,12 +93,9 @@ namespace Learny.Controllers
 
         public ActionResult ListTeachers()
         {
-            List<ApplicationUser> students = AllStudents();
-
-            List<ApplicationUser> allUsers = db.Users.ToList();
-
-            var allTeachers = allUsers.Except(students).OrderBy(t => t.Name).ToList();
-
+            var role = db.Roles.SingleOrDefault(m => m.Name == RoleName.teacher);
+            var allTeachers = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).OrderBy(t => t.Name).ToList();
+            
             List<TeacherViewModel> teachers = new List<TeacherViewModel>();
 
             foreach (var teacher in allTeachers)
@@ -111,19 +108,6 @@ namespace Learny.Controllers
             }
 
             return PartialView("_TeachersPartial", teachers);
-        }
-
-
-        private List<ApplicationUser> AllStudents()
-        {
-            var students = new List<ApplicationUser>();
-            foreach (var course in db.Courses)
-            {
-                students.AddRange(course.Students.ToList());
-            }
-            students = students.Distinct().ToList();
-
-            return students;
         }
 
         private void AddErrors(IdentityResult result)
