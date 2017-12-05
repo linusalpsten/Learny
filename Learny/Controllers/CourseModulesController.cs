@@ -67,6 +67,10 @@ namespace Learny.Controllers
         public ActionResult Create(int id)
         {
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            if (course == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
             var viewModel = new ModuleViewModel
             {
