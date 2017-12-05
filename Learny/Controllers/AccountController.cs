@@ -445,9 +445,9 @@ namespace Learny.Controllers
 
             if (ModelState.IsValid)
             {
-                //Check if email is not used by another user
-                var idOfUserWithChoosenEmail = UserManager.FindByEmail(studentViewModel.Email).Id;
-                if (studentViewModel.Id != idOfUserWithChoosenEmail)
+                //Check that email is not used by another user
+                var student = UserManager.FindByEmail(studentViewModel.Email);                
+                if (student != null && studentViewModel.Id != student.Id)
                 {
                     ModelState.AddModelError("Email", "E-post adressen används redan");
                     studentViewModel.Courses = CoursesOrderedByName();
@@ -460,14 +460,21 @@ namespace Learny.Controllers
                 // Update it with the values from the view model
                 studentToUpdate.Name = studentViewModel.Name;
                 studentToUpdate.Email = studentViewModel.Email;
+                studentToUpdate.CourseId = studentViewModel.CourseId;
 
                 // Apply the changes if any to the db
                 UserManager.Update(studentToUpdate);
 
                 //Get updated student from database
                 var updatedStudent = UserManager.FindById(studentViewModel.Id);
+                var updatedStudentViewModel = new StudentViewModel
+                {
+                    Name = updatedStudent.Name,
+                    Email = updatedStudent.Email,
+                    CourseName = updatedStudent.Course.FullCourseName
+                };
 
-                return View("StudentDetails", updatedStudent);
+                return View("StudentDetails", updatedStudentViewModel);
             }
             studentViewModel.Courses = CoursesOrderedByName();
             return View(studentViewModel);
