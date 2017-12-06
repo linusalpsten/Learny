@@ -1,34 +1,31 @@
 ﻿
-@model IEnumerable<Learny.Shared_classes.CourseSchedule>
+@model Learny.ViewModels.ScheduleViewModel
 
 @{
-    ViewBag.Title = "ShowSchedule";
+    ViewBag.Title = Model.FullCourseName;
 
-  
 }
 
-<h2>ShowSchedule</h2>
-
+<h2>Schedule</h2>
+<h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.StartDate)
+            <h4>Start datum</h4>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.ModuleName)
+            <h4>Slut datum</h4>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ActivityName)
+           <h4>Modul namn</h4>
         </th>
-       @* <th></th>*@
+        <th>
+            <h4>Activitet namn</h4>
+        </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.ScheduleEntries)
     {
         <tr>
             <td>
@@ -48,5 +45,5 @@
 
 </table>
 <p>
-    @Html.ActionLink("Tillbaka till kurs översikt", "Details", "Courses")
+    @Html.ActionLink("Tillbaka till kurs översikt", "Index", "StudentCourse", new { id = Model.CourseId }, null)
 </p>

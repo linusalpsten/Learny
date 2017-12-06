@@ -223,7 +223,7 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Shared classes\CourseSchedule.cs" />
+    <Compile Include="SharedClasses\CourseSchedule.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -241,6 +241,7 @@
     <Compile Include="ViewModels\ModuleAcivityCreateViewModel.cs" />
     <Compile Include="ViewModels\ModuleActivityViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
+    <Compile Include="ViewModels\ScheduleViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseViewModel.cs" />
     <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
     <Compile Include="ViewModels\StudentModuleActivity.cs" />

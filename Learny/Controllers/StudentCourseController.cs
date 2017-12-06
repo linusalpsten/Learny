@@ -1,12 +1,13 @@
 ﻿using Learny.Models;
 using Learny.Settings;
-using Learny.Shared_classes;
+using Learny.SharedClasses;
 using Learny.ViewModels;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+
 
 namespace Learny.Controllers
 {
@@ -20,36 +21,40 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.student)]
         public ActionResult ShowSchedule(int? id)
         {
-            var courseEntries = new List<CourseSchedule>();
+            ApplicationUser CurrentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            Course course = db.Courses.Find(CurrentUser.CourseId);
 
-            Course course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            var courseEntries = new List<OneScheduleEntry>();
+
+            var ScheduleVM = new ScheduleViewModel();
+
+            ScheduleVM.CourseId = course.Id;
+            ScheduleVM.CourseName = course.Name;
+            ScheduleVM.CourseCode = course.CourseCode;
 
             // All modules for THIS Course
-           var courseModules = course.Modules.ToList();
-
+            var courseModules = course.Modules.ToList();
 
             foreach (var module in courseModules)
             {
-
                 // All activities for THIS module
                 var moduleActivities = module.Activities.ToList();
 
                 foreach (var activity in moduleActivities)
                 {
-                    var oneCourseEntry = new CourseSchedule();
-                    oneCourseEntry.CourseId = course.Id;
-                    oneCourseEntry.CourseCode = course.CourseCode;
-                    oneCourseEntry.CourseName = course.Name;
-                    oneCourseEntry.ModuleName = module.Name;
-                    oneCourseEntry.StartDate = activity.StartDate;
-                    oneCourseEntry.EndDate = activity.EndDate;
-                    oneCourseEntry.ActivityName = activity.Name;
-
+                    var oneCourseEntry = new OneScheduleEntry
+                    {
+                        ModuleName = module.Name,
+                        StartDate = activity.StartDate,
+                        EndDate = activity.EndDate,
+                        ActivityName = activity.Name
+                    };
                     // save in the final data structure to be shown on the view
                     courseEntries.Add(oneCourseEntry);
                 }
             }
-            return View(courseEntries);
+            ScheduleVM.ScheduleEntries = courseEntries;
+            return View(ScheduleVM);
         }
 
 

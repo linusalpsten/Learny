@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Learny.Shared_classes
+namespace Learny.SharedClasses
 {
-    public class CourseSchedule
+    public class OneScheduleEntry
     {
-        public int CourseId { get; set; }
-
-        public string CourseCode { get; set; }
-
-        public string CourseName { get; set; }
+       
         // Activity start date
         public DateTime StartDate { get; set; }
         
