@@ -1,5 +1,8 @@
 ﻿using Learny.Models;
+using Learny.Settings;
+using Learny.Shared_classes;
 using Learny.ViewModels;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -11,6 +14,45 @@ namespace Learny.Controllers
     public class StudentCourseController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+
+        // The course id is passed to to this Action which act as a GET
+        [Authorize(Roles = RoleName.student)]
+        public ActionResult ShowSchedule(int? id)
+        {
+            var courseEntries = new List<CourseSchedule>();
+
+            Course course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+
+            // All modules for THIS Course
+           var courseModules = course.Modules.ToList();
+
+
+            foreach (var module in courseModules)
+            {
+
+                // All activities for THIS module
+                var moduleActivities = module.Activities.ToList();
+
+                foreach (var activity in moduleActivities)
+                {
+                    var oneCourseEntry = new CourseSchedule();
+                    oneCourseEntry.CourseId = course.Id;
+                    oneCourseEntry.CourseCode = course.CourseCode;
+                    oneCourseEntry.CourseName = course.Name;
+                    oneCourseEntry.ModuleName = module.Name;
+                    oneCourseEntry.StartDate = activity.StartDate;
+                    oneCourseEntry.EndDate = activity.EndDate;
+                    oneCourseEntry.ActivityName = activity.Name;
+
+                    // save in the final data structure to be shown on the view
+                    courseEntries.Add(oneCourseEntry);
+                }
+            }
+            return View(courseEntries);
+        }
+
+
 
         // GET: StudentCourse
         public ActionResult Index()
@@ -60,7 +102,7 @@ namespace Learny.Controllers
                 Activities = db.Activities.Where(a => a.CourseModuleId == courseModule.Id).OrderBy(a => a.StartDate).ToList()
             };
             return View(courseModuleViewModel);
-        } 
+        }
 
         // GET: StudentCourse/Activity/5
         public ActionResult Activity(int? id)

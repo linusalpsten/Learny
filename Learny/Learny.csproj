@@ -223,6 +223,7 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Shared classes\CourseSchedule.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -332,6 +333,8 @@
     <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Account\_StudentsPartial.cshtml" />
     <Content Include="Views\Account\CreateStudent.cshtml" />
+    <Content Include="Views\Courses\ShowSchedule.cshtml" />
+    <Content Include="Views\StudentCourse\ShowSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

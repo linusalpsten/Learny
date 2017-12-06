@@ -7,10 +7,15 @@ namespace Learny.Shared_classes
 {
     public class CourseSchedule
     {
-        // Module start date
+        public int CourseId { get; set; }
+
+        public string CourseCode { get; set; }
+
+        public string CourseName { get; set; }
+        // Activity start date
         public DateTime StartDate { get; set; }
         
-        // Module end date
+        // Activity end date
         public DateTime EndDate { get; set; }
 
         // Module name

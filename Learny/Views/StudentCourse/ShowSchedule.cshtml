@@ -1,0 +1,52 @@
+﻿
+@model IEnumerable<Learny.Shared_classes.CourseSchedule>
+
+@{
+    ViewBag.Title = "ShowSchedule";
+
+  
+}
+
+<h2>ShowSchedule</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ModuleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActivityName)
+        </th>
+       @* <th></th>*@
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModuleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityName)
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Tillbaka till kurs översikt", "Details", "Courses")
+</p>

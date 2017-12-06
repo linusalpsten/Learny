@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
+using Learny.Shared_classes;
 
 namespace Learny.Models
 {
@@ -16,6 +16,49 @@ namespace Learny.Models
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+
+
+        // The course id is passed to to this Action which act as a GET
+        [Authorize(Roles = RoleName.student)]
+        public ActionResult ShowSchedule(int? id)
+        {
+            var courseEntries = new List<CourseSchedule>();
+
+            Course course = (Course)db.Courses.Where(c => c.Id == id);
+
+            // All modules for THIS Course
+            List<CourseModule> courseModules = course.Modules.ToList();
+
+            CourseSchedule oneCourseEntry = new CourseSchedule();
+
+            oneCourseEntry.CourseId = course.Id;
+            oneCourseEntry.CourseCode = course.CourseCode;
+            oneCourseEntry.CourseName = course.Name;
+
+            foreach (var module in courseModules)
+            {
+                oneCourseEntry.ModuleName = module.Name;
+
+                // All activities for THIS module
+                List<ModuleActivity> moduleActivities = module.Activities.ToList();
+
+                foreach (var activity in moduleActivities)
+                {
+                    oneCourseEntry.StartDate = activity.StartDate;
+                    oneCourseEntry.EndDate = activity.EndDate;
+                    oneCourseEntry.ActivityName = activity.Name;
+
+                    // save in the final data structure to be shown on the view
+                    courseEntries.Add(oneCourseEntry);
+                }
+            }
+            return View(courseEntries);
+        }
+
+
+
+
 
         // GET: Courses
         [Authorize(Roles = RoleName.teacher)]
@@ -48,7 +91,7 @@ namespace Learny.Models
         }
 
         // GET: Courses/Details/5
-        [Authorize(Roles = RoleName.teacher +","+  RoleName.student)]
+        [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -149,7 +192,7 @@ namespace Learny.Models
                 // 1. db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode 
                 // 2. db.Courses.Where(c => c.Id == courseView.Id).Select (c => c.CourseCode)
 
-                if (db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode != courseView.CourseCode)
+                if (db.Courses.AsNoTracking().FirstOrDefault(c => c.Id == courseView.Id)?.CourseCode != courseView.CourseCode)
                 {
                     if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode && c.Id != courseView.Id))
                     {
