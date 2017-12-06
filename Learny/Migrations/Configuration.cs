@@ -110,16 +110,16 @@ namespace Learny.Migrations
                     EndDate = startDate.AddDays(21), CourseId = courseId },
                 new CourseModule { Name = "Testning", StartDate = startDate.AddDays(22),
                     EndDate = startDate.AddDays(22), CourseId = courseId },
-                new CourseModule { Name = "C#", StartDate = startDate.AddDays(23),
-                    EndDate = startDate.AddDays(29), CourseId = courseId },
+                //new CourseModule { Name = "C#", StartDate = startDate.AddDays(23),
+                //    EndDate = startDate.AddDays(29), CourseId = courseId },
                 new CourseModule { Name = "Webb", StartDate = startDate.AddDays(30),
                     EndDate = startDate.AddDays(44), CourseId = courseId },
-                new CourseModule { Name = "MVC", StartDate = startDate.AddDays(45),
-                    EndDate = startDate.AddDays(52), CourseId = courseId },
-                new CourseModule { Name = "Webb", StartDate = startDate.AddDays(53),
-                    EndDate = startDate.AddDays(53), CourseId = courseId },
-                new CourseModule { Name = "MVC", StartDate = startDate.AddDays(54),
-                    EndDate =startDate.AddDays(62), CourseId = courseId }
+                //new CourseModule { Name = "MVC", StartDate = startDate.AddDays(45),
+                //    EndDate = startDate.AddDays(52), CourseId = courseId },
+                //new CourseModule { Name = "Webb", StartDate = startDate.AddDays(53),
+                //    EndDate = startDate.AddDays(53), CourseId = courseId },
+                //new CourseModule { Name = "MVC", StartDate = startDate.AddDays(54),
+                //    EndDate =startDate.AddDays(62), CourseId = courseId }
             };
             context.Modules.AddOrUpdate(
                 c => new { c.Name, c.StartDate },
@@ -130,7 +130,7 @@ namespace Learny.Migrations
 
             var elearningTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.elearning).FirstOrDefault().Id;
             var exerciseTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.exercise).FirstOrDefault().Id;
-            var lectureTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.exercise).FirstOrDefault().Id;
+            var lectureTypeId = context.ActivityTypes.Where(t => t.Name == ActivityTypeName.lecture).FirstOrDefault().Id;
             var cSharpModuleName1 = modules[0].Name;
             var cSharpModuleStartDate1 = modules[0].StartDate;
             var cSharpModuleId1 = context.Modules.Where(m => m.Name == cSharpModuleName1 && m.StartDate == cSharpModuleStartDate1).FirstOrDefault().Id;
@@ -252,7 +252,31 @@ namespace Learny.Migrations
 
             var users = new List<string[]>();
             users.Add(new[] { "teacher@learny.com", "Learny", "Tomas Svensson", RoleName.teacher });
-            users.Add(new[] { "student@learny.com", "Learny", "Hans Karlsson", RoleName.student });
+            users.Add(new[] { "student@learny.com", "Learny", "Klas Klättermus", RoleName.student });
+            users.Add(new[] { "Abas@learny.com", "Learny", "Abas Ali Rahmanian Aberouie", RoleName.student });
+            users.Add(new[] { "Afram@learny.com", "Learny", "Afram Kako", RoleName.student });
+            users.Add(new[] { "Archana@learny.com", "Learny", "Archana Chikmagalur Lakshminarasimha", RoleName.student });
+            users.Add(new[] { "Christian@learny.com", "Learny", "Christian Trochez Östnaes", RoleName.student });
+            users.Add(new[] { "Christopher@learny.com", "Learny", "Christopher Wolf", RoleName.student });
+            users.Add(new[] { "Daniel@learny.com", "Learny", "Daniel Saar Odhammer", RoleName.student });
+            users.Add(new[] { "Egidio@learny.com", "Learny", "Egidio Palmo Ricchiuti", RoleName.student });
+            users.Add(new[] { "Gunnar@learny.com", "Learny", "Gunnar Rydberg", RoleName.student });
+            users.Add(new[] { "Hans@learny.com", "Learny", "Hans Guldager", RoleName.student });
+            users.Add(new[] { "James@learny.com", "Learny", "James Allen", RoleName.student });
+            users.Add(new[] { "John@learny.com", "Learny", "John Alkas Yousef", RoleName.student });
+            users.Add(new[] { "Juha@learny.com", "Learny", "Juha Kuusjärvi", RoleName.student });
+            users.Add(new[] { "Lars@learny.com", "Learny", "Lars Börlin", RoleName.student });
+            users.Add(new[] { "Linus@learny.com", "Learny", "Linus Alpsten", RoleName.student });
+            users.Add(new[] { "Nils@learny.com", "Learny", "Nils Lindstedt", RoleName.student });
+            users.Add(new[] { "Ola@learny.com", "Learny", "Ola Bjelving", RoleName.student });
+            users.Add(new[] { "Petra@learny.com", "Learny", "Petra Lindell", RoleName.student });
+            users.Add(new[] { "Rolf@learny.com", "Learny", "Rolf Lundqvist", RoleName.student });
+            users.Add(new[] { "Sattar@learny.com", "Learny", "Sattar Alvandpour", RoleName.student });
+            users.Add(new[] { "Tensaeberhan@learny.com", "Learny", "Tensaeberhan Mengist Yoseph", RoleName.student });
+            users.Add(new[] { "Thomas@learny.com", "Learny", "Thomas Palestig", RoleName.student });
+            users.Add(new[] { "Tomas@learny.com", "Learny", "Tomas Lanquist", RoleName.student });
+            users.Add(new[] { "Vijayalakshmi@learny.com", "Learny", "Vijayalakshmi Goduguluri", RoleName.student });
+            users.Add(new[] { "Zareen@learny.com", "Learny", "Zareen Pathan", RoleName.student });
 
             foreach (var user in users)
             {
