@@ -79,12 +79,17 @@ namespace Learny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+
+
+            var currentDateTime = DateTime.Now;
+            var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
+
             var viewModel = new ModuleViewModel
             {
                 FullCourseName = course.FullCourseName,
                 CourseId = id,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now
+                StartDate = today,
+                EndDate = today
             };
 
             return View(viewModel);
