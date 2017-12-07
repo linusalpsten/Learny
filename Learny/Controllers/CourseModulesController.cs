@@ -1,7 +1,6 @@
 ﻿using Learny.Models;
 using Learny.Settings;
 using Learny.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -131,13 +130,13 @@ namespace Learny.Controllers
                         Name = viewModel.Name,
                         Description = viewModel.Description,
                         StartDate = viewModel.StartDate,
-                        EndDate = viewModel.EndDate,
-                        CourseId = viewModel.CourseId
+                        EndDate = viewModel.EndDate
                     };
                     db.Entry(courseModule).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    TempData["Feedback"] = $"Modulen {courseModule.Name} har ändrats";
+                    TempData["FeedbackMessage"] = "Modulen har ändrats";
+                    TempData["FeedbackData"] = viewModel;
 
                     var course = db.Courses.Where(c => c.Id == viewModel.CourseId).FirstOrDefault();
                     if (course == null)
@@ -170,10 +169,9 @@ namespace Learny.Controllers
 
                     var createdModule = db.Modules.Add(courseModule);
                     db.SaveChanges();
-                
-                    TempData["Feedback"] = $"Modulen har lagts till: {createdModule.Name}, {createdModule.StartDate:d}, {createdModule.EndDate:d}, {createdModule.Description}";
-
-                        //RedirectToAction("Details", "Courses", new { id = viewModel.CourseId });
+                    
+                    TempData["FeedbackMessage"] = "Modulen har lagts till";
+                    TempData["FeedbackData"] = viewModel;
                 }
             }
 
