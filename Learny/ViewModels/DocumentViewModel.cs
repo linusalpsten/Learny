@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -13,10 +14,13 @@ namespace Learny.ViewModels
 
         public int? ModuleActivityId { get; set; }
 
+        [DisplayName("Namn")]
         public string Name { get; set; }
 
+        [DisplayName("Beskrivning")]
         public string Description { get; set; }
 
+        [DisplayName("Dokument")]
         public HttpPostedFileBase Document { get; set; }
 
         public string UploadTo { get; set; }

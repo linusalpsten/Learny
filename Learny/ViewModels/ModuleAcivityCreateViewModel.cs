@@ -33,8 +33,15 @@ namespace Learny.ViewModels
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
+        [Display(Name = "Modul")]
+        public string ModuleName { get; set; }
+
+        [Display(Name = "Kurs")]
+        public string CourseName { get; set; }
 
         public int CourseModuleId { get; set; }
+
+        public int CourseId { get; set; }
 
         [Required(ErrorMessage = "Aktivitetstyp är obligatorisk")]
         public int ActivityTypeId { get; set; }

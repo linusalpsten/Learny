@@ -1,10 +1,8 @@
 ﻿using Learny.Models;
-using Learny.Settings;
-using Learny.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,10 +10,6 @@ using System.Web.Mvc;
 
 namespace Learny.Controllers
 {
-
-
-
-
 
     [Authorize]
     public class AccountController : Controller
@@ -142,133 +136,6 @@ namespace Learny.Controllers
                     return View(model);
             }
         }
-
-        #region Student
-        [Authorize(Roles = RoleName.teacher)]
-        public ActionResult CreateStudentFromNavBar()
-        {
-            return RedirectToAction("CreateStudent");
-        }
-
-
-        // Student CREATE
-        // GET: /Account/Register
-        [Authorize(Roles = RoleName.teacher)]
-        public ActionResult CreateStudent(int? id)
-        {
-            if (id == null)
-            {
-                var allCourses = db.Courses.ToList();
-                var viewModel = new StudentVM {
-                    Courses = allCourses,
-                    CourseSelected = false                    
-                };
-
-                return View(viewModel);
-            }
-
-            var course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-
-            var viewModelSelectedCourse = new StudentVM {
-                AttendingCourse = course.FullCourseName,
-                CourseId = course.Id,
-                CourseSelected = true
-            };
-
-            return View(viewModelSelectedCourse);
-
-        }
-
-        //
-        // POST: /Account/CreateStudent (former Register)
-        [HttpPost]
-        [Authorize(Roles = RoleName.teacher)]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateStudent(StudentVM model)
-        {
-            var allCourses = db.Courses.ToList();
-            if (ModelState.IsValid)
-            {
-                // Check if email is already used by other users
-                if (db.Users.Any(u => u.Email == model.Email))
-                {
-                    ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
-                    model.Courses = allCourses;
-                    return View("CreateStudent", model);
-                }
-
-                var user = new ApplicationUser
-                {
-                    CourseId = model.CourseId,
-                    // CourseName = model.CourseCode,
-                    Name = model.Name,
-                    UserName = model.Email,
-                    Email = model.Email
-                };
-
-                var errorsInSwedish = new List<string>();
-
-                var result = UserManager.Create(user, model.Password);
-
-                foreach (var error in result.Errors)
-                {
-                    if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
-                    {
-                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, en siffra, en versal('A' - 'Z') och bestå av minst 6 tecken.");
-                    }
-                    else
-                    {
-                        errorsInSwedish.Add(error);
-                    }
-                }
-
-                if (result.Succeeded)
-                {
-                    //SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    var existingUser = UserManager.FindByName(model.Email);
-                    if (!UserManager.IsInRole(existingUser.Id, RoleName.student))
-                    {
-                        UserManager.AddToRole(existingUser.Id, RoleName.student);
-                    }
-
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    //  return RedirectToAction("Index", "Home");
-
-
-                    return RedirectToAction("CreateStudent", "Account");
-                }
-                // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
-                // AddErrors(result);
-                var resultModified = new IdentityResult(errorsInSwedish);
-                AddErrors(resultModified);
-            }
-
-            // Model state is invalid: I need to feel the list of courses again and post it
-            //model = new StudentVM { Courses = allCourses };
-            model.Courses = allCourses;
-
-            // If we got this far, something failed, redisplay form
-            return View("CreateStudent", model);
-        }
-
-        public ActionResult Students(int id)
-        {
-            var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
-            var students = course.Students.OrderBy(s => s.Name).ToList();
-            
-            return PartialView("_StudentsPartial",students);
-        }
-
-#endregion
 
         //
         // GET: /Account/ConfirmEmail
@@ -580,4 +447,5 @@ namespace Learny.Controllers
         }
         #endregion
     }
+
 }

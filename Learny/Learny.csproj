@@ -198,7 +198,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModuleActivitiesController.cs" />
-    <Compile Include="Controllers\StudentCourseController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="DataAnnotations\DateTimeToSqlDateTime.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -223,7 +224,6 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Settings\Settings.cs" />
-    <Compile Include="SharedClasses\CourseSchedule.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -241,12 +241,10 @@
     <Compile Include="ViewModels\ModuleAcivityCreateViewModel.cs" />
     <Compile Include="ViewModels\ModuleActivityViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
-    <Compile Include="ViewModels\ScheduleViewModel.cs" />
-    <Compile Include="ViewModels\StudentCourseViewModel.cs" />
-    <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
-    <Compile Include="ViewModels\StudentModuleActivity.cs" />
-    <Compile Include="ViewModels\StudentsViewModel.cs" />
-    <Compile Include="ViewModels\StudentVM.cs" />
+    <Compile Include="ViewModels\StudentListViewModel.cs" />
+    <Compile Include="ViewModels\StudentCreateViewModel.cs" />
+    <Compile Include="ViewModels\StudentViewModel.cs" />
+    <Compile Include="ViewModels\TeacherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client Scripts\mvcfoolproof.unobtrusive.js" />
@@ -325,21 +323,19 @@
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Index.cshtml" />
-    <Content Include="Views\StudentCourseModules\Index.cshtml" />
-    <Content Include="Views\StudentCourse\Details.cshtml" />
-    <Content Include="Views\StudentCourse\Index.cshtml" />
-    <Content Include="Views\StudentCourse\Module.cshtml" />
-    <Content Include="Views\StudentCourse\Activity.cshtml" />
     <Content Include="Views\Document\UploadDocument.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
-    <Content Include="Views\Account\_StudentsPartial.cshtml" />
-    <Content Include="Views\Account\CreateStudent.cshtml" />
-    <Content Include="Views\Courses\ShowSchedule.cshtml" />
-    <Content Include="Views\StudentCourse\ShowSchedule.cshtml" />
+    <Content Include="Views\Student\_StudentsPartial.cshtml" />
+    <Content Include="Views\Student\Create.cshtml" />
+    <Content Include="Views\Student\Index.cshtml" />
+    <Content Include="Views\Student\Details.cshtml" />
+    <Content Include="Views\Student\Edit.cshtml" />
+    <Content Include="Views\Teacher\Create.cshtml" />
+    <Content Include="Views\Teacher\_TeachersPartial.cshtml" />
+    <Content Include="Views\Document\_DocumentsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
-    <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

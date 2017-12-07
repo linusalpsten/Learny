@@ -1,12 +1,12 @@
 ﻿
-@model Learny.ViewModels.StudentVM
+@model Learny.ViewModels.StudentCreateViewModel
 @{
-    ViewBag.Title = "Lägg till en ny elev";
+    ViewBag.Title = "Lägg till ny elev";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("CreateStudent", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Create", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @*<h4>Lägg till en ny elev</h4>*@
@@ -17,7 +17,7 @@
     if (Model.CourseSelected == true)
     {
         <h4> @Html.DisplayFor(model => model.AttendingCourse)</h4>
-        @Html.HiddenFor(model => model.CourseId) @*Http post courseId to createStudent action *@
+        @Html.HiddenFor(model => model.CourseId) @*Http post courseId to create action *@
         @Html.HiddenFor(model => model.CourseSelected)
         @Html.HiddenFor(model => model.AttendingCourse)
         <hr />
@@ -75,11 +75,19 @@
         </div>
 }
 
+@if (TempData["Feedback"] != null)
+{
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Feedback"]
+    </div>
+}
+
 @if (Model.CourseSelected == true)
 {
     <hr />
     <h4>Elever</h4>
-    @Html.Action("Students", "Account", new { id = Model.CourseId })
+    @Html.Action("Students", "Student", new { id = Model.CourseId })
 
 }
 @if (Model.CourseSelected == false)

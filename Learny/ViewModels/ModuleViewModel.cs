@@ -33,6 +33,9 @@ namespace Learny.ViewModels
 
         public int CourseId { get; set; }
 
+        [Display(Name = "Kurs")]
+        public string FullCourseName { get; set; }
+
         public virtual ICollection<ModuleActivity> Activities { get; set; }
 
     }
