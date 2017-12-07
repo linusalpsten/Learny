@@ -23,6 +23,11 @@ namespace Learny.Models
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult ShowSchedule(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             Course course;
             if (User.IsInRole(RoleName.student))
             {
@@ -37,7 +42,7 @@ namespace Learny.Models
 
             var ScheduleVM = new ScheduleViewModel();
 
-
+            // Populate the VM with Course infos
             ScheduleVM.CourseId = course.Id;
             ScheduleVM.CourseName = course.Name;
             ScheduleVM.CourseCode = course.CourseCode;
