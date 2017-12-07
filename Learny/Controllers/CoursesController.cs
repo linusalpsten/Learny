@@ -20,14 +20,23 @@ namespace Learny.Models
 
 
         // The course id is passed to to this Action which act as a GET
-        [Authorize(Roles = RoleName.teacher)]
+        [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult ShowSchedule(int? id)
         {
+            Course course;
+            if (User.IsInRole(RoleName.student))
+            {
+                ApplicationUser CurrentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                 course = db.Courses.Find(CurrentUser.CourseId);
+            }
+            else
+            {
+                 course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            }
             var courseEntries = new List<OneScheduleEntry>();
 
             var ScheduleVM = new ScheduleViewModel();
 
-            Course course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
 
             ScheduleVM.CourseId = course.Id;
             ScheduleVM.CourseName = course.Name;
