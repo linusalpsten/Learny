@@ -1,5 +1,4 @@
-﻿
-@model Learny.ViewModels.ScheduleViewModel
+﻿@model Learny.ViewModels.ScheduleViewModel
 
 @{
     ViewBag.Title = Model.FullCourseName;
@@ -18,7 +17,7 @@
             <h4>Slut Datum</h4>
         </th>
         <th>
-           <h4>Modul Namn</h4>
+            <h4>Modul Namn</h4>
         </th>
         <th>
             <h4>Activitet Namn</h4>
@@ -29,21 +28,34 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @Html.DisplayFor(modelItem => item.CurrentDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @Html.DisplayFor(modelItem => item.CurrentDay)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ModuleName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ActivityName)
+                <ul>
+                    @*class="alert alert-success">*@
+                    @foreach (var activity in item.ActivityNamesList)
+                    {
+                        if (DateTime.Compare(DateTime.Today, item.CurrentDate.Date) == 0)
+                        {
+                            <li class="alert alert-success">@activity</li>
+                        }
+                        else
+                        {
+                            <li>@activity</li>
+                        }
+                    }
+                </ul>
             </td>
         </tr>
     }
-
 </table>
 <p>
     @Html.ActionLink("Tillbaka till kurs översikt", "Details", "Courses", new { id = Model.CourseId }, null)
 </p>
+

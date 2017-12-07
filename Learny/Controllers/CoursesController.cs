@@ -1,5 +1,4 @@
-﻿using Learny.ViewModels;
-using Learny.Settings;
+﻿using Learny.Settings;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Learny.SharedClasses;
+using Learny.ViewModels;
 
 namespace Learny.Models
 {
@@ -23,42 +23,67 @@ namespace Learny.Models
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult ShowSchedule(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             Course course;
             if (User.IsInRole(RoleName.student))
             {
                 ApplicationUser CurrentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-                 course = db.Courses.Find(CurrentUser.CourseId);
+                course = db.Courses.Find(CurrentUser.CourseId);
             }
             else
             {
-                 course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+                course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
             }
             var courseEntries = new List<OneScheduleEntry>();
 
             var ScheduleVM = new ScheduleViewModel();
 
-
+            // Populate the VM with Course infos
             ScheduleVM.CourseId = course.Id;
             ScheduleVM.CourseName = course.Name;
             ScheduleVM.CourseCode = course.CourseCode;
 
             // All modules for THIS Course
-            var courseModules = course.Modules.ToList();
-
+            var courseModules = course.Modules.OrderBy(c => c.StartDate ).ToList();
+            DateTime currentDate;
             foreach (var module in courseModules)
             {
+                TimeSpan difference = module.EndDate - module.StartDate;
+                int moduleDays = (int)difference.TotalDays;
+
                 // All activities for THIS module
                 var moduleActivities = module.Activities.ToList();
 
-                foreach (var activity in moduleActivities)
+                // date counter
+                for (int daycounter = 0; daycounter < moduleDays; daycounter++)
                 {
-                    var oneCourseEntry = new OneScheduleEntry
+                    var oneCourseEntry = new OneScheduleEntry();
+                    oneCourseEntry.ActivityNamesList = new List<string>();
+
+                    // Update the date counter
+                    currentDate = module.StartDate.AddDays(daycounter);
+
+                    oneCourseEntry.CurrentDate = currentDate;
+                    oneCourseEntry.ModuleName = module.Name;
+
+                    // For each date check if any activity is ACTIVE.
+                    // If so, the save it in onecourseEntry otherwise skip it
+                    foreach (var activity in moduleActivities)
                     {
-                        ModuleName = module.Name,
-                        StartDate = activity.StartDate,
-                        EndDate = activity.EndDate,
-                        ActivityName = activity.Name
-                    };
+                        var activityStart = activity.StartDate;
+                        var activityEnd = activity.EndDate;
+                        if (DateTime.Compare(currentDate, activityStart) >= 0 &&
+                            DateTime.Compare(currentDate, activityEnd) <= 0)
+                        {
+                            // the current activity is ACTIVE in currentDate
+                            // and can be stored in the "dayly schedule entry"
+                            oneCourseEntry.ActivityNamesList.Add(activity.Name);
+                        }
+                    }
                     // save in the final data structure to be shown on the view
                     courseEntries.Add(oneCourseEntry);
                 }
@@ -66,9 +91,6 @@ namespace Learny.Models
             ScheduleVM.ScheduleEntries = courseEntries;
             return View(ScheduleVM);
         }
-
-
-
 
 
         // GET: Courses
