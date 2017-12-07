@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
+using Learny.SharedClasses;
 
 namespace Learny.Models
 {
@@ -16,6 +16,60 @@ namespace Learny.Models
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+
+
+        // The course id is passed to to this Action which act as a GET
+        [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
+        public ActionResult ShowSchedule(int? id)
+        {
+            Course course;
+            if (User.IsInRole(RoleName.student))
+            {
+                ApplicationUser CurrentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                 course = db.Courses.Find(CurrentUser.CourseId);
+            }
+            else
+            {
+                 course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            }
+            var courseEntries = new List<OneScheduleEntry>();
+
+            var ScheduleVM = new ScheduleViewModel();
+
+
+            ScheduleVM.CourseId = course.Id;
+            ScheduleVM.CourseName = course.Name;
+            ScheduleVM.CourseCode = course.CourseCode;
+
+            // All modules for THIS Course
+            var courseModules = course.Modules.ToList();
+
+            foreach (var module in courseModules)
+            {
+                // All activities for THIS module
+                var moduleActivities = module.Activities.ToList();
+
+                foreach (var activity in moduleActivities)
+                {
+                    var oneCourseEntry = new OneScheduleEntry
+                    {
+                        ModuleName = module.Name,
+                        StartDate = activity.StartDate,
+                        EndDate = activity.EndDate,
+                        ActivityName = activity.Name
+                    };
+                    // save in the final data structure to be shown on the view
+                    courseEntries.Add(oneCourseEntry);
+                }
+            }
+            ScheduleVM.ScheduleEntries = courseEntries;
+            return View(ScheduleVM);
+        }
+
+
+
+
 
         // GET: Courses
         [Authorize(Roles = RoleName.teacher)]
@@ -161,7 +215,7 @@ namespace Learny.Models
                 // 1. db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode 
                 // 2. db.Courses.Where(c => c.Id == courseView.Id).Select (c => c.CourseCode)
 
-                if (db.Courses.AsNoTracking().FirstOrDefault(c =>c.Id == courseView.Id)?.CourseCode != courseView.CourseCode)
+                if (db.Courses.AsNoTracking().FirstOrDefault(c => c.Id == courseView.Id)?.CourseCode != courseView.CourseCode)
                 {
                     if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode && c.Id != courseView.Id))
                     {
