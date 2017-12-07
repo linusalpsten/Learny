@@ -17,9 +17,11 @@ namespace Learny.ViewModels
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
         

@@ -21,11 +21,13 @@ namespace Learny.ViewModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Startdatum är obligatoriskt")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Startdatum")]
         [DateTimeToSqlDateTime]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Slutdatum är obligatoriskt")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Slutdatum")]
         [DateTimeToSqlDateTime]
         [GreaterThanOrEqualTo("StartDate", ErrorMessage = "Slutdatum får inte vara mindre än startdatum")]
