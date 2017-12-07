@@ -24,14 +24,14 @@ namespace Learny.ViewModels
 
         [Required(ErrorMessage = "Startdatum är obligatoriskt")]
         [DateTimeToSqlDateTime]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Slutdatum är obligatoriskt")]
         [GreaterThanOrEqualTo("StartDate", ErrorMessage = "Slutdatum får inte vara mindre än startdatum")]
         [DateTimeToSqlDateTime]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 

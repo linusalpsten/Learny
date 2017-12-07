@@ -4,8 +4,6 @@ using Learny.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Learny.ViewModels
 {
@@ -25,14 +23,14 @@ namespace Learny.ViewModels
         public string FullCourseName { get; set; }
 
         [Required(ErrorMessage = "Startdatum är obligatoriskt.")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode=true)]
         [Display(Name = "Start")]
         [DateTimeToSqlDateTime]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Slutdatum är obligatoriskt.")]
         [GreaterThanOrEqualTo("StartDate", ErrorMessage = "Slutdatum får inte vara mindre än startdatum")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Display(Name = "Slut")]
         [DateTimeToSqlDateTime]
         public DateTime EndDate { get; set; }
