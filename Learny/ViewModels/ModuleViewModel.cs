@@ -12,7 +12,7 @@ namespace Learny.ViewModels
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Namn är obligatoriskt")]
-        [Display(Name = "Namn")]
+        [Display(Name = "Modul")]
         public string Name { get; set; }
 
         [Display(Name = "Beskrivning")]
@@ -37,6 +37,5 @@ namespace Learny.ViewModels
         public string FullCourseName { get; set; }
 
         public virtual ICollection<ModuleActivity> Activities { get; set; }
-
     }
 }
