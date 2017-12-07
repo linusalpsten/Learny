@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Learny.Models;
+using Learny.Settings;
+using Learny.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Learny.Models;
-using Learny.ViewModels;
-using Learny.Settings;
 
 namespace Learny.Controllers
 {
@@ -79,17 +78,16 @@ namespace Learny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-
-
-            var currentDateTime = DateTime.Now;
-            var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
-
+            //Find last modules end date 
+            var lastModule = db.Modules.Where(m => m.CourseId == course.Id).OrderByDescending(m => m.EndDate).FirstOrDefault();
+            var startDate = lastModule.EndDate.AddDays(1);
+            
             var viewModel = new ModuleViewModel
             {
                 FullCourseName = course.FullCourseName,
                 CourseId = id,
-                StartDate = today,
-                EndDate = today
+                StartDate = startDate,
+                EndDate = startDate
             };
 
             return View(viewModel);
