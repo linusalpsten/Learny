@@ -20,7 +20,14 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @if (item.Edit) {
+                
+                    @Html.ActionLink(item.Name, "EditInCreate", new { id = item.Id})
+                }
+                else
+                { 
+                    @Html.DisplayFor(modelItem => item.Name)
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)

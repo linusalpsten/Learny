@@ -23,7 +23,7 @@ namespace Learny.Controllers
             return View(db.Modules.ToList());
         }
 
-        public ActionResult Modules(int id)
+        public ActionResult Modules(int id, bool linkToEditInCreateView=false)
         {
             var courseModules = db.Modules.Where(m => m.CourseId == id).OrderBy(m => m.StartDate).ToList();
             var modules = new List<ModuleViewModel>();
@@ -36,6 +36,7 @@ namespace Learny.Controllers
                     Description = module.Description,
                     StartDate = module.StartDate,
                     EndDate = module.EndDate,
+                    Edit = linkToEditInCreateView
                 });
             }
 
@@ -118,10 +119,45 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId")] ModuleViewModel viewModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId, FullCourseName, Edit")] ModuleViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                if (viewModel.Edit)
+                {
+                    var courseModule = new CourseModule
+                    {
+                        Id = viewModel.Id,
+                        Name = viewModel.Name,
+                        Description = viewModel.Description,
+                        StartDate = viewModel.StartDate,
+                        EndDate = viewModel.EndDate,
+                        CourseId = viewModel.CourseId
+                    };
+                    db.Entry(courseModule).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    TempData["Feedback"] = $"Modulen {courseModule.Name} har ändrats";
+
+                    var course = db.Courses.Where(c => c.Id == viewModel.CourseId).FirstOrDefault();
+                    if (course == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    //Find last modules end date 
+                    var lastModule = db.Modules.Where(m => m.CourseId == course.Id).OrderByDescending(m => m.EndDate).FirstOrDefault();
+                    var startDate = lastModule.EndDate.AddDays(1);
+                    viewModel = new ModuleViewModel
+                    {
+                        FullCourseName = course.FullCourseName,
+                        CourseId = course.Id,
+                        StartDate = startDate,
+                        EndDate = startDate
+                    };
+                }
+                else
+                { 
                     var courseModule = new CourseModule
                     {
                         Id = viewModel.Id,
@@ -132,12 +168,42 @@ namespace Learny.Controllers
                         CourseId = viewModel.CourseId
                     };
 
-                db.Modules.Add(courseModule);
-                db.SaveChanges();
-                return RedirectToAction("Details", "Courses", new { id = viewModel.CourseId });
+                    var createdModule = db.Modules.Add(courseModule);
+                    db.SaveChanges();
+                
+                    TempData["Feedback"] = $"Modulen har lagts till: {createdModule.Name}, {createdModule.StartDate:d}, {createdModule.EndDate:d}, {createdModule.Description}";
+
+                        //RedirectToAction("Details", "Courses", new { id = viewModel.CourseId });
+                }
             }
 
             return View(viewModel);
+        }
+
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult EditInCreate(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CourseModule courseModule = db.Modules.Find(id);
+            if (courseModule == null)
+            {
+                return HttpNotFound();
+            }
+            var moduleView = new ModuleViewModel
+            {
+                Id = courseModule.Id,
+                Name = courseModule.Name,
+                StartDate = courseModule.StartDate,
+                EndDate = courseModule.EndDate,
+                Description = courseModule.Description,
+                CourseId = courseModule.CourseId,
+                FullCourseName= db.Courses.Find(courseModule.CourseId).FullCourseName
+            };
+            moduleView.Edit = true;
+            return View("Create",moduleView);
         }
 
 

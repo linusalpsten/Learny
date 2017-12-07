@@ -1,6 +1,6 @@
 ﻿@model Learny.ViewModels.ModuleViewModel
 @{
-    ViewBag.Title = "Skapa modul";
+    ViewBag.Title = "Ny modul";
 }
 
 <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
@@ -49,15 +49,36 @@
         </div>
 
         @Html.HiddenFor(model => model.CourseId) @*Http post courseId to create controller*@
+        @Html.HiddenFor(model => model.FullCourseName)
+        @Html.HiddenFor(model => model.Edit)
         
        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Spara" class="btn btn-default" />
+                @if (!Model.Edit)
+                {
+                    <input type="submit" value="Lägg till ny" class="btn btn-default" />
+                }
+                else
+                {
+                    <input type="submit" value="Spara ändring" class="btn btn-default" /> 
+                }
             </div>
         </div>
     </div>
 }
+
+
+@if (TempData["Feedback"] != null)
+{
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["Feedback"]
+    </div>
+}
+
+
+@Html.Action("Modules", "CourseModules", new { id = Model.CourseId , linkToEditInCreateView = true})
 
 @*<div>
     @Html.ActionLink("Tillbaka til listan", "Index")
