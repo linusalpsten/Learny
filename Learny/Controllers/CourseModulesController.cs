@@ -87,9 +87,9 @@ namespace Learny.Controllers
             return View(module);
         }
 
-        // GET: CourseModules/Create
+        // GET: 
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Create(int id)
+        public ActionResult Manage(int id)
         {
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
             if (course == null)
@@ -112,13 +112,13 @@ namespace Learny.Controllers
             return View(viewModel);
         }
 
-        // POST: CourseModules/Create
+        // POST: 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId, FullCourseName, Edit")] ModuleViewModel viewModel)
+        public ActionResult Manage([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId, FullCourseName, Edit")] ModuleViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -179,7 +179,7 @@ namespace Learny.Controllers
         }
 
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult EditInCreate(int? id)
+        public ActionResult EditInManage(int? id)
         {
             if (id == null)
             {
@@ -201,7 +201,7 @@ namespace Learny.Controllers
                 FullCourseName= db.Courses.Find(courseModule.CourseId).FullCourseName
             };
             moduleView.Edit = true;
-            return View("Create",moduleView);
+            return View("Manage",moduleView);
         }
 
 

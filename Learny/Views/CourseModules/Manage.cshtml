@@ -1,11 +1,19 @@
 ﻿@model Learny.ViewModels.ModuleViewModel
 @{
-    ViewBag.Title = "Ny modul";
+    ViewBag.Title = "Moduler";
 }
 
 <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
 
-<h2>Ny modul</h2>
+
+@if (!Model.Edit)
+{
+    <h2>Lägg till modul</h2>
+}
+else
+{
+    <h2>Ändra modul</h2>
+}
 
 
 @using (Html.BeginForm())
@@ -57,7 +65,7 @@
             <div class="col-md-offset-2 col-md-10">
                 @if (!Model.Edit)
                 {
-                    <input type="submit" value="Lägg till ny" class="btn btn-default" />
+                    <input type="submit" value="Lägg till" class="btn btn-default" />
                 }
                 else
                 {
