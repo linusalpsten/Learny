@@ -5,18 +5,23 @@
 
 <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
 
+@{
+    var actionName = "";
+}
 
-@if (!Model.Edit)
+@if (Model.Edit)
 {
-    <h2>Lägg till modul</h2>
+    <h3>@Model.Name</h3>
+    actionName = "Edit";
 }
 else
 {
-    <h2>Ändra modul</h2>
+    <h3>Lägg till modul</h3>
+    actionName = "Create";
 }
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(actionName, "CourseModules"))
 {
                 @Html.AntiForgeryToken()
 
@@ -43,7 +48,7 @@ else
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", type="date" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -51,7 +56,7 @@ else
         <div class="form-group">
             @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -59,23 +64,25 @@ else
         @Html.HiddenFor(model => model.CourseId) @*Http post courseId to create controller*@
         @Html.HiddenFor(model => model.FullCourseName)
         @Html.HiddenFor(model => model.Edit)
+        @Html.HiddenFor(model => model.ListEdit)
         
        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @if (!Model.Edit)
+                @if (Model.Edit)
                 {
-                    <input type="submit" value="Lägg till" class="btn btn-default" />
+                    @*@Html.ActionLink("Tag bort", "Delete", new { id = Model.Id }, new { @class = "btn btn-default" })*@
+                    <input type="submit" value="Spara ändringar" class="btn btn-default" />
                 }
                 else
                 {
-                    <input type="submit" value="Spara ändring" class="btn btn-default" /> 
+                    <input type="submit" value="Lägg till" class="btn btn-default" />
                 }
             </div>
         </div>
     </div>
 }
-
+<br />
 
 @if (TempData["FeedbackMessage"] != null)
 {
@@ -91,16 +98,27 @@ else
         @Html.LabelFor(m => msgObj.StartDate): @Html.DisplayFor(m => msgObj.StartDate)
         <br />
         @Html.LabelFor(m => msgObj.EndDate): @Html.DisplayFor(m => msgObj.EndDate)
-        <br />
+        <br /><br />
+        @if (!Model.Edit)
+        {
+            @Html.ActionLink("Ändra |", "Edit", new { id = msgObj.Id, listEdit = true });
+            //|
+        }
+        @Html.ActionLink("Visa modul", "Details", "CourseModules", new { id = msgObj.Id }, null)
     </div>
 }
 
+@if (Model.Edit)
+{
 
-@Html.Action("Modules", "CourseModules", new { id = Model.CourseId , linkToEditInCreateView = true})
-
-@*<div>
-    @Html.ActionLink("Tillbaka til listan", "Index")
-</div>*@
+    @Html.ActionLink("Ny modul", "Create", "CourseModules", new { id = Model.CourseId }, null)
+    <br /><br />
+}
+@if (!Model.Edit || Model.ListEdit)
+{
+    @*View partial view with modules*@
+    @Html.Action("Modules", "CourseModules", new { id = Model.CourseId , linkToEditInCreateView = true})
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

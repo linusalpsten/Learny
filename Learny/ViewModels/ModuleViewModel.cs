@@ -39,5 +39,6 @@ namespace Learny.ViewModels
         public virtual ICollection<ModuleActivity> Activities { get; set; }
 
         public bool Edit { get; set; }
+        public bool ListEdit { get; set; }
     }
 }
