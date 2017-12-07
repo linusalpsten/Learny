@@ -41,10 +41,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Document, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" name="Document" id="Document" />
+                <input type="file" name="Document" id="Document" /> (max @Model.MaxFileSize)
             </div>
         </div>
-
+        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Spara" class="btn btn-default" />
