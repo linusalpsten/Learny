@@ -23,6 +23,25 @@ namespace Learny.Controllers
             return View(db.Modules.ToList());
         }
 
+        public ActionResult Modules(int id)
+        {
+            var courseModules = db.Modules.Where(m => m.CourseId == id).OrderBy(m => m.StartDate).ToList();
+            var modules = new List<ModuleViewModel>();
+            foreach (var module in courseModules)
+            {
+                modules.Add(new ModuleViewModel
+                {
+                    Id = module.Id,
+                    Name = module.Name,
+                    Description = module.Description,
+                    StartDate = module.StartDate,
+                    EndDate = module.EndDate,
+                });
+            }
+
+            return PartialView("_ModulesPartial", modules);
+        }
+
         // GET: CourseModules/Details/5
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)
@@ -103,15 +122,15 @@ namespace Learny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var courseModule = new CourseModule
-                {
-                    Id = viewModel.Id,
-                    Name = viewModel.Name,
-                    Description = viewModel.Description,
-                    StartDate = viewModel.StartDate,
-                    EndDate = viewModel.EndDate,
-                    CourseId = viewModel.CourseId
-                };
+                    var courseModule = new CourseModule
+                    {
+                        Id = viewModel.Id,
+                        Name = viewModel.Name,
+                        Description = viewModel.Description,
+                        StartDate = viewModel.StartDate,
+                        EndDate = viewModel.EndDate,
+                        CourseId = viewModel.CourseId
+                    };
 
                 db.Modules.Add(courseModule);
                 db.SaveChanges();

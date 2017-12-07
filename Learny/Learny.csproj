@@ -336,6 +336,7 @@
     <Content Include="Views\Teacher\_TeachersPartial.cshtml" />
     <Content Include="Views\Document\_DocumentsPartial.cshtml" />
     <Content Include="Views\Courses\ShowSchedule.cshtml" />
+    <Content Include="Views\CourseModules\_ModulesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
