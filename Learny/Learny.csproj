@@ -332,7 +332,7 @@
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
     <Content Include="Views\Student\Edit.cshtml" />
-    <Content Include="Views\Teacher\Create.cshtml" />
+    <Content Include="Views\Teacher\Manage.cshtml" />
     <Content Include="Views\Teacher\_TeachersPartial.cshtml" />
     <Content Include="Views\Document\_DocumentsPartial.cshtml" />
     <Content Include="Views\Courses\ShowSchedule.cshtml" />
