@@ -11,7 +11,7 @@
 span {
     font-size: 12px;
     font-family: cursive;
-    color: white;
+    /*color: white;*/
     animation: blink 2.5s linear infinite;
 }
 
