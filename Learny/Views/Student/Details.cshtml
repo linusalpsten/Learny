@@ -1,0 +1,35 @@
+﻿@model Learny.ViewModels.StudentViewModel
+@using Learny.Settings
+
+@{
+    ViewBag.Title = "Elev";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+
+            <h2>@Html.DisplayFor(model => model.Name)</h2>
+            
+            <p>
+                @Html.DisplayNameFor(model => model.Name):
+                @Html.DisplayFor(model => model.Name)
+                <br />
+                @Html.DisplayNameFor(model => model.Email):
+                @Html.DisplayFor(model => model.Email)
+                <br />
+                @Html.DisplayNameFor(model => model.CourseName):
+                @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId }, null)
+            </p>
+            
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>
+                    @*@Html.ActionLink("Visa alla elever", "Index") |*@
+                    @Html.ActionLink("Ändra", "Edit", new { email = Model.Email })
+                </p>
+            }
+        </div>
+
+    </div>
+</div>

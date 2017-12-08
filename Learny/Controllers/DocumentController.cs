@@ -1,13 +1,16 @@
 ﻿using Learny.Models;
+using Learny.Settings;
 using Learny.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace Learny.Controllers
@@ -17,6 +20,19 @@ namespace Learny.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+
+        public ActionResult Documents(int? courseId = null, int? moduleId = null, int? activityId = null)
+        {
+            var documents = new List<Document>();
+            if (courseId != null) documents = db.Documents.Where(d => d.CourseId == courseId).ToList();
+            if (moduleId != null) documents = db.Documents.Where(d => d.CourseModuleId == moduleId).ToList();
+            if (activityId != null) documents = db.Documents.Where(d => d.ModuleActivityId == activityId).ToList();
+
+            return PartialView("_DocumentsPartial", documents);
+        }
+
+
+        [Authorize(Roles = RoleName.teacher)]
         public ActionResult Index()
         {
             var documents = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).Documents.ToList();
@@ -31,20 +47,37 @@ namespace Learny.Controllers
                 CourseId = courseId,
                 CourseModuleId = moduleId,
                 ModuleActivityId = activityId,
+                MaxFileSize = MaxFileSizeToUpload(),
+                MaxFileSizeKB = MaxFileSizeKB()
             };
             if (courseId != null)
             {
-                viewModel.UploadTo = " to " + db.Courses.FirstOrDefault(c => c.Id == courseId).FullCourseName;
+                viewModel.UploadTo = db.Courses.FirstOrDefault(c => c.Id == courseId).FullCourseName;
             }
             else if (moduleId != null)
             {
-                viewModel.UploadTo = " to " + db.Modules.FirstOrDefault(m => m.Id == moduleId).Name;
+                viewModel.UploadTo = db.Modules.FirstOrDefault(m => m.Id == moduleId).Name;
             }
             else if (activityId != null)
             {
-                viewModel.UploadTo = " to " + db.Activities.FirstOrDefault(a => a.Id == activityId).Name;
+                viewModel.UploadTo = db.Activities.FirstOrDefault(a => a.Id == activityId).Name;
             }
             return View(viewModel);
+        }
+
+        private static string MaxFileSizeToUpload()
+        {
+            var maxFileSizeKB = ((HttpRuntimeSection)ConfigurationManager.GetSection("system.web/httpRuntime")).MaxRequestLength;
+            string maxFileSize = maxFileSizeKB + " KB";
+            if (maxFileSizeKB >= 1024) maxFileSize = (int)(maxFileSizeKB * 0.0009765625) + " MB";
+            if (maxFileSizeKB >= 1048576) maxFileSize = (int)(maxFileSizeKB * 0.00000095367432) + " GB";
+            return maxFileSize;
+        }
+
+        private static int MaxFileSizeKB()
+        {
+            var maxFileSizeKB = ((HttpRuntimeSection)ConfigurationManager.GetSection("system.web/httpRuntime")).MaxRequestLength;
+            return maxFileSizeKB;
         }
 
         [HttpPost]
@@ -67,6 +100,12 @@ namespace Learny.Controllers
                     Description = model.Description
                 };
                 Upload(model.Document, document);
+
+
+                if (model.CourseId != null) return RedirectToAction("Details", "Courses", new { id= model.CourseId });
+                if (model.CourseModuleId != null) return RedirectToAction("Details", "CourseModules", new { id = model.CourseModuleId });
+                if (model.ModuleActivityId != null) return RedirectToAction("Details", "ModuleActivities", new { id = model.ModuleActivityId });
+
                 return RedirectToAction("Index", "Home");
             }
             return View(model);

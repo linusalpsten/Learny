@@ -1,0 +1,49 @@
+﻿
+@model Learny.ViewModels.ScheduleViewModel
+
+@{
+    ViewBag.Title = Model.FullCourseName;
+
+}
+
+<h2>Schedule</h2>
+<h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            <h4>Start datum</h4>
+        </th>
+        <th>
+            <h4>Slut datum</h4>
+        </th>
+        <th>
+           <h4>Modul namn</h4>
+        </th>
+        <th>
+            <h4>Activitet namn</h4>
+        </th>
+    </tr>
+
+    @foreach (var item in Model.ScheduleEntries)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModuleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityName)
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Tillbaka till kurs översikt", "Index", "StudentCourse", new { id = Model.CourseId }, null)
+</p>

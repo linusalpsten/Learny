@@ -1,131 +1,297 @@
-﻿using System;
+﻿using Learny.Models;
+using Learny.Settings;
+using Learny.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Learny.Controllers
 {
+    [Authorize]
     public class StudentController : Controller
     {
-        // GET: Student
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: Student/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        private ApplicationDbContext db = new ApplicationDbContext();
+        
 
-        // GET: Student/Create
-        public ActionResult Create()
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult CreateStudentFromNavBar()
         {
-            return View();
+            return RedirectToAction("Create");
         }
-
-        // POST: Student/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult Create(int? id)
         {
-            try
+            if (id == null)
             {
-                // TODO: Add insert logic here
+                var allCourses = db.Courses.ToList();
+                var viewModel = new StudentCreateViewModel
+                {
+                    Courses = allCourses,
+                    CourseSelected = false
+                };
 
-                return RedirectToAction("Index");
+                return View(viewModel);
             }
-            catch
+
+            var course = db.Courses.Find(id);
+            if (course == null)
             {
-                return View();
+                return HttpNotFound();
             }
+
+            var viewModelSelectedCourse = new StudentCreateViewModel
+            {
+                AttendingCourse = course.FullCourseName,
+                CourseId = course.Id,
+                CourseSelected = true
+            };
+
+            return View(viewModelSelectedCourse);
+
         }
-
-
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
+        
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateStudent(RegisterViewModel model)
+        public ActionResult Create(StudentCreateViewModel model)
         {
+            var allCourses = db.Courses.ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                // Check if email is already used by other users
+                if (db.Users.Any(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
+                    model.Courses = allCourses;
+                    return View("Create", model);
+                }
+
+                var user = new ApplicationUser
+                {
+                    CourseId = model.CourseId,
+                    // CourseName = model.CourseCode,
+                    Name = model.Name,
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+
+                var errorsInSwedish = new List<string>();
+
+                var userStore = new UserStore<ApplicationUser>(db);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                var result = userManager.Create(user, model.Password);
+
+                foreach (var error in result.Errors)
+                {
+                    if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
+                    {
+                        errorsInSwedish.Add("Lösenord måste ha minst en icke bokstav, en siffra, en versal('A' - 'Z') och bestå av minst 6 tecken.");
+                    }
+                    else
+                    {
+                        errorsInSwedish.Add(error);
+                    }
+                }
+
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var existingUser = userManager.FindByName(model.Email);
+                    if (!userManager.IsInRole(existingUser.Id, RoleName.student))
+                    {
+                        userManager.AddToRole(existingUser.Id, RoleName.student);
+                    }
 
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                    TempData["Feedback"] = model.Name + " med e-post " + model.Email + " har lagts till";
+                    return RedirectToAction("Create");
                 }
-                AddErrors(result);
+                // If I get a conflict with data already in DB I trigger an error and the following method save it in ModelState
+                // AddErrors(result);
+                var resultModified = new IdentityResult(errorsInSwedish);
+                AddErrors(resultModified);
             }
+
+            // Model state is invalid: I need to fill the list of courses again and post it
+            model.Courses = allCourses;
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("Create", model);
         }
 
 
 
-
-
-        // GET: Student/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Students(int id)
         {
-            return View();
+            var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            var students = course.Students.OrderBy(s => s.Name).ToList();
+
+            return PartialView("_StudentsPartial", students);
+        }
+        
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult Index()
+        {
+            var students = new List<StudentViewModel>();
+            foreach (var student in AllStudents().OrderBy(s => s.Name))
+            {
+                students.Add(new StudentViewModel
+                {
+                    Name = student.Name,
+                    Email = student.Email,
+                    CourseName = student.Course.Name
+                });
+            }
+
+            return View(students);
         }
 
-        // POST: Student/Edit/5
+        private List<ApplicationUser> AllStudents()
+        {
+            var role = db.Roles.SingleOrDefault(m => m.Name == RoleName.student);
+            var students = db.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).ToList();
+
+            return students;
+        }
+
+        public ActionResult Details(string email)
+        {
+            var userStore = new UserStore<ApplicationUser>(db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var student = userManager.FindByEmail(email);
+            var studentViewModel = new StudentViewModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                CourseId = (int)student.CourseId,
+                CourseName = student.Course.Name
+            };
+
+            return View(studentViewModel);
+        }
+        
+        
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult Edit(string email)
+        {
+
+            var userStore = new UserStore<ApplicationUser>(db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var student = userManager.FindByEmail(email);
+            var studentViewModel = new StudentViewModel
+            {
+                Id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                CourseId = (int)student.CourseId,
+                Courses = CoursesOrderedByName()
+            };
+
+            return View(studentViewModel);
+        }
+
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult Edit(StudentViewModel studentViewModel)
         {
-            try
-            {
-                // TODO: Add update logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+            var userStore = new UserStore<ApplicationUser>(db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            if (ModelState.IsValid)
             {
-                return View();
+                //Check that email is not used by another user
+                var student = userManager.FindByEmail(studentViewModel.Email);
+                if (student != null && studentViewModel.Id != student.Id)
+                {
+                    ModelState.AddModelError("Email", "E-post adressen används redan");
+                    studentViewModel.Courses = CoursesOrderedByName();
+                    return View(studentViewModel);
+                }
+
+                // Get the existing student from the db
+                var studentToUpdate = userManager.FindById(studentViewModel.Id);
+
+                // Update it with the values from the view model
+                studentToUpdate.Name = studentViewModel.Name;
+                studentToUpdate.Email = studentViewModel.Email;
+                studentToUpdate.CourseId = studentViewModel.CourseId;
+
+                // Apply the changes if any to the db
+                userManager.Update(studentToUpdate);
+
+                //Get updated student from database
+                var updatedStudent = userManager.FindById(studentViewModel.Id);
+                var updatedStudentViewModel = new StudentViewModel
+                {
+                    Name = updatedStudent.Name,
+                    Email = updatedStudent.Email,
+                    CourseId = (int)updatedStudent.CourseId,
+                    CourseName = updatedStudent.Course.FullCourseName
+                };
+
+                return View("Details", updatedStudentViewModel);
+            }
+            studentViewModel.Courses = CoursesOrderedByName();
+            return View(studentViewModel);
+
+        }
+
+        public List<Course> CoursesOrderedByName()
+        {
+            return db.Courses.OrderBy(c => c.Name).ToList();
+        }
+
+
+        //}
+        //public ActionResult DeleteUser(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    var user = db.Users.Find(id);
+        //    if (user == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(db.Users.Find(id));
+        //}
+
+        //public async Task<ActionResult> UserDeleteConfirmed(string id)
+        //{
+        //    var user = await UserManager.FindByIdAsync(id);
+
+        //    var result = await UserManager.DeleteAsync(user);
+        //    if (result.Succeeded)
+        //    {
+        //        TempData["UserDeleted"] = "User Successfully Deleted";
+        //        return RedirectToAction("ManageEditors");
+        //    }
+        //    else
+        //    {
+        //        TempData["UserDeleted"] = "Error Deleting User";
+        //        return RedirectToAction("ManageEditors");
+        //    }
+        //}
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
             }
         }
 
-        // GET: Student/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Student/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

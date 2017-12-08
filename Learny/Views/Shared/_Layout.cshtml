@@ -9,7 +9,7 @@
     <title>@ViewBag.Title - Learny</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @RenderSection("styles", required:false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,8 +33,8 @@
                     @if (User.IsInRole(RoleName.teacher))
                     {
                         <li>@Html.ActionLink("Kurser", "Index", "Courses")</li>
-                        <li>@Html.ActionLink("Elever", "CreateStudentFromNavBar", "Account")</li>
-                        <li>@Html.ActionLink("Lärare", "CreateTeacher", "Account")</li>
+                        <li>@Html.ActionLink("Elever", "CreateStudentFromNavBar", "Student")</li>
+                        <li>@Html.ActionLink("Lärare", "Create", "Teacher")</li>
                     }
                 </ul>
                 @if (User.Identity.IsAuthenticated)

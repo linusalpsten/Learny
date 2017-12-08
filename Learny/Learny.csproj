@@ -198,7 +198,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModuleActivitiesController.cs" />
-    <Compile Include="Controllers\StudentCourseController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="DataAnnotations\DateTimeToSqlDateTime.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -223,6 +224,7 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="SharedClasses\OneScheduleEntry.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -240,11 +242,11 @@
     <Compile Include="ViewModels\ModuleAcivityCreateViewModel.cs" />
     <Compile Include="ViewModels\ModuleActivityViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
-    <Compile Include="ViewModels\StudentCourseViewModel.cs" />
-    <Compile Include="ViewModels\StudentCourseModuleViewModel.cs" />
-    <Compile Include="ViewModels\StudentModuleActivity.cs" />
+    <Compile Include="ViewModels\ScheduleViewModel.cs" />
     <Compile Include="ViewModels\StudentListViewModel.cs" />
+    <Compile Include="ViewModels\StudentCreateViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
+    <Compile Include="ViewModels\TeacherCreateViewModel.cs" />
     <Compile Include="ViewModels\TeacherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -254,8 +256,11 @@
     <Content Include="Client Scripts\MvcFoolproofJQueryValidation.min.js" />
     <Content Include="Client Scripts\MvcFoolproofValidation.js" />
     <Content Include="Client Scripts\MvcFoolproofValidation.min.js" />
+    <Content Include="Content\blink.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Stockholm_backg.jpg" />
+    <Content Include="Content\LoginStyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -267,6 +272,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\FileSizeCheck.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -315,7 +321,7 @@
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\CourseModules\Create.cshtml" />
+    <Content Include="Views\CourseModules\Manage.cshtml" />
     <Content Include="Views\CourseModules\Delete.cshtml" />
     <Content Include="Views\CourseModules\Details.cshtml" />
     <Content Include="Views\CourseModules\Edit.cshtml" />
@@ -325,21 +331,23 @@
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Index.cshtml" />
-    <Content Include="Views\StudentCourseModules\Index.cshtml" />
-    <Content Include="Views\StudentCourse\Details.cshtml" />
-    <Content Include="Views\StudentCourse\Index.cshtml" />
-    <Content Include="Views\StudentCourse\Module.cshtml" />
-    <Content Include="Views\StudentCourse\Activity.cshtml" />
     <Content Include="Views\Document\UploadDocument.cshtml" />
     <Content Include="Views\Document\Index.cshtml" />
-    <Content Include="Views\Account\_StudentsPartial.cshtml" />
-    <Content Include="Views\Account\CreateStudent.cshtml" />
-    <Content Include="Views\Account\CreateTeacher.cshtml" />
-    <Content Include="Views\Account\_TeachersPartial.cshtml" />
+    <Content Include="Views\Student\_StudentsPartial.cshtml" />
+    <Content Include="Views\Student\Create.cshtml" />
+    <Content Include="Views\Student\Index.cshtml" />
+    <Content Include="Views\Student\Details.cshtml" />
+    <Content Include="Views\Student\Edit.cshtml" />
+    <Content Include="Views\Teacher\Manage.cshtml" />
+    <Content Include="Views\Teacher\_TeachersPartial.cshtml" />
+    <Content Include="Views\Document\_DocumentsPartial.cshtml" />
+    <Content Include="Views\Courses\ShowSchedule.cshtml" />
+    <Content Include="Views\CourseModules\_ModulesPartial.cshtml" />
+    <Content Include="Views\Teacher\Edit.cshtml" />
+    <Content Include="Views\Teacher\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
-    <Folder Include="Views\Student\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

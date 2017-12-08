@@ -92,8 +92,10 @@ namespace Learny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var currentDateTime = DateTime.Now;
-            var today = new DateTime(currentDateTime.Year, currentDateTime.Month, currentDateTime.Day);
+
+            //Find last activity's end date 
+            var lastActivity = db.Activities.Where(m => m.CourseModuleId == id).OrderByDescending(m => m.EndDate).FirstOrDefault();
+            var startDate = lastActivity.EndDate.AddDays(1);
 
             var module = db.Modules.Where(m => m.Id == id).FirstOrDefault();
             var course = db.Courses.Where(c => c.Id == module.CourseId).FirstOrDefault();
@@ -104,8 +106,8 @@ namespace Learny.Controllers
                 CourseModuleId = id,
                 CourseName = course.Name,
                 CourseId = course.Id,
-                StartDate = today,
-                EndDate = today,
+                StartDate = startDate,
+                EndDate = startDate,
                 ActivityTypes = db.ActivityTypes.ToList()
 
             };
