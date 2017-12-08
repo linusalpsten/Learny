@@ -46,7 +46,7 @@
             <ul>
                 @foreach (var item in Model.Activities)
             {
-                    <li>@Html.DisplayFor(modelItem => item.ActivityType.Name):  @Html.ActionLink(item.Name, "Details", "ModuleActivities", new { id = item.Id }, null)</li>
+                    <li>@Html.DisplayFor(modelItem => item.ActivityType.ShortName):  @Html.ActionLink(item.Name, "Details", "ModuleActivities", new { id = item.Id }, null)</li>
                 }
             </ul>
         </div>
