@@ -26,7 +26,7 @@ namespace Learny.Controllers
         public ActionResult Create()
         {
             var viewModel = new TeacherViewModel { };
-            return View(viewModel);
+            return View("Manage",viewModel);
         }
 
         //
@@ -88,7 +88,7 @@ namespace Learny.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("Manage", model);
         }
 
         public ActionResult ListTeachers()

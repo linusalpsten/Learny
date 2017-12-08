@@ -317,7 +317,7 @@
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\CourseModules\Create.cshtml" />
+    <Content Include="Views\CourseModules\Manage.cshtml" />
     <Content Include="Views\CourseModules\Delete.cshtml" />
     <Content Include="Views\CourseModules\Details.cshtml" />
     <Content Include="Views\CourseModules\Edit.cshtml" />
@@ -334,10 +334,11 @@
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
     <Content Include="Views\Student\Edit.cshtml" />
-    <Content Include="Views\Teacher\Create.cshtml" />
+    <Content Include="Views\Teacher\Manage.cshtml" />
     <Content Include="Views\Teacher\_TeachersPartial.cshtml" />
     <Content Include="Views\Document\_DocumentsPartial.cshtml" />
     <Content Include="Views\Courses\ShowSchedule.cshtml" />
+    <Content Include="Views\CourseModules\_ModulesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

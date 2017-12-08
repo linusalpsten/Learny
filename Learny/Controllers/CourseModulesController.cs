@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Learny.Models;
+using Learny.Settings;
+using Learny.ViewModels;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Learny.Models;
-using Learny.ViewModels;
-using Learny.Settings;
 
 namespace Learny.Controllers
 {
@@ -22,6 +20,26 @@ namespace Learny.Controllers
         public ActionResult Index()
         {
             return View(db.Modules.ToList());
+        }
+
+        public ActionResult Modules(int id, bool linkToEditInCreateView=false)
+        {
+            var courseModules = db.Modules.Where(m => m.CourseId == id).OrderBy(m => m.StartDate).ToList();
+            var modules = new List<ModuleViewModel>();
+            foreach (var module in courseModules)
+            {
+                modules.Add(new ModuleViewModel
+                {
+                    Id = module.Id,
+                    Name = module.Name,
+                    Description = module.Description,
+                    StartDate = module.StartDate,
+                    EndDate = module.EndDate,
+                    Edit = linkToEditInCreateView
+                });
+            }
+
+            return PartialView("_ModulesPartial", modules);
         }
 
         // GET: CourseModules/Details/5
@@ -69,7 +87,7 @@ namespace Learny.Controllers
             return View(module);
         }
 
-        // GET: CourseModules/Create
+        // GET: 
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult Create(int id)
         {
@@ -79,24 +97,28 @@ namespace Learny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            //Find last modules end date 
+            var lastModule = db.Modules.Where(m => m.CourseId == course.Id).OrderByDescending(m => m.EndDate).FirstOrDefault();
+            var startDate = lastModule.EndDate.AddDays(1);
+            
             var viewModel = new ModuleViewModel
             {
                 FullCourseName = course.FullCourseName,
                 CourseId = id,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now
+                StartDate = startDate,
+                EndDate = startDate
             };
 
-            return View(viewModel);
+            return View("Manage", viewModel);
         }
 
-        // POST: CourseModules/Create
+        // POST: 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId")] ModuleViewModel viewModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId, FullCourseName, Edit, ListEdit")] ModuleViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -110,12 +132,24 @@ namespace Learny.Controllers
                     CourseId = viewModel.CourseId
                 };
 
-                db.Modules.Add(courseModule);
+                var createdModule = db.Modules.Add(courseModule);
                 db.SaveChanges();
-                return RedirectToAction("Details", "Courses", new { id = viewModel.CourseId });
+                    
+                TempData["FeedbackMessage"] = "Modulen har lagts till";
+                TempData["FeedbackData"] = viewModel;
+
+                var newViewModel = new ModuleViewModel
+                {
+                    Edit = viewModel.Edit,
+                    ListEdit = viewModel.ListEdit,
+                    CourseId = viewModel.CourseId,
+                    FullCourseName = viewModel.FullCourseName
+                };
+
+                return View("Manage", newViewModel);
             }
 
-            return View(viewModel);
+            return View("Manage", viewModel);
         }
 
 
@@ -123,7 +157,7 @@ namespace Learny.Controllers
 
         // GET: CourseModules/Edit/5
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, bool listEdit=false )
         {
             if (id == null)
             {
@@ -141,9 +175,12 @@ namespace Learny.Controllers
                 StartDate = courseModule.StartDate,
                 EndDate = courseModule.EndDate,
                 Description = courseModule.Description,
-                CourseId = courseModule.CourseId
+                CourseId = courseModule.CourseId,
+                FullCourseName = courseModule.Course.FullCourseName,
+                Edit = true,
+                ListEdit = listEdit
             };
-            return View(moduleView);
+            return View("Manage", moduleView);
         }
 
 
@@ -153,7 +190,7 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId")] ModuleViewModel moduleView)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId,FullCourseName,Edit, ListEdit")] ModuleViewModel moduleView)
         {
             if (ModelState.IsValid)
             {
@@ -168,9 +205,11 @@ namespace Learny.Controllers
                 };
                 db.Entry(courseModule).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", new { id = moduleView.Id });
+                TempData["FeedbackMessage"] = "Modulen har ändrats";
+                TempData["FeedbackData"] = moduleView;
+                //return RedirectToAction("Details", new { id = moduleView.Id });
             }
-            return View(moduleView);
+            return View("Manage", moduleView);
         }
 
         // GET: CourseModules/Delete/5

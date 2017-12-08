@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Web;
 
 namespace Learny.ViewModels
@@ -24,5 +21,7 @@ namespace Learny.ViewModels
         public HttpPostedFileBase Document { get; set; }
 
         public string UploadTo { get; set; }
+
+        public string MaxFileSize { get; set; }
     }
 }

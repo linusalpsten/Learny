@@ -1,14 +1,16 @@
 ﻿using Learny.Models;
-using Learny.ViewModels;
 using Learny.Settings;
+using Learny.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace Learny.Controllers
@@ -45,6 +47,7 @@ namespace Learny.Controllers
                 CourseId = courseId,
                 CourseModuleId = moduleId,
                 ModuleActivityId = activityId,
+                MaxFileSize = MaxFileSizeToUpload()
             };
             if (courseId != null)
             {
@@ -56,9 +59,24 @@ namespace Learny.Controllers
             }
             else if (activityId != null)
             {
-                viewModel.UploadTo =  db.Activities.FirstOrDefault(a => a.Id == activityId).Name;
+                viewModel.UploadTo = db.Activities.FirstOrDefault(a => a.Id == activityId).Name;
             }
             return View(viewModel);
+        }
+
+        private static string MaxFileSizeToUpload()
+        {
+            var maxFileSizeKB = ((HttpRuntimeSection)ConfigurationManager.GetSection("system.web/httpRuntime")).MaxRequestLength;
+            string maxFileSize = maxFileSizeKB + " KB";
+            if (maxFileSizeKB >= 1024) maxFileSize = (int)(maxFileSizeKB * 0.0009765625) + " MB";
+            if (maxFileSizeKB >= 1048576) maxFileSize = (int)(maxFileSizeKB * 0.00000095367432) + " GB";
+            return maxFileSize;
+        }
+
+        private static int MaxFileSizeKB()
+        {
+            var maxFileSizeKB = ((HttpRuntimeSection)ConfigurationManager.GetSection("system.web/httpRuntime")).MaxRequestLength;
+            return maxFileSizeKB;
         }
 
         [HttpPost]
