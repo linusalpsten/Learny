@@ -246,6 +246,7 @@
     <Compile Include="ViewModels\StudentListViewModel.cs" />
     <Compile Include="ViewModels\StudentCreateViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
+    <Compile Include="ViewModels\TeacherCreateViewModel.cs" />
     <Compile Include="ViewModels\TeacherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +338,8 @@
     <Content Include="Views\Document\_DocumentsPartial.cshtml" />
     <Content Include="Views\Courses\ShowSchedule.cshtml" />
     <Content Include="Views\CourseModules\_ModulesPartial.cshtml" />
+    <Content Include="Views\Teacher\Edit.cshtml" />
+    <Content Include="Views\Teacher\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

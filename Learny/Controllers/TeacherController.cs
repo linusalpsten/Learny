@@ -3,38 +3,32 @@ using Learny.Settings;
 using Learny.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Learny.Controllers
 {
+    [Authorize(Roles = RoleName.teacher)]
     public class TeacherController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         //
-        // GET: /Account/CreateTeacher
-        [Authorize(Roles = RoleName.teacher)]
+        // GET
         public ActionResult Create()
         {
-            var viewModel = new TeacherViewModel { };
+            var viewModel = new TeacherCreateViewModel { };
             return View("Manage",viewModel);
         }
 
         //
-        // POST: /Account/CreateTeacher
+        // POST
         [HttpPost]
         [Authorize(Roles = RoleName.teacher)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TeacherViewModel model)
+        public ActionResult Create(TeacherCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -65,11 +59,11 @@ namespace Learny.Controllers
                     }
 
 
-                    var feedbackMessage = "Lärare: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
+                    var feedbackMessage = "Läraren har lagts till";
                     var teacherViewModel = new TeacherViewModel(existingUser);
                     addFeedbackToTempData(feedbackMessage, teacherViewModel);
 
-                    return View("Manage", model);
+                    return View("Manage", new TeacherCreateViewModel());
                 }
 
                 var errorsInSwedish = new List<string>();
@@ -93,10 +87,72 @@ namespace Learny.Controllers
             return View("Manage", model);
         }
 
+        public ActionResult Details(string email)
+        {
+            var userStore = new UserStore<ApplicationUser>(db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var teacher = userManager.FindByEmail(email);
+            var teacherViewModel = new TeacherViewModel(teacher);
+
+            return View(teacherViewModel);
+        }
+
+        public ActionResult Edit(string email)
+        {
+            var userStore = new UserStore<ApplicationUser>(db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var teacher = userManager.FindByEmail(email);
+            var teacherViewModel = new TeacherViewModel(teacher);
+
+            return View(teacherViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(TeacherViewModel teacherViewModel)
+        {
+            var userStore = new UserStore<ApplicationUser>(db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+
+            if (ModelState.IsValid)
+            {
+                //Check that email is not used by another user
+                var teacher = userManager.FindByEmail(teacherViewModel.Email);
+                if (teacher != null && teacherViewModel.Id != teacher.Id)
+                {
+                    ModelState.AddModelError("Email", "E-post adressen används redan");
+                    return View(teacherViewModel);
+                }
+
+                // Get the existing user from the db
+                var teacherToUpdate = userManager.FindById(teacherViewModel.Id);
+
+                // Update it with the values from the view model
+                teacherToUpdate.Name = teacherViewModel.Name;
+                teacherToUpdate.UserName = teacherViewModel.Email;
+                teacherToUpdate.Email = teacherViewModel.Email;
+
+                // Apply the changes if any to the db
+                userManager.Update(teacherToUpdate);
+
+                //Get updated user from database
+                var updatedTeacher = userManager.FindById(teacherViewModel.Id);
+                var updatedTeacherViewModel = new TeacherViewModel
+                {
+                    Name = updatedTeacher.Name,
+                    Email = updatedTeacher.Email,
+                };
+
+                return View("Details", updatedTeacherViewModel);
+            }
+
+            return View(teacherViewModel);
+
+        }
 
         public void addFeedbackToTempData(string message, TeacherViewModel teacher)
         {
-            TempData["FeedbackMessage"] = "Modulen har lagts till";
+            TempData["FeedbackMessage"] = message;
             TempData["FeedbackData"] = teacher;
         }
 
