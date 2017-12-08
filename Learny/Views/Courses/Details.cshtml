@@ -52,16 +52,18 @@
         </div>
 
 
-        <div class="col-sm-4">
-
-            <h2>Dokument</h2>
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
+        @if (Model.HaveDocuments)
+        {
+            <div class="col-sm-4">
+                <h2>Dokument</h2>
+                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                {
                 <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)</p>
-            }
-            @Html.Action("Documents", "Document", new { courseId = Model.Id })
-        </div>
+                }
+                @Html.Action("Documents", "Document", new { courseId = Model.Id })
 
+            </div>
+        }
 
 
         <div class="col-sm-4">
@@ -69,7 +71,7 @@
             <h2>Elever</h2>
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
             {
-                <p>@Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id}, null)</p>
+                <p>@Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)</p>
             }
             @Html.Action("Students", "Student", new { id = Model.Id })
         </div>

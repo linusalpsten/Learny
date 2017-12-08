@@ -9,6 +9,8 @@ namespace Learny.ViewModels
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
+        public bool HaveDocuments { get; set; }
+
         public CourseDetailsViewModel() { }
 
         public CourseDetailsViewModel(Course course)
@@ -20,6 +22,7 @@ namespace Learny.ViewModels
             StartDate = course.StartDate;
             EndDate = course.EndDate;
             Modules = course.Modules.OrderBy(m => m.StartDate).ToList();
+            HaveDocuments = course.Documents.Count() > 0;
         }
     }
 }
