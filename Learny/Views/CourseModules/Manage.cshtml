@@ -108,7 +108,7 @@ else
     </div>
 }
 
-@if (Model.Edit)
+@if (Model.Edit && Model.ListEdit)
 {
 
     @Html.ActionLink("Ny modul", "Create", "CourseModules", new { id = Model.CourseId }, null)

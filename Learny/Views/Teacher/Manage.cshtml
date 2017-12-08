@@ -1,4 +1,4 @@
-﻿@model Learny.ViewModels.TeacherViewModel
+﻿@model Learny.ViewModels.TeacherCreateViewModel
 
 @{
     ViewBag.Title = "Lägg till ny lärare";
@@ -48,25 +48,33 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Spara" class="btn btn-default" />
+                <input type="submit" value="Lägg till" class="btn btn-default" />
             </div>
         </div>
-    </div>
+    </div> 
+
 }
 
-@if (TempData["Feedback"] != null)
+@if (TempData["FeedbackMessage"] != null)
 {
     <div class="alert alert-success alert-dismissable fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["Feedback"]
+        @TempData["FeedbackMessage"]
+        @{var msgObj = (Learny.ViewModels.TeacherViewModel)@TempData["FeedbackData"];}
+        <br /><br />
+        @Html.LabelFor(m => msgObj.Name) @Html.DisplayFor(m => msgObj.Name)
+        <br />
+        @Html.LabelFor(m => msgObj.Email) @Html.DisplayFor(m => msgObj.Email)
+
     </div>
 }
 
-    <hr />
-    <h4>Lärare</h4>
-    @Html.Action("ListTeachers", "Teacher")
+<br />
+<hr />
+<h4>Lärare</h4>
+@Html.Action("ListTeachers", "Teacher")
 
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
