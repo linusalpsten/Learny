@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 120px;
+    padding-top: 100px;
     /*font: 400 15px Lato, sans-serif;*/
     font-family: 'Roboto' ,sans-serif;
     font-size: 15px;
@@ -40,7 +40,7 @@ h2 {
 @media (min-width: 768px) {
 
     .navbar-nav > li > a {
-        padding-top: 40px;
+        padding-top: 25px;
         padding-bottom: 15px;
         padding-left: 40px;
     }
