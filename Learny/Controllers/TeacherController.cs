@@ -42,7 +42,7 @@ namespace Learny.Controllers
                 if (db.Users.Any(u => u.Email == model.Email))
                 {
                     ModelState.AddModelError("Email", "En användare med den e-post adressen finns redan");
-                    return View();
+                    return View("Manage");
                 }
 
                 var user = new ApplicationUser
@@ -56,8 +56,23 @@ namespace Learny.Controllers
                 var userManager = new UserManager<ApplicationUser>(userStore);
                 var result = userManager.Create(user, model.Password);
 
-                var errorsInSwedish = new List<string>();
+                if (result.Succeeded)
+                {
+                    var existingUser = userManager.FindByName(model.Email);
+                    if (!userManager.IsInRole(existingUser.Id, RoleName.teacher))
+                    {
+                        userManager.AddToRole(existingUser.Id, RoleName.teacher);
+                    }
 
+
+                    var feedbackMessage = "Lärare: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
+                    var teacherViewModel = new TeacherViewModel(existingUser);
+                    addFeedbackToTempData(feedbackMessage, teacherViewModel);
+
+                    return View("Manage", model);
+                }
+
+                var errorsInSwedish = new List<string>();
                 foreach (var error in result.Errors)
                 {
                     if (error.Substring(0, error.IndexOf(" ")) == "Passwords")
@@ -69,19 +84,6 @@ namespace Learny.Controllers
                         errorsInSwedish.Add(error);
                     }
                 }
-
-                if (result.Succeeded)
-                {
-                    var existingUser = userManager.FindByName(model.Email);
-                    if (!userManager.IsInRole(existingUser.Id, RoleName.teacher))
-                    {
-                        userManager.AddToRole(existingUser.Id, RoleName.teacher);
-                    }
-
-
-                    TempData["Feedback"] = "Lärare: " + model.Name + " med e-posten: " + model.Email + " har lagts till";
-                    return RedirectToAction("Create");
-                }
                 // Add swedish error message
                 var resultModified = new IdentityResult(errorsInSwedish);
                 AddErrors(resultModified);
@@ -89,6 +91,13 @@ namespace Learny.Controllers
 
             // If we got this far, something failed, redisplay form
             return View("Manage", model);
+        }
+
+
+        public void addFeedbackToTempData(string message, TeacherViewModel teacher)
+        {
+            TempData["FeedbackMessage"] = "Modulen har lagts till";
+            TempData["FeedbackData"] = teacher;
         }
 
         public ActionResult ListTeachers()

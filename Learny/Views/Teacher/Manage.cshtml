@@ -54,13 +54,26 @@
     </div>
 }
 
-@if (TempData["Feedback"] != null)
+@if (TempData["FeedbackMessage"] != null)
 {
     <div class="alert alert-success alert-dismissable fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["Feedback"]
+        @TempData["FeedbackMessage"]
+        @{var msgObj = (Learny.ViewModels.TeacherViewModel)@TempData["FeedbackData"];}
+        <br /><br />
+        @Html.LabelFor(m => msgObj.Name): @Html.DisplayFor(m => msgObj.Name)
+        <br />
+        @Html.LabelFor(m => msgObj.Email): @Html.DisplayFor(m => msgObj.Email)
+        <br /><br />
+        @if (!Model.Edit)
+        {
+            @Html.ActionLink("Ändra |", "Edit", new { id = msgObj.Id, listEdit = true });
+            //|
+        }
+        @Html.ActionLink("Visa modul", "Details", "CourseModules", new { id = msgObj.Id }, null)
     </div>
 }
+
 
     <hr />
     <h4>Lärare</h4>

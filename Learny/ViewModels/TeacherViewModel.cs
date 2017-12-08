@@ -4,6 +4,8 @@ namespace Learny.ViewModels
 {
     public class TeacherViewModel
     {
+        public string Id { get; set; }
+
         [Required(ErrorMessage = "Namn är obligatoriskt")]
         [Display(Name = "Namn")]
         public string Name { get; set; }
@@ -23,6 +25,17 @@ namespace Learny.ViewModels
         [Display(Name = "Bekräfta lösenord")]
         [Compare("Password", ErrorMessage = "Det bekräftade lösenordet och lösenordet matchar inte.")]
         public string ConfirmPassword { get; set; }
+
+        public bool Edit { get; set; }
+
+        public TeacherViewModel() { }
+
+        public TeacherViewModel(Models.ApplicationUser teacher)
+        {
+            Id = teacher.Id;
+            Name = teacher.Name;
+            Email = teacher.Email;
+        }
 
     }
 }
