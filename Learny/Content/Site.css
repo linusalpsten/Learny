@@ -36,7 +36,6 @@ textarea {
 span {
     font-size: 12px;
     font-family: cursive;
-    color: white;
     animation: blink 2.5s linear infinite;
 }
 
@@ -52,4 +51,17 @@ span {
     100% {
         opacity: 1;
     }
+}
+
+.global-footer {
+    text-align: center;
+    padding-top: 1em;
+    background-color: black;
+    color: #999999;
+    border-top: 1px solid #808080;
+}
+
+.global-header {
+    color: #999999;
+    border-bottom: 1px solid #808080;
 }

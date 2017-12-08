@@ -61,12 +61,8 @@ namespace Learny.Models
                 // date counter
                 for (int daycounter = 0; daycounter < moduleDays; daycounter++)
                 {
-
-
                     // Update the date counter
                     currentDate = module.StartDate.AddDays(daycounter);
-
-
 
                     // For each date check if any activity is ACTIVE.
                     // If so, the save it in onecourseEntry otherwise skip it
@@ -96,7 +92,6 @@ namespace Learny.Models
                         courseEntries.Add(oneCourseEntry);
                     }
                     // save in the final data structure to be shown on the view
-
                 }
             }
             ScheduleVM.ScheduleEntries = courseEntries;

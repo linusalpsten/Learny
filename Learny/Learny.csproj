@@ -257,6 +257,7 @@
     <Content Include="Client Scripts\MvcFoolproofValidation.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\Stockholm_5616x3744.jpg" />
     <Content Include="Content\Images\Stockholm_backg.jpg" />
     <Content Include="Content\LoginStyle.css" />
     <Content Include="favicon.ico" />

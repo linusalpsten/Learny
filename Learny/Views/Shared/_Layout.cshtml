@@ -3,15 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="~/Content/Site.css" type="text/css" rel="stylesheet" />
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Learny</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @RenderSection("styles", required:false)
+    @RenderSection("styles", required: false)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top global-header">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -43,8 +45,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
+         @*<hr />*@
+        <footer class="navbar-fixed-bottom global-footer">
             <p>&copy; @DateTime.Now.Year - Learny</p>
         </footer>
     </div>

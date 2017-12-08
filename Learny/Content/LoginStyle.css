@@ -1,5 +1,53 @@
 ﻿body {
-    background-image: url(Images/Stockholm_backg.jpg);
+    /*background-image: url(Images/Stockholm_backg.jpg);*/
+    background-image: url('Images/Stockholm_5616x3744.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.loginbox {
+    background-color: black;
+    border-radius: 25px;
+    padding-top: 2em;
+    height: 20%;
+    min-height: 270px;
+    width: 30%;
+    min-width: 330px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+
+.logintextcolor {
+    color: white;
+}
+
+.loginbtn {
+    color: white;
+    background-color: darkorange;
+    border-color: #ea5000;
+}
+
+    .loginbtn:hover {
+        background-color: #ff5a04;
+        color: white;
+    }
+
+
+
+html, body, .container-table {
+    height: 100%;
+}
+
+/*.container-table {
+    display: table;
+}
+
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}*/
