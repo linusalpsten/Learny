@@ -7,12 +7,13 @@
 }
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-6">
 
-<h5>Kurs: @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId}, null)  Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+        <div class="col-sm-12">
 
-<h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
-<h2>@Html.DisplayFor(model => model.Name)</h2>
+            <h5>Kurs: @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId }, null)  Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+            
+            <h2>@Html.DisplayFor(model => model.Name)</h2>
+            <h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
 
             <p>@Model.Description</p>
 
@@ -40,16 +41,18 @@
 
 
         </div>
-            <div class="col-sm-6">
 
-                <h2>Dokument</h2>
-                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-                    <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { activityId = Model.Id }, null)</p>
-                }
-                @Html.Action("Documents", "Document", new { activityId = Model.Id })
-            </div>
-
-
-        </div>
     </div>
+    <div class="row">
+
+        <div class="col-sm-12">
+            <h2>Dokument</h2>
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { activityId = Model.Id }, null)</p>
+            }
+            @Html.Action("Documents", "Document", new { activityId = Model.Id })
+        </div>
+
+    </div>
+</div>
