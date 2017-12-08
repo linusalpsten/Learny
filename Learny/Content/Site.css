@@ -6,9 +6,11 @@
     color: #202020;
 }
 
-h2 {
-    font-family: 'Roboto',sans-serif;
+.headerRow {
+    background-color: #ca2e2e;
+    color:white;
 }
+
 
 .navbar {
     margin-bottom: 0;
