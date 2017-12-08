@@ -48,7 +48,7 @@ namespace Learny.Models
             ScheduleVM.CourseCode = course.CourseCode;
 
             // All modules for THIS Course
-            var courseModules = course.Modules.OrderBy(c => c.StartDate ).ToList();
+            var courseModules = course.Modules.Where(m => m.Activities.Count != 0).OrderBy(m => m.StartDate).ToList();
             DateTime currentDate;
             foreach (var module in courseModules)
             {
@@ -61,17 +61,16 @@ namespace Learny.Models
                 // date counter
                 for (int daycounter = 0; daycounter < moduleDays; daycounter++)
                 {
-                    var oneCourseEntry = new OneScheduleEntry();
-                    oneCourseEntry.ActivityNamesList = new List<string>();
+
 
                     // Update the date counter
                     currentDate = module.StartDate.AddDays(daycounter);
 
-                    oneCourseEntry.CurrentDate = currentDate;
-                    oneCourseEntry.ModuleName = module.Name;
+
 
                     // For each date check if any activity is ACTIVE.
                     // If so, the save it in onecourseEntry otherwise skip it
+                    List<ModuleActivity> activities = new List<ModuleActivity>();
                     foreach (var activity in moduleActivities)
                     {
                         var activityStart = activity.StartDate;
@@ -81,11 +80,23 @@ namespace Learny.Models
                         {
                             // the current activity is ACTIVE in currentDate
                             // and can be stored in the "dayly schedule entry"
-                            oneCourseEntry.ActivityNamesList.Add(activity.Name);
+                            activities.Add(activity);
                         }
                     }
+                    if (activities.Count != 0)
+                    {
+                        var oneCourseEntry = new OneScheduleEntry();
+                        oneCourseEntry.ActivityNamesList = new List<string>();
+                        oneCourseEntry.CurrentDate = currentDate;
+                        oneCourseEntry.ModuleName = module.Name;
+                        foreach (var activity in activities)
+                        {
+                            oneCourseEntry.ActivityNamesList.Add(activity.Name);
+                        }
+                        courseEntries.Add(oneCourseEntry);
+                    }
                     // save in the final data structure to be shown on the view
-                    courseEntries.Add(oneCourseEntry);
+
                 }
             }
             ScheduleVM.ScheduleEntries = courseEntries;
