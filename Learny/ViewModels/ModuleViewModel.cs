@@ -4,6 +4,7 @@ using Learny.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Learny.ViewModels
 {
@@ -40,5 +41,22 @@ namespace Learny.ViewModels
 
         public bool Edit { get; set; }
         public bool ListEdit { get; set; }
+
+        public bool HaveDocuments { get; set; }
+
+        public ModuleViewModel() { }
+
+        public ModuleViewModel(CourseModule module)
+        {
+            Id = module.Id;
+            Name = module.Name;
+            Description = module.Description;
+            StartDate = module.StartDate;
+            EndDate = module.EndDate;
+            CourseId = module.CourseId;
+            FullCourseName = module.Course.FullCourseName;
+            Activities = module.Activities.OrderBy(a => a.StartDate).ToList();
+            HaveDocuments = module.Documents.Count() > 0;
+        }
     }
 }

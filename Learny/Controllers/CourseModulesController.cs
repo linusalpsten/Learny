@@ -28,13 +28,8 @@ namespace Learny.Controllers
             var modules = new List<ModuleViewModel>();
             foreach (var module in courseModules)
             {
-                modules.Add(new ModuleViewModel
+                modules.Add(new ModuleViewModel(module)
                 {
-                    Id = module.Id,
-                    Name = module.Name,
-                    Description = module.Description,
-                    StartDate = module.StartDate,
-                    EndDate = module.EndDate,
                     Edit = linkToEditInCreateView
                 });
             }
@@ -73,17 +68,7 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            var module = new ModuleViewModel
-            {
-                Id = courseModule.Id,
-                Name = courseModule.Name,
-                Description = courseModule.Description,
-                StartDate = courseModule.StartDate,
-                EndDate = courseModule.EndDate,
-                CourseId = courseModule.CourseId,
-                FullCourseName = course.FullCourseName,
-                Activities = courseModule.Activities.OrderBy(a => a.StartDate).ToList()
-            };
+            var module = new ModuleViewModel(courseModule);
             return View(module);
         }
 
@@ -168,15 +153,8 @@ namespace Learny.Controllers
             {
                 return HttpNotFound();
             }
-            var moduleView = new ModuleViewModel
+            var moduleView = new ModuleViewModel(courseModule)
             {
-                Id = courseModule.Id,
-                Name = courseModule.Name,
-                StartDate = courseModule.StartDate,
-                EndDate = courseModule.EndDate,
-                Description = courseModule.Description,
-                CourseId = courseModule.CourseId,
-                FullCourseName = courseModule.Course.FullCourseName,
                 Edit = true,
                 ListEdit = listEdit
             };

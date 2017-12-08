@@ -51,14 +51,18 @@
             </ul>
         </div>
 
-        <div class="col-sm-6">
-            <h2>Dokument</h2>
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+        @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
+        {
+            <div class="col-sm-6">
+                <h2>Dokument</h2>
+                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
                 {
-                <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { moduleId = Model.Id }, null)</p>
-            }
-            @Html.Action("Documents", "Document", new { moduleId = Model.Id })
-        </div>
+                    <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { moduleId = Model.Id }, null)</p>
+                }
+                @Html.Action("Documents", "Document", new { moduleId = Model.Id })
+            </div>
+        }
+
 
     </div>
 </div>
