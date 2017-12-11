@@ -348,6 +348,7 @@
     <Content Include="Views\CourseModules\_ModulesPartial.cshtml" />
     <Content Include="Views\Teacher\Edit.cshtml" />
     <Content Include="Views\Teacher\Details.cshtml" />
+    <Content Include="Views\Document\Delete.cshtml" />
     <Content Include="Views\ModuleActivities\Manage.cshtml" />
     <Content Include="Views\ModuleActivities\_ActivitiesPartial.cshtml" />
   </ItemGroup>

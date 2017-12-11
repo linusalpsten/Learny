@@ -31,6 +31,57 @@ namespace Learny.Controllers
             return PartialView("_DocumentsPartial", documents);
         }
 
+        // GET: Document/Delete/5
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            Document document = db.Documents.Find(id);
+            if (document == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(document);
+        }
+
+        // POST: Document/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.teacher)]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Document document = db.Documents.Find(id);
+            string controller = null;
+            int? entityId = null;
+            if (document.ModuleActivityId != null)
+            {
+                controller = "ModuleActivities";
+                entityId = document.ModuleActivityId;
+            }
+            else if (document.CourseModuleId != null)
+            {
+                controller = "CourseModules";
+                entityId = document.CourseModuleId;
+            }
+            else if (document.CourseId != null)
+            {
+                controller = "Courses";
+                entityId = document.CourseId;
+            }
+
+            System.IO.File.Delete(document.Path);
+            db.Documents.Remove(document);
+            db.SaveChanges();
+
+            if (controller != null && entityId != null)
+            {
+                return RedirectToAction("Details", controller, new { id = entityId });
+            }
+            return RedirectToAction("Index","Home");
+        }
 
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult Index()
