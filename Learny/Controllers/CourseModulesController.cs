@@ -23,7 +23,7 @@ namespace Learny.Controllers
             return View(db.Modules.ToList());
         }
 
-        public ActionResult Modules(int id, bool linkToEditInCreateView=false)
+        public ActionResult Modules(int id, bool linkToEditInCreateView = false)
         {
             var courseModules = db.Modules.Where(m => m.CourseId == id).OrderBy(m => m.StartDate).ToList();
             var modules = new List<ModuleViewModel>();
@@ -92,7 +92,7 @@ namespace Learny.Controllers
                 //No previous module exist, use course start date 
                 startDate = course.StartDate;
             }
-            
+
             var viewModel = new ModuleViewModel
             {
                 FullCourseName = course.FullCourseName,
@@ -126,7 +126,7 @@ namespace Learny.Controllers
 
                 var createdModule = db.Modules.Add(courseModule);
                 db.SaveChanges();
-                    
+
                 TempData["FeedbackMessage"] = "Modulen har lagts till";
                 TempData["FeedbackData"] = viewModel;
 
@@ -141,7 +141,7 @@ namespace Learny.Controllers
 
         // GET: CourseModules/Edit/5
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Edit(int? id, bool listEdit=false )
+        public ActionResult Edit(int? id, bool listEdit = false)
         {
             if (id == null)
             {
@@ -212,8 +212,27 @@ namespace Learny.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CourseModule courseModule = db.Modules.Find(id);
-            db.Modules.Remove(courseModule);
-            db.SaveChanges();
+            bool allowDelete = true;
+            if (courseModule.Documents.Count > 0)
+            {
+                allowDelete = false;
+            }
+            else
+            {
+                foreach (var item in courseModule.Activities)
+                {
+                    if (item.Documents.Count > 0)
+                    {
+                        allowDelete = false;
+                        break;
+                    }
+                }
+            }
+            if (allowDelete)
+            {
+                db.Modules.Remove(courseModule);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
