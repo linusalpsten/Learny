@@ -116,7 +116,7 @@ namespace Learny.Controllers
 
             };
 
-            return View(activityViewModel);
+            return View("Manage",activityViewModel);
         }
 
         // POST: ModuleActivities/Create
@@ -155,7 +155,7 @@ namespace Learny.Controllers
             }
 
             activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
-            return View(activityViewModel);
+            return View("Manage", activityViewModel);
         }
 
         #endregion
