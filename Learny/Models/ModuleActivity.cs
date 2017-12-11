@@ -20,6 +20,7 @@ namespace Learny.Models
         public DateTime EndDate { get; set; }
 
         public int CourseModuleId { get; set; }
+        public virtual CourseModule Module { get; set; }
 
         public int ActivityTypeId { get; set; }
 
