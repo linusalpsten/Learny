@@ -150,13 +150,10 @@ namespace Learny.Models
                 return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(id);
+            if (course == null) return RedirectToAction("Index", "Home");
             CourseDetailsViewModel viewModel = (CourseDetailsViewModel)populateCourseVM(course);
             viewModel.Students = course.Students;
             viewModel.Description = course.Description;
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
             return View(viewModel);
         }
 
@@ -295,7 +292,7 @@ namespace Learny.Models
             Course course = db.Courses.Find(id);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             return View(course);
         }
