@@ -1,17 +1,31 @@
 ﻿@model Learny.ViewModels.ModuleActivityCreateViewModel
 
 @{
-    ViewBag.Title = "Ny aktivitet";
+    ViewBag.Title = "Aktiviteter";
 }
 
-<h5>Kurs: @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId }, null) Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+<h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null) Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
 
-<h2>MANAGE - @ViewBag.Title</h2>
-
-
+<h2>@ViewBag.Title</h2>
 
 
-@using (Html.BeginForm())
+@{
+    var actionName = "";
+}
+
+@if (Model.Edit)
+{
+    <h3>@Model.Name</h3>
+    actionName = "Edit";
+}
+else
+{
+    <h3>Lägg till aktivitet</h3>
+    actionName = "Create";
+}
+
+
+@using (Html.BeginForm(actionName, "ModuleActivities"))
 {
     @Html.AntiForgeryToken()
 
@@ -68,12 +82,65 @@
             </div>
         </div>
 
+        @Html.HiddenFor(model => model.CourseId) @*Http post courseId to create controller*@
+        @Html.HiddenFor(model => model.FullCourseName)
+        @Html.HiddenFor(model => model.CourseModuleId)
+        @Html.HiddenFor(model => model.ModuleName)
+        @Html.HiddenFor(model => model.Edit)
+        @Html.HiddenFor(model => model.ListEdit)
+
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Spara" class="btn btn-default" />
+                @if (Model.Edit)
+                {
+                    @*@Html.ActionLink("Tag bort", "Delete", new { id = Model.Id }, new { @class = "btn btn-default" })*@
+                    <input type="submit" value="Spara ändringar" class="btn btn-default" />
+                }
+                else
+                {
+                    <input type="submit" value="Lägg till" class="btn btn-default" />
+                }
             </div>
         </div>
     </div>
+}
+<br />
+
+@if (TempData["FeedbackMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["FeedbackMessage"]
+        @{var msgObj = (Learny.ViewModels.ModuleActivityCreateViewModel)@TempData["FeedbackData"];}
+        <br /><br />
+        @Html.LabelFor(m => msgObj.Name): @Html.DisplayFor(m => msgObj.Name)
+        <br />
+        @Html.LabelFor(m => msgObj.Description): @Html.DisplayFor(m => msgObj.Description)
+        <br />
+        @Html.LabelFor(m => msgObj.StartDate): @Html.DisplayFor(m => msgObj.StartDate)
+        <br />
+        @Html.LabelFor(m => msgObj.EndDate): @Html.DisplayFor(m => msgObj.EndDate)
+        <br /><br />
+        @if (!Model.Edit)
+        {
+            @Html.ActionLink("Ändra |", "Edit", new { id = msgObj.Id, listEdit = true });
+            //|
+        }
+        @Html.ActionLink("Gå till aktivitet", "Details", "ModuleActivities", new { id = msgObj.Id }, null)
+    </div>
+            }
+
+@if (Model.Edit && Model.ListEdit)
+{
+
+    @Html.ActionLink("Ny aktivitet", "Create", "ModuleActivities", new { id = Model.CourseId }, null)
+    <br /><br />
+}
+@if (!Model.Edit || Model.ListEdit)
+{
+    @*View partial view with activities*@
+    @Html.Action("Activities", "ModuleActivities", new { id = Model.CourseModuleId, linkToEditInCreateView = true })
 }
 
 

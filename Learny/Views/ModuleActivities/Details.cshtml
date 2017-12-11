@@ -10,7 +10,7 @@
 
         <div class="col-sm-12">
 
-            <h5>Kurs: @Html.ActionLink(Model.CourseName, "Details", "Courses", new { id = Model.CourseId }, null)  Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+            <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)  Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
             
             <h2>@Html.DisplayFor(model => model.Name)</h2>
             <h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>

@@ -175,7 +175,7 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId,FullCourseName,Edit, ListEdit")] ModuleViewModel moduleView)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId,FullCourseName,Edit,ListEdit")] ModuleViewModel moduleView)
         {
             if (ModelState.IsValid)
             {
@@ -190,10 +190,11 @@ namespace Learny.Controllers
                 };
                 db.Entry(courseModule).State = EntityState.Modified;
                 db.SaveChanges();
+
                 TempData["FeedbackMessage"] = "Modulen har ändrats";
                 TempData["FeedbackData"] = moduleView;
-                //return RedirectToAction("Details", new { id = moduleView.Id });
             }
+
             return View("Manage", moduleView);
         }
 
