@@ -20,6 +20,7 @@ namespace Learny.Models
 
         [Required]
         [DateTimeToSqlDateTime]
+        [Display(Name = "Tidsstämpel")]
         public DateTime TimeStamp { get; set; }
 
         [Required]
@@ -34,19 +35,25 @@ namespace Learny.Models
         [Required]
         public string UserId { get; set; }
 
+        [Display(Name = "Kurs")]
         public virtual Course Course { get; set; }
 
+        [Display(Name = "Modul")]
         public virtual CourseModule Module { get; set; }
 
+        [Display(Name = "Aktivitet")]
         public virtual ModuleActivity Activity { get; set; }
 
+        [Display(Name = "Användare")]
         public virtual ApplicationUser User { get; set; }
 
         public string Name { get; set; }
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
         //Display name returns FileName if Name is null, else it returns Name
         public string Extension { get { return new Regex(@"\.[^.]+$").Match(FileName).Value; } } // takes the last characters after the last dot (including the dot)
         public string FileNameWithoutExtension { get { return new Regex(@"(^.+)(?:\.[^.]+$)").Match(FileName).Captures[0].Value; } } // takes the first characters before the last dot (excluding the last dot)
+        [Display(Name = "Namn")]
         public string DisplayName { get { return Name ?? FileNameWithoutExtension; } }
     }
 }
