@@ -14,9 +14,11 @@ namespace Learny.Models
         public string Description { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
 
         public int ActivityTypeId { get; set; }

@@ -12,7 +12,7 @@
             <div class="header">
                 <h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
             </div>
-            
+
 
             <p>
                 @Html.DisplayFor(model => model.Description)
@@ -43,7 +43,14 @@
 
         <div class="col-sm-7">
 
-            
+
+            <div class="header">
+                <h2>Moduler</h2>
+            </div>
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
+            }
 
             <table class="table">
                 <tr class="headerRow">
@@ -54,15 +61,12 @@
                 </tr>
 
 
-                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-                 {
-                    <tr><td>@Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)</td></tr>
-                }
+
 
                 @foreach (var item in Model.Modules)
                 {
                     <tr>
-                        <td> @Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id},null)                        </td>
+                        <td> @Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null)                        </td>
                         <td>                            @Html.DisplayFor(modelItem => item.StartDate)                        </td>
                         <td>                            @Html.DisplayFor(modelItem => item.EndDate)                        </td>
                         <td>                            @Html.DisplayFor(modelItem => item.Description)                        </td>
@@ -76,30 +80,32 @@
 
         </div>
 
-            <div class="col-sm-4">
+        <div class="col-sm-4">
 
-                @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
-                {
-
-                    <h2>Dokument</h2>
-                    if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-                    {
-                        <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)</p>
-                    }
-                    @Html.Action("Documents", "Document", new { courseId = Model.Id })
-
-
-                }
-
-
-
-                <h2>Elever</h2>
-                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
             {
-                    <p>@Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)</p>
+                <div class="header">
+                    <h2>Dokument</h2>
+                </div>
+                if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                {
+                    <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)</p>
                 }
-                @Html.Action("Students", "Student", new { id = Model.Id })
-            </div>
+                @Html.Action("Documents", "Document", new { courseId = Model.Id })
 
+
+            }
+
+
+            <div class="header">
+                <h2>Elever</h2>
+            </div>
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>@Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)</p>
+            }
+            @Html.Action("Students", "Student", new { id = Model.Id })
         </div>
+
+    </div>
 </div>
