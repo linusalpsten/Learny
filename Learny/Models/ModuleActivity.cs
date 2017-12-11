@@ -19,15 +19,15 @@ namespace Learny.Models
         [Required]
         public DateTime EndDate { get; set; }
 
-        public int CourseModuleId { get; set; }
-        public virtual CourseModule Module { get; set; }
-
         public int ActivityTypeId { get; set; }
 
-        [Display(Name = "Modul")]
-        public virtual CourseModule CourseModule { get; set; }
+        public int CourseModuleId { get; set; }
+
 
         public virtual ActivityType ActivityType { get; set; }
+
+        [Display(Name = "Modul")]
+        public virtual CourseModule Module { get; set; }
 
         public virtual ICollection<Document> Documents { get; set; }
     }
