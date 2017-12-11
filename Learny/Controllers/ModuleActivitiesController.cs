@@ -37,29 +37,29 @@ namespace Learny.Controllers
                 
                 if (userModule == null)
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             ModuleActivity moduleActivity = db.Activities.Find(id);
             if (moduleActivity == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             CourseModule module = db.Modules.Find(moduleActivity.CourseModuleId);
             if (module == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(module.CourseId);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             
             var activity = new ModuleActivityViewModel
@@ -89,7 +89,7 @@ namespace Learny.Controllers
             //checked if module id exist
             if (!db.Modules.Any(m => m.Id == id))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
 
 
@@ -164,12 +164,12 @@ namespace Learny.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             ModuleActivity moduleActivity = db.Activities.Find(id);
             if (moduleActivity == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
 
             var activityViewModel = new ModuleActivityCreateViewModel
@@ -229,12 +229,12 @@ namespace Learny.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             ModuleActivity moduleActivity = db.Activities.Find(id);
             if (moduleActivity == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             return View(moduleActivity);
         }
