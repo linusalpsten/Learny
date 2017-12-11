@@ -25,7 +25,7 @@ namespace Learny.Models
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
 
             Course course;
@@ -133,13 +133,10 @@ namespace Learny.Models
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
+            if (course == null) return RedirectToAction("Index", "Home");
             CourseDetailsViewModel viewModel = new CourseDetailsViewModel(course);
             return View(viewModel);
         }
@@ -193,12 +190,12 @@ namespace Learny.Models
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(id);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             var courseView = new CourseCreateViewModel
             {
@@ -274,12 +271,12 @@ namespace Learny.Models
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(id);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             return View(course);
         }

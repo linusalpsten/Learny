@@ -1,6 +1,7 @@
 ﻿using Learny.Models;
 using Learny.Settings;
 using Learny.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -49,24 +50,24 @@ namespace Learny.Controllers
                 CourseModule userModule = db.Modules.Where(m => m.CourseId == userCourse.Id && m.Id == id).FirstOrDefault();
                 if (userModule == null)
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             CourseModule courseModule = db.Modules.Find(id);
             if (courseModule == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
 
             var course = db.Courses.Find(courseModule.CourseId);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             var module = new ModuleViewModel(courseModule);
             return View(module);
@@ -77,14 +78,20 @@ namespace Learny.Controllers
         public ActionResult Create(int id)
         {
             var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
-            if (course == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (course == null) return RedirectToAction("Index", "Home");
 
             //Find last modules end date 
+            DateTime startDate;
             var lastModule = db.Modules.Where(m => m.CourseId == course.Id).OrderByDescending(m => m.EndDate).FirstOrDefault();
-            var startDate = lastModule.EndDate.AddDays(1);
+            if (lastModule != null)
+            {
+                startDate = lastModule.EndDate.AddDays(1);
+            }
+            else
+            {
+                //No previous module exist, use course start date 
+                startDate = course.StartDate;
+            }
             
             var viewModel = new ModuleViewModel
             {
@@ -146,12 +153,12 @@ namespace Learny.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             CourseModule courseModule = db.Modules.Find(id);
             if (courseModule == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             var moduleView = new ModuleViewModel(courseModule)
             {
@@ -196,12 +203,12 @@ namespace Learny.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             CourseModule courseModule = db.Modules.Find(id);
             if (courseModule == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             return View(courseModule);
         }
