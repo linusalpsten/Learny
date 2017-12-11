@@ -6,9 +6,17 @@
     color: #202020;
 }
 
+.header {
+    background-color: #d60000;
+    opacity: 0.8;
+    color: white;
+    padding: 8px;
+}
+
 .headerRow {
-    background-color: #ca2e2e;
-    color:white;
+    background-color: #d60000;
+    opacity: 0.5;
+    color: white;
 }
 
 

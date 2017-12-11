@@ -23,21 +23,6 @@ namespace Learny.Controllers
             return View(db.Modules.ToList());
         }
 
-        public ActionResult Modules(int id, bool linkToEditInCreateView = false)
-        {
-            var courseModules = db.Modules.Where(m => m.CourseId == id).OrderBy(m => m.StartDate).ToList();
-            var modules = new List<ModuleViewModel>();
-            foreach (var module in courseModules)
-            {
-                modules.Add(new ModuleViewModel(module)
-                {
-                    Edit = linkToEditInCreateView
-                });
-            }
-
-            return PartialView("_ModulesPartial", modules);
-        }
-
         // GET: CourseModules/Details/5
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)
@@ -73,6 +58,21 @@ namespace Learny.Controllers
             return View(module);
         }
 
+        public ActionResult Modules(int id, bool linkToEditInCreateView = false)
+        {
+            var courseModules = db.Modules.Where(m => m.CourseId == id).OrderBy(m => m.StartDate).ToList();
+            var modules = new List<ModuleViewModel>();
+            foreach (var module in courseModules)
+            {
+                modules.Add(new ModuleViewModel(module)
+                {
+                    EditMode = linkToEditInCreateView
+                });
+            }
+
+            return PartialView("_ModulesPartial", modules);
+        }
+
         // GET: 
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult Create(int id)
@@ -98,7 +98,8 @@ namespace Learny.Controllers
                 FullCourseName = course.FullCourseName,
                 CourseId = id,
                 StartDate = startDate,
-                EndDate = startDate
+                EndDate = startDate,
+                ShowModuleList = true,
             };
 
             return View("Manage", viewModel);
@@ -128,7 +129,7 @@ namespace Learny.Controllers
                 db.SaveChanges();
 
                 TempData["FeedbackMessage"] = "Modulen har lagts till";
-                TempData["FeedbackData"] = viewModel;
+                TempData["FeedbackData"] = createdModule;
 
                 return RedirectToAction("Create", new { id = viewModel.CourseId });
             }
@@ -137,26 +138,21 @@ namespace Learny.Controllers
         }
 
 
-        // Egidio: below is Edit for Modules
-
         // GET: CourseModules/Edit/5
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Edit(int? id, bool listEdit = false)
+        public ActionResult Edit(int? id, bool showModuleList = false)
         {
-            if (id == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (id == null) return RedirectToAction("Index", "Home");
+            
             CourseModule courseModule = db.Modules.Find(id);
-            if (courseModule == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (courseModule == null) return RedirectToAction("Index", "Home");
+            
             var moduleView = new ModuleViewModel(courseModule)
             {
-                Edit = true,
-                ListEdit = listEdit
+                EditMode = true,
+                ShowModuleList = showModuleList,
             };
+
             return View("Manage", moduleView);
         }
 
@@ -167,7 +163,7 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId,FullCourseName,Edit,ListEdit")] ModuleViewModel moduleView)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseId,FullCourseName,EditMode,ShowModuleList")] ModuleViewModel moduleView)
         {
             if (ModelState.IsValid)
             {
@@ -183,8 +179,14 @@ namespace Learny.Controllers
                 db.Entry(courseModule).State = EntityState.Modified;
                 db.SaveChanges();
 
+                var changedModule = db.Modules.Find(courseModule.Id);
+
                 TempData["FeedbackMessage"] = "Modulen har ändrats";
-                TempData["FeedbackData"] = moduleView;
+                TempData["FeedbackData"] = changedModule;
+
+                if (moduleView.ShowModuleList) { 
+                    return RedirectToAction("Create", new { id = courseModule.CourseId });
+                }
             }
 
             return View("Manage", moduleView);
