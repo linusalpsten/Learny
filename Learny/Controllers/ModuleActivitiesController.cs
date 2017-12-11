@@ -41,7 +41,6 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)
         {
-
             //Student may not view activity from other courses
             if (User.IsInRole(RoleName.student))
             {
@@ -50,32 +49,19 @@ namespace Learny.Controllers
                 ModuleActivity userActivity = db.Activities.Where(a => a.Id == id).FirstOrDefault();
                 CourseModule userModule = db.Modules.Where(m => m.Id == userActivity.CourseModuleId && m.CourseId == currentUser.CourseId).FirstOrDefault();
 
-                if (userModule == null)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                if (userModule == null) return RedirectToAction("Index", "Home");
             }
 
+            if (id == null) return RedirectToAction("Index", "Home");
 
-            if (id == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
             ModuleActivity moduleActivity = db.Activities.Find(id);
-            if (moduleActivity == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (moduleActivity == null) return RedirectToAction("Index", "Home");
+
             CourseModule module = db.Modules.Find(moduleActivity.CourseModuleId);
-            if (module == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (module == null) return RedirectToAction("Index", "Home");
+
             Course course = db.Courses.Find(module.CourseId);
-            if (course == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (course == null) return RedirectToAction("Index", "Home");
 
             var activity = new ModuleActivityViewModel
             {
@@ -89,7 +75,6 @@ namespace Learny.Controllers
                 ModuleName = module.Name,
                 FullCourseName = course.Name,
                 CourseId = course.Id
-
             };
             return View(activity);
         }
@@ -127,11 +112,11 @@ namespace Learny.Controllers
                 CourseId = course.Id,
                 StartDate = startDate,
                 EndDate = startDate,
-                ActivityTypes = db.ActivityTypes.ToList()
-
+                ActivityTypes = db.ActivityTypes.ToList(),
+                ShowActivityList = true,
             };
 
-            return View("Manage",activityViewModel);
+            return View("Manage", activityViewModel);
         }
 
         // POST: ModuleActivities/Create
@@ -140,7 +125,7 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId,FullCourseName,CourseModuleId,ModuleName")] ModuleActivityCreateViewModel activityViewModel)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,CourseModuleId,ActivityTypeId,FullCourseName,CourseModuleId,ModuleName,EditMode,ShowActivityList")] ModuleActivityCreateViewModel activityViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -158,21 +143,9 @@ namespace Learny.Controllers
                 db.SaveChanges();
 
                 TempData["FeedbackMessage"] = "Aktiviteten har lagts till";
-                TempData["FeedbackData"] = activityViewModel;
+                TempData["FeedbackData"] = createdActivity;
 
-                var newViewModel = new ModuleActivityCreateViewModel
-                {
-                    Edit = activityViewModel.Edit,
-                    ListEdit = activityViewModel.ListEdit,
-                    CourseId = activityViewModel.CourseId,
-                    FullCourseName = activityViewModel.FullCourseName,
-                    ModuleName = activityViewModel.ModuleName,
-                    CourseModuleId = activityViewModel.CourseModuleId,
-                    ActivityTypes = db.ActivityTypes.ToList()
-            };
-
-                return View("Manage", newViewModel);
-                //return RedirectToAction("Details", "CourseModules",new { id = activityViewModel.CourseModuleId });
+                return RedirectToAction("Create", new { id = activityViewModel.CourseModuleId });
             }
 
             activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
@@ -185,21 +158,21 @@ namespace Learny.Controllers
 
         // GET: ModuleActivities/Edit/5
         [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Edit(int? id, bool listEdit = false)
+        public ActionResult Edit(int? id, bool showActivityList = false)
         {
             if (id == null) return RedirectToAction("Index", "Home");
-            
+
             ModuleActivity moduleActivity = db.Activities.Find(id);
             if (moduleActivity == null) return RedirectToAction("Index", "Home");
 
             var activityViewModel = new ModuleActivityCreateViewModel(moduleActivity)
             {
                 ActivityTypes = db.ActivityTypes.ToList(),
-                Edit = true,
-                ListEdit = listEdit
+                EditMode = true,
+                ShowActivityList = showActivityList
             };
-            
-            return View("Manage",activityViewModel);
+
+            return View("Manage", activityViewModel);
         }
 
         // POST: ModuleActivities/Edit/5
@@ -208,7 +181,7 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,ActivityTypeId,CourseModuleId,ModuleName,FullCourseName,Edit,ListEdit")] ModuleActivityCreateViewModel activityViewModel)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,ActivityTypeId,CourseModuleId,ModuleName,FullCourseName,EditMode,ShowActivityList")] ModuleActivityCreateViewModel activityViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -226,16 +199,20 @@ namespace Learny.Controllers
                 db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
 
-                TempData["FeedbackMessage"] = "Modulen har ändrats";
-                TempData["FeedbackData"] = activityViewModel;
+                var changedActivity = db.Activities.Find(activity.Id);
+
+                TempData["FeedbackMessage"] = "Aktiviteten har ändrats";
+                TempData["FeedbackData"] = changedActivity;
             }
 
-            if(activityViewModel.Edit == true && activityViewModel.ListEdit != true)
+            if (activityViewModel.ShowActivityList)
             {
-                return RedirectToAction("Details", new { id = activityViewModel.Id });// View("Manage", activityViewModel);
+                activityViewModel.EditMode = false;
+                return RedirectToAction("Create", new { id = activityViewModel.CourseModuleId });// View("Manage", activityViewModel);
             }
-            activityViewModel.Edit = false;
-            return RedirectToAction("Create", new { id = activityViewModel.CourseModuleId });// View("Manage", activityViewModel);
+
+            activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
+            return View("Manage", activityViewModel);
         }
 
 
