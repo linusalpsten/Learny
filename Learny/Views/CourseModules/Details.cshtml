@@ -23,16 +23,16 @@
                 @Html.DisplayNameFor(model => model.EndDate):
                 @Html.DisplayFor(model => model.EndDate)
             </p>
+            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            {
+                <p>
+                    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
+                </p>
+            }
         </div>
 
 
 
-        @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-            <p>
-                @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
-            </p>
-        }
 
     </div>
     <div class="row">
