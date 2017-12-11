@@ -212,6 +212,7 @@ namespace Learny.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CourseModule courseModule = db.Modules.Find(id);
+            int? entityId = courseModule.CourseId;
             bool allowDelete = true;
             if (courseModule.Documents.Count > 0)
             {
@@ -233,7 +234,7 @@ namespace Learny.Controllers
                 db.Modules.Remove(courseModule);
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Courses", new { id = entityId });
         }
 
         protected override void Dispose(bool disposing)
