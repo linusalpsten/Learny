@@ -50,24 +50,24 @@ namespace Learny.Controllers
                 CourseModule userModule = db.Modules.Where(m => m.CourseId == userCourse.Id && m.Id == id).FirstOrDefault();
                 if (userModule == null)
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             CourseModule courseModule = db.Modules.Find(id);
             if (courseModule == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
 
             var course = db.Courses.Find(courseModule.CourseId);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             var module = new ModuleViewModel(courseModule);
             return View(module);
@@ -153,12 +153,12 @@ namespace Learny.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             CourseModule courseModule = db.Modules.Find(id);
             if (courseModule == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             var moduleView = new ModuleViewModel(courseModule)
             {
@@ -203,12 +203,12 @@ namespace Learny.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             CourseModule courseModule = db.Modules.Find(id);
             if (courseModule == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             return View(courseModule);
         }
