@@ -2,6 +2,34 @@
 
 @{
     ViewBag.Title = "Delete";
+    bool allowDelete = true;
+    if (Model.Documents.Count > 0)
+    {
+        allowDelete = false;
+    }
+    else
+    {
+        foreach (var module in Model.Modules)
+        {
+            if (module.Documents.Count > 0)
+            {
+                allowDelete = false;
+                break;
+            }
+            foreach (var activity in module.Activities)
+            {
+                if (activity.Documents.Count > 0)
+                {
+                    allowDelete = false;
+                    break;
+                }
+            }
+            if (!allowDelete)
+            {
+                break;
+            }
+        }
+    }
 }
 
 <h2>Delete</h2>
@@ -57,8 +85,21 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @if (allowDelete)
+            {
+                <input type="submit" value="Delete" class="btn btn-default" />
+            }
+            else
+            {
+                <input type="submit" value="Ta bort" class="btn btn-default" disabled />
+            }
+            |
             @Html.ActionLink("Back to List", "Index")
+            @if (!allowDelete)
+            {
+                <br />
+                <span class="alert-danger">Den här kursen eller dens moduler och aktiviteter har dokument kopplade till dem.</span>
+            }
         </div>
     }
 </div>

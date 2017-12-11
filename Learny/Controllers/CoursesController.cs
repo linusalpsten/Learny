@@ -288,8 +288,39 @@ namespace Learny.Models
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);
-            db.Courses.Remove(course);
-            db.SaveChanges();
+            bool allowDelete = true;
+            if (course.Documents.Count > 0)
+            {
+                allowDelete = false;
+            }
+            else
+            {
+                foreach (var module in course.Modules)
+                {
+                    if (module.Documents.Count > 0)
+                    {
+                        allowDelete = false;
+                        break;
+                    }
+                    foreach (var activity in module.Activities)
+                    {
+                        if (activity.Documents.Count > 0)
+                        {
+                            allowDelete = false;
+                            break;
+                        }
+                    }
+                    if (!allowDelete)
+                    {
+                        break;
+                    }
+                }
+            }
+            if (allowDelete)
+            {
+                db.Courses.Remove(course);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
