@@ -1,7 +1,24 @@
 ﻿@model Learny.Models.Document
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Ta bort";
+    string controller = null;
+    int? entityId = null;
+    if (Model.ModuleActivityId != null)
+    {
+        controller = "ModuleActivities";
+        entityId = Model.ModuleActivityId;
+    }
+    else if (Model.CourseModuleId != null)
+    {
+        controller = "CourseModules";
+        entityId = Model.CourseModuleId;
+    }
+    else if (Model.CourseId != null)
+    {
+        controller = "Courses";
+        entityId = Model.CourseId;
+    }
 }
 
 <h2>Ta bort</h2>
@@ -107,8 +124,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Ta bort" class="btn btn-default" /> |
+            @Html.ActionLink("Tillbaka", "Details", controller, new { id = entityId }, null)
         </div>
     }
 </div>
