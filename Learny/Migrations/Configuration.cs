@@ -61,16 +61,16 @@ namespace Learny.Migrations
                 }
             }
 
-            var activityTypeNames = new[] {
-                ActivityTypeName.exercise,
-                ActivityTypeName.elearning,
-                ActivityTypeName.lecture
+            var activityTypeNames = new string[,] {
+                { ActivityTypeName.exercise, ActivityTypeName.exerciseShortName},
+                { ActivityTypeName.elearning, ActivityTypeName.elearningShortName},
+                { ActivityTypeName.lecture, ActivityTypeName.lectureShortName}
             };
-            var activityTypes = new ActivityType[activityTypeNames.Length];
+            var activityTypes = new ActivityType[activityTypeNames.GetUpperBound(0)+1];
 
             for (int i = 0; i < activityTypes.Length; i++)
             {
-                activityTypes[i] = new ActivityType { Name = activityTypeNames[i] };
+                activityTypes[i] = new ActivityType { Name = activityTypeNames[i, 0], ShortName = activityTypeNames[i, 1] };
             }
 
             context.ActivityTypes.AddOrUpdate(

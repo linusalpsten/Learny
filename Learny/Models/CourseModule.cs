@@ -21,6 +21,7 @@ namespace Learny.Models
 
         public int CourseId { get; set; }
 
+        [Display(Name = "Kurs")]
         public virtual Course Course { get; set; }
 
         public virtual ICollection<ModuleActivity> Activities { get; set; }
