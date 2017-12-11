@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Learny.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -31,12 +32,27 @@ namespace Learny.ViewModels
         public int CourseModuleId { get; set; }
 
         [Display(Name = "Kurs")]
-        public string CourseName { get; set; }
+        public string FullCourseName { get; set; }
 
         public int CourseId { get; set; }
 
         public string ActivityTypeName { get; set; }
 
+        public bool HaveDocuments { get; set; }
+
+        public ModuleActivityViewModel() { }
+
+        public ModuleActivityViewModel(ModuleActivity activity)
+        {
+            Id = activity.Id;
+            Name = activity.Name;
+            Description = activity.Description;
+            StartDate = activity.StartDate;
+            EndDate = activity.EndDate;
+            CourseId = activity.Module.CourseId;
+            FullCourseName = activity.Module.Course.FullCourseName;
+            HaveDocuments = activity.Documents.Count() > 0;
+        }
 
     }
 }
