@@ -47,7 +47,8 @@ namespace Learny.Controllers
                 CourseId = courseId,
                 CourseModuleId = moduleId,
                 ModuleActivityId = activityId,
-                MaxFileSize = MaxFileSizeToUpload()
+                MaxFileSize = MaxFileSizeToUpload(),
+                MaxFileSizeKB = MaxFileSizeKB()
             };
             if (courseId != null)
             {
