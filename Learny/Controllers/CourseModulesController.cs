@@ -130,15 +130,7 @@ namespace Learny.Controllers
                 TempData["FeedbackMessage"] = "Modulen har lagts till";
                 TempData["FeedbackData"] = viewModel;
 
-                var newViewModel = new ModuleViewModel
-                {
-                    Edit = viewModel.Edit,
-                    ListEdit = viewModel.ListEdit,
-                    CourseId = viewModel.CourseId,
-                    FullCourseName = viewModel.FullCourseName
-                };
-
-                return View("Manage", newViewModel);
+                return RedirectToAction("Create", new { id = viewModel.CourseId });
             }
 
             return View("Manage", viewModel);
