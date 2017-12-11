@@ -15,7 +15,10 @@ namespace Learny.Settings
     public class ActivityTypeName
     {
         public const string exercise = "Övning";
+        public const string exerciseShortName = "ÖVN";
         public const string elearning = "E-Learning";
+        public const string elearningShortName = "E-L";
         public const string lecture = "Föreläsning";
+        public const string lectureShortName = "FRL";
     }
 }

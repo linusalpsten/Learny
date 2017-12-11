@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201712011331411_add_relations_to_document.Designer.cs">
       <DependentUpon>201712011331411_add_relations_to_document.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712081442310_AddShortNameInActivityType.cs" />
+    <Compile Include="Migrations\201712081442310_AddShortNameInActivityType.Designer.cs">
+      <DependentUpon>201712081442310_AddShortNameInActivityType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
@@ -376,6 +380,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712011331411_add_relations_to_document.resx">
       <DependentUpon>201712011331411_add_relations_to_document.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712081442310_AddShortNameInActivityType.resx">
+      <DependentUpon>201712081442310_AddShortNameInActivityType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
