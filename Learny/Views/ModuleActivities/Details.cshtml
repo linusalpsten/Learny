@@ -11,39 +11,44 @@
         <div class="col-sm-12">
 
             <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)  Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
-            
-            <h2>@Html.DisplayFor(model => model.Name)</h2>
-            <h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
 
-            <p>@Model.Description</p>
+            <div class="header">
+                <h2>@Html.DisplayFor(model => model.Name)</h2>
+            </div>
+                <h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
 
-            <p>
-                @Html.DisplayNameFor(model => model.StartDate):
-                @Html.DisplayFor(model => model.StartDate)
-                <br />
-                @Html.DisplayNameFor(model => model.EndDate):
-                @Html.DisplayFor(model => model.EndDate)
-            </p>
+                <p>@Model.Description</p>
 
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
                 <p>
-                   @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
+                    @Html.DisplayNameFor(model => model.StartDate):
+                    @Html.DisplayFor(model => model.StartDate)
+                    <br />
+                    @Html.DisplayNameFor(model => model.EndDate):
+                    @Html.DisplayFor(model => model.EndDate)
                 </p>
-            }
 
+                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+        {
+            <p>
+                @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
+            </p>
+}
+
+
+            </div>
 
         </div>
-
-    </div>
     <div class="row">
 
-        <div class="col-sm-12">
-            <h2>Dokument</h2>
+        <div class="col-sm-4">
+
+            <div class="header">
+                <h2>Dokument</h2>
+            </div>
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-                <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { activityId = Model.Id }, null)</p>
-            }
+    {
+        <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { activityId = Model.Id }, null)</p>
+}
             @Html.Action("Documents", "Document", new { activityId = Model.Id })
         </div>
 
