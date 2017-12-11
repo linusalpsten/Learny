@@ -51,5 +51,8 @@ namespace Learny.ViewModels
         [Display(Name = "Aktivitetstyp")]
         public List<ActivityType> ActivityTypes { get; set; }
 
+        public bool Edit { get; set; }
+        public bool ListEdit { get; set; }
+
     }
 }
