@@ -35,7 +35,7 @@ namespace Learny.ViewModels
         [DateTimeToSqlDateTime]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "Moduler")]
+        [Display(Name = "Modul")]
         public ICollection<CourseModule> Modules { get; set; }
     }
 }
