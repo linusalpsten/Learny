@@ -23,6 +23,8 @@ namespace Learny.Models
 
         public int ActivityTypeId { get; set; }
 
+        public virtual CourseModule CourseModule { get; set; }
+
         public virtual ActivityType ActivityType { get; set; }
 
         public virtual ICollection<Document> Documents { get; set; }
