@@ -33,8 +33,8 @@ namespace Learny.Controllers
                 ApplicationUser currentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
 
                 ModuleActivity userActivity = db.Activities.Where(a => a.Id == id).FirstOrDefault();
-                CourseModule userModule = db.Modules.Where(m => m.Id == userActivity.CourseModuleId && m.CourseId==currentUser.CourseId).FirstOrDefault();
-                
+                CourseModule userModule = db.Modules.Where(m => m.Id == userActivity.CourseModuleId && m.CourseId == currentUser.CourseId).FirstOrDefault();
+
                 if (userModule == null)
                 {
                     return RedirectToAction("Index", "Home");
@@ -61,7 +61,7 @@ namespace Learny.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
+
             var activity = new ModuleActivityViewModel
             {
                 Id = moduleActivity.Id,
@@ -74,7 +74,7 @@ namespace Learny.Controllers
                 ModuleName = module.Name,
                 CourseName = course.Name,
                 CourseId = course.Id
-                
+
             };
             return View(activity);
         }
@@ -94,7 +94,7 @@ namespace Learny.Controllers
             //Find previous activity's end date 
             DateTime startDate;
             var lastActivity = db.Activities.Where(m => m.CourseModuleId == id).OrderByDescending(m => m.EndDate).FirstOrDefault();
-            if(lastActivity!=null)
+            if (lastActivity != null)
             {
                 startDate = lastActivity.EndDate.AddDays(1);
             }
@@ -151,7 +151,7 @@ namespace Learny.Controllers
 
                 db.Activities.Add(activity);
                 db.SaveChanges();
-                return RedirectToAction("Details", "CourseModules",new { id = activityViewModel.CourseModuleId });
+                return RedirectToAction("Details", "CourseModules", new { id = activityViewModel.CourseModuleId });
             }
 
             activityViewModel.ActivityTypes = db.ActivityTypes.ToList();
@@ -188,7 +188,7 @@ namespace Learny.Controllers
                 ActivityTypeId = moduleActivity.ActivityTypeId
             };
 
-         //   ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
+            //   ViewBag.ActivityTypeId = new SelectList(db.ActivityTypes, "Id", "Name", moduleActivity.ActivityTypeId);
 
             return View(activityViewModel);
         }
@@ -250,9 +250,18 @@ namespace Learny.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             ModuleActivity moduleActivity = db.Activities.Find(id);
-            db.Activities.Remove(moduleActivity);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            int? entityId = moduleActivity.CourseModuleId;
+            bool allowDelete = true;
+            if (moduleActivity.Documents.Count > 0)
+            {
+                allowDelete = false;
+            }
+            if (allowDelete)
+            {
+                db.Activities.Remove(moduleActivity);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Details", "CourseModules", new { id = entityId });
         }
 
         protected override void Dispose(bool disposing)
