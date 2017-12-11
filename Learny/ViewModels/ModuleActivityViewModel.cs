@@ -38,6 +38,8 @@ namespace Learny.ViewModels
 
         public string ActivityTypeName { get; set; }
 
+        public bool Edit { get; set; }
+
         public bool HaveDocuments { get; set; }
 
         public ModuleActivityViewModel() { }
