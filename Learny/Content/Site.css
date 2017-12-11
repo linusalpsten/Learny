@@ -25,17 +25,19 @@ textarea {
 
 /* Added by Egidio for Schedule View highlight activity in current date*/
 .blink {
-    width: 100px;
-    height: 12px;
-    background-color: green;
-    padding: 7.5px;
-    text-align: center;
+    width: auto;
+    height: 30px;
+    background-color: #ff5a04;
+    padding: 9px;
+    text-align: left;
     line-height: 10px;
 }
 
 span {
-    font-size: 12px;
-    font-family: cursive;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
     animation: blink 2.5s linear infinite;
 }
 

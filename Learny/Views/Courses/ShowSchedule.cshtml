@@ -24,6 +24,7 @@
         </th>
     </tr>
 
+
     @foreach (var item in Model.ScheduleEntries)
     {
         <tr>
@@ -43,7 +44,8 @@
                     {
                         if (DateTime.Compare(DateTime.Today, item.CurrentDate.Date) == 0)
                         {
-                            <li class="alert alert-success">@activity</li>
+                            @*<li class="alert alert-success">@activity</li>*@
+                            <li><div class="blink"><span>@activity</span></div></li>
                         }
                         else
                         {
