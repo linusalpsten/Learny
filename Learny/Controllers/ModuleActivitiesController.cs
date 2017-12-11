@@ -85,20 +85,24 @@ namespace Learny.Controllers
         [Authorize(Roles = RoleName.teacher)]
         public ActionResult Create(int id)
         {
-
-            //checked if module id exist
-            if (!db.Modules.Any(m => m.Id == id))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-
-            //Find last activity's end date 
-            var lastActivity = db.Activities.Where(m => m.CourseModuleId == id).OrderByDescending(m => m.EndDate).FirstOrDefault();
-            var startDate = lastActivity.EndDate.AddDays(1);
-
             var module = db.Modules.Where(m => m.Id == id).FirstOrDefault();
+            if (module == null) return RedirectToAction("Index", "Home");
+
             var course = db.Courses.Where(c => c.Id == module.CourseId).FirstOrDefault();
+            if (course == null) return RedirectToAction("Index", "Home");
+
+            //Find previous activity's end date 
+            DateTime startDate;
+            var lastActivity = db.Activities.Where(m => m.CourseModuleId == id).OrderByDescending(m => m.EndDate).FirstOrDefault();
+            if(lastActivity!=null)
+            {
+                startDate = lastActivity.EndDate.AddDays(1);
+            }
+            else
+            {
+                //No previous activity exist, use modules start date 
+                startDate = module.StartDate;
+            }
 
             var activityViewModel = new ModuleActivityCreateViewModel
             {
