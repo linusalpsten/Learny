@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201712011331411_add_relations_to_document.Designer.cs">
       <DependentUpon>201712011331411_add_relations_to_document.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712081442310_AddShortNameInActivityType.cs" />
+    <Compile Include="Migrations\201712081442310_AddShortNameInActivityType.Designer.cs">
+      <DependentUpon>201712081442310_AddShortNameInActivityType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Models\Document.cs" />
@@ -246,6 +250,7 @@
     <Compile Include="ViewModels\StudentListViewModel.cs" />
     <Compile Include="ViewModels\StudentCreateViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
+    <Compile Include="ViewModels\TeacherCreateViewModel.cs" />
     <Compile Include="ViewModels\TeacherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +260,7 @@
     <Content Include="Client Scripts\MvcFoolproofJQueryValidation.min.js" />
     <Content Include="Client Scripts\MvcFoolproofValidation.js" />
     <Content Include="Client Scripts\MvcFoolproofValidation.min.js" />
+    <Content Include="Content\blink.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\Stockholm_5616x3744.jpg" />
@@ -270,6 +276,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\FileSizeCheck.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -340,6 +347,8 @@
     <Content Include="Views\Document\_DocumentsPartial.cshtml" />
     <Content Include="Views\Courses\ShowSchedule.cshtml" />
     <Content Include="Views\CourseModules\_ModulesPartial.cshtml" />
+    <Content Include="Views\Teacher\Edit.cshtml" />
+    <Content Include="Views\Teacher\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
@@ -371,6 +380,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712011331411_add_relations_to_document.resx">
       <DependentUpon>201712011331411_add_relations_to_document.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712081442310_AddShortNameInActivityType.resx">
+      <DependentUpon>201712081442310_AddShortNameInActivityType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

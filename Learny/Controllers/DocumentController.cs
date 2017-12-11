@@ -47,7 +47,8 @@ namespace Learny.Controllers
                 CourseId = courseId,
                 CourseModuleId = moduleId,
                 ModuleActivityId = activityId,
-                MaxFileSize = MaxFileSizeToUpload()
+                MaxFileSize = MaxFileSizeToUpload(),
+                MaxFileSizeKB = MaxFileSizeKB()
             };
             if (courseId != null)
             {
@@ -111,11 +112,12 @@ namespace Learny.Controllers
         }
 
         // GET: Document
-        public FileResult Download(int id)
+        public FileContentResult Download(int id)
         {
             var document = db.Documents.FirstOrDefault(d => d.Id == id);
             byte[] documentBytes = System.IO.File.ReadAllBytes(document.Path);
-            return File(documentBytes, document.ContentType, document.DisplayName + document.Extension);
+            Response.AppendHeader("Content-Disposition", "inline; filename=" + document.FileName);
+            return File(documentBytes, document.ContentType);
         }
 
         public void Upload(HttpPostedFileBase document)

@@ -23,5 +23,7 @@ namespace Learny.ViewModels
         public string UploadTo { get; set; }
 
         public string MaxFileSize { get; set; }
+
+        public int MaxFileSizeKB { get; set; }
     }
 }

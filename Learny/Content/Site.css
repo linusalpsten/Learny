@@ -24,36 +24,7 @@ textarea {
 }
 
 /* Added by Egidio for Schedule View highlight activity in current date*/
-.blink {
-    width: auto;
-    height: 30px;
-    background-color: #ff5a04;
-    padding: 9px;
-    text-align: left;
-    line-height: 10px;
-}
 
-.blinkspan {
-    font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    color: white;
-    animation: blink 2.5s linear infinite;
-}
-
-@keyframes blink {
-    0% {
-        opacity: 0;
-    }
-
-    50% {
-        opacity: .5;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
 
 .global-footer {
     text-align: center;

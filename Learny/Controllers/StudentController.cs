@@ -47,7 +47,7 @@ namespace Learny.Controllers
             var course = db.Courses.Find(id);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
 
             var viewModelSelectedCourse = new StudentCreateViewModel

@@ -25,7 +25,7 @@ namespace Learny.Models
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
 
             Course course;
@@ -104,30 +104,16 @@ namespace Learny.Models
         public ActionResult Index()
         {
             var courses = db.Courses.ToList();
-            List<CourseViewModel> viewModels = new List<CourseViewModel>();
+            List<CourseDetailsViewModel> viewModels = new List<CourseDetailsViewModel>();
             foreach (var course in courses)
             {
-                viewModels.Add(populateCourseVM(course));
+                viewModels.Add(new CourseDetailsViewModel(course));
             }
 
             var sortedViewModel = viewModels.OrderBy(v => v.StartDate);
             return View(sortedViewModel);
         }
 
-        private CourseViewModel populateCourseVM(Course course)
-        {
-            CourseViewModel viewModel = new CourseDetailsViewModel
-            {
-                Id = course.Id,
-                Name = course.Name,
-                CourseCode = course.CourseCode,
-                FullCourseName = course.FullCourseName,
-                StartDate = course.StartDate,
-                EndDate = course.EndDate,
-                Modules = course.Modules.OrderBy(m => m.StartDate).ToList()
-            };
-            return viewModel;
-        }
 
         // GET: Courses/Details/5
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
@@ -142,16 +128,11 @@ namespace Learny.Models
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(id);
-            CourseDetailsViewModel viewModel = (CourseDetailsViewModel)populateCourseVM(course);
-            viewModel.Students = course.Students;
-            viewModel.Description = course.Description;
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
+            if (course == null) return RedirectToAction("Index", "Home");
+            CourseDetailsViewModel viewModel = new CourseDetailsViewModel(course);
             return View(viewModel);
         }
 
@@ -204,12 +185,12 @@ namespace Learny.Models
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(id);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             var courseView = new CourseCreateViewModel
             {
@@ -285,12 +266,12 @@ namespace Learny.Models
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Home");
             }
             Course course = db.Courses.Find(id);
             if (course == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
             return View(course);
         }
