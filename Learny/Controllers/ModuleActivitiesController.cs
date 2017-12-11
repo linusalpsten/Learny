@@ -108,7 +108,7 @@ namespace Learny.Controllers
             {
                 ModuleName = module.Name,
                 CourseModuleId = id,
-                CourseName = course.Name,
+                FullCourseName = course.Name,
                 CourseId = course.Id,
                 StartDate = startDate,
                 EndDate = startDate,

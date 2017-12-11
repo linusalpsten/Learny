@@ -39,7 +39,7 @@ namespace Learny.ViewModels
         public string ModuleName { get; set; }
 
         [Display(Name = "Kurs")]
-        public string CourseName { get; set; }
+        public string FullCourseName { get; set; }
 
         public int CourseModuleId { get; set; }
 
