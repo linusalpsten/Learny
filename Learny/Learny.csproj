@@ -330,16 +330,12 @@
     <Content Include="Views\CourseModules\Delete.cshtml" />
     <Content Include="Views\CourseModules\Details.cshtml" />
     <Content Include="Views\CourseModules\Edit.cshtml" />
-    <Content Include="Views\CourseModules\Index.cshtml" />
     <Content Include="Views\ModuleActivities\Delete.cshtml" />
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
-    <Content Include="Views\ModuleActivities\Index.cshtml" />
     <Content Include="Views\Document\UploadDocument.cshtml" />
-    <Content Include="Views\Document\Index.cshtml" />
     <Content Include="Views\Student\_StudentsPartial.cshtml" />
     <Content Include="Views\Student\Create.cshtml" />
-    <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
     <Content Include="Views\Student\Edit.cshtml" />
     <Content Include="Views\Teacher\Manage.cshtml" />

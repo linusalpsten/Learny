@@ -16,13 +16,6 @@ namespace Learny.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: CourseModules
-        [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Index()
-        {
-            return View(db.Modules.ToList());
-        }
-
         // GET: CourseModules/Details/5
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult Details(int? id)

@@ -83,13 +83,6 @@ namespace Learny.Controllers
             return RedirectToAction("Index","Home");
         }
 
-        [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Index()
-        {
-            var documents = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).Documents.ToList();
-            return View(documents);
-        }
-
         [HttpGet]
         public ActionResult UploadDocument(int? courseId = null, int? moduleId = null, int? activityId = null)
         {
