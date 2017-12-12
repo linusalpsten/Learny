@@ -15,7 +15,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    @Html.DisplayFor(model => model.Name)
+                    <span class="panelHeader">@Html.DisplayFor(model => model.Name)</span>
 
                     @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
                     {
@@ -73,4 +73,4 @@
 
         </div>
     </div>
-</div>
+

@@ -5,24 +5,27 @@
 
 }
 
-<h2>Schedule</h2>
-<h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            <h4>Datum</h4>
-        </th>
-        <th>
-            <h4>Dag</h4>
-        </th>
-        <th>
-            <h4>Modul Namn</h4>
-        </th>
-        <th>
-            <h4>Activitet Namn</h4>
-        </th>
-    </tr>
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <span class="panelHeader">@Html.DisplayFor(model => model.FullCourseName)</span>
+    </div>
+
+    <div class="panel-body">
+
+        <p>
+            @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { id = Model.CourseId }, null)
+        </p>
+
+        <table class="table">
+            <tr>
+                <th> <h4>Datum</h4>                </th>
+                <th> <h4>Dag</h4>                </th>
+                <th> <h4>Modul Namn</h4>                </th>
+                <th> <h4>Activitet Namn</h4>                </th>
+            </tr>
 
     @foreach (var item in Model.ScheduleEntries)
     {
@@ -52,15 +55,9 @@
         else
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CurrentDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CurrentDay)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModuleName)
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.CurrentDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.CurrentDay)</td>
+                <td>@Html.DisplayFor(modelItem => item.ModuleName)</td>
                 <td>
                     <ul>
                         @*class="alert alert-success">*@

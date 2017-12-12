@@ -13,12 +13,13 @@
     padding: 8px;
 }
 
-.headerRow {
-    background-color: #d60000;
-    opacity: 0.5;
-    color: white;
+.tHeader {
+    font-weight: normal;
 }
 
+.panelHeader {
+    font-weight: bold;
+}
 ul {
     display: block;
     list-style-type: none;
