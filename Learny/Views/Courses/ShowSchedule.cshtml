@@ -5,8 +5,6 @@
 
 }
 
-
-
 <div class="panel panel-default">
 
     <div class="panel-heading">
@@ -21,10 +19,11 @@
 
         <table class="table">
             <tr>
-                <th> <h4>Datum</h4>                </th>
-                <th> <h4>Dag</h4>                </th>
-                <th> <h4>Modul Namn</h4>                </th>
-                <th> <h4>Activitet Namn</h4>                </th>
+                <th> <h4>Datum</h4>      </th>
+                <th> <h4>Dag</h4>        </th>
+                <th> <h4>Modul</h4>      </th>
+                <th> <h4>Typ</h4>      </th>
+                <th> <h4>Aktivitet</h4>  </th>
             </tr>
 
             @foreach (var item in Model.ScheduleEntries)
@@ -35,10 +34,33 @@
                         <td> @Html.DisplayFor(modelItem => item.CurrentDate)  </td>
                         <td> @Html.DisplayFor(modelItem => item.CurrentDay) </td>
                         <td>
-                            @if (item.ModuleName != null)
-                    {
-                                @Html.ActionLink(item.ModuleName, "Details", "CourseModules", new { id = item.ModuleId }, null)
-                            }
+                            <ul>
+                                @if (item.Activities != null)
+                                {
+                                    foreach (var activity in item.Activities)
+                                    {
+                                        <li>
+                                            @if (activity.Module.Name != null)
+                                            {
+                                                @Html.ActionLink(activity.Module.Name, "Details", "CourseModules", new { id = activity.Module.Id }, null)
+                                            }
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                @if (item.Activities != null)
+                                {
+                                    foreach (var activity in item.Activities)
+                                    {
+                                        <li>
+                                            @Html.DisplayFor(modelActivity => activity.ActivityType.ShortName)
+                                        </li>
+                                    }
+                                }
+                            </ul>
                         </td>
                         <td>
                             <ul>
@@ -58,13 +80,36 @@
                 else
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.CurrentDate)</td>
-                        <td>@Html.DisplayFor(modelItem => item.CurrentDay)</td>
+                        <td> @Html.DisplayFor(modelItem => item.CurrentDate)  </td>
+                        <td> @Html.DisplayFor(modelItem => item.CurrentDay) </td>
                         <td>
-                            @if (item.ModuleName != null)
-                    {
-                                @Html.ActionLink(item.ModuleName, "Details", "CourseModules", new { id = item.ModuleId }, null)
-                            }
+                            <ul>
+                                @if (item.Activities != null)
+                                {
+                                    foreach (var activity in item.Activities)
+                                    {
+                                        <li>
+                                            @if (activity.Module.Name != null)
+                                            {
+                                                @Html.ActionLink(activity.Module.Name, "Details", "CourseModules", new { id = activity.Module.Id }, null)
+                                            }
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                @if (item.Activities != null)
+                                {
+                                    foreach (var activity in item.Activities)
+                                    {
+                                        <li>
+                                            @Html.DisplayFor(modelActivity => activity.ActivityType.ShortName)
+                                        </li>
+                                    }
+                                }
+                            </ul>
                         </td>
                         <td>
                             <ul>
@@ -100,6 +145,6 @@
 }
 @section scripts{
     <script>
-            location.href = "#today";
+        location.href = "#today";
     </script>
-    }
+}

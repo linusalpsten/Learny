@@ -15,9 +15,6 @@ namespace Learny.SharedClasses
         public DateTime CurrentDate { get; set; }
 
         public string CurrentDay => CurrentDate.DayOfWeek.ToString();
-        
-        public string ModuleName { get; set; }
-        public int ModuleId { get; set; }
 
         public List<ModuleActivity> Activities { get; set; }
         

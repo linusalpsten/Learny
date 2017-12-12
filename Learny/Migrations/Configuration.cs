@@ -144,9 +144,9 @@ namespace Learny.Migrations
                     EndDate = startDate.AddDays(62), CourseId = courseId },
                 new CourseModule { Name = "Databas", StartDate = startDate.AddDays(63),
                     EndDate = startDate.AddDays(73), CourseId = courseId },
-                new CourseModule { Name = "Applikations utveckling", StartDate = startDate.AddDays(74),
+                new CourseModule { Name = "App.Utv.", StartDate = startDate.AddDays(74),
                     EndDate =startDate.AddDays(82), CourseId = courseId },
-                new CourseModule { Name = "MVC fördjupning", StartDate = startDate.AddDays(81),
+                new CourseModule { Name = "MVC fördj", StartDate = startDate.AddDays(81),
                     EndDate =startDate.AddDays(111), CourseId = courseId }
             };
             context.Modules.AddOrUpdate(
@@ -318,7 +318,7 @@ namespace Learny.Migrations
 
                 new ModuleActivity {
                     Name = "Sprint review 3", Description ="Slutprojekt",
-                    StartDate = startDate.AddDays(107), EndDate = startDate.AddDays(108),
+                    StartDate = startDate.AddDays(107), EndDate = startDate.AddDays(107),
                     ActivityTypeId = exerciseTypeId,
                     CourseModuleId = mvcAdvId },
 

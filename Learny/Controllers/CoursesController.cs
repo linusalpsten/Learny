@@ -14,17 +14,11 @@ namespace Learny.Models
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
-
-
-        // The course id is passed to to this Action which act as a GET
+        
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult ShowSchedule(int? id)
         {
-            if (id == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (id == null) return RedirectToAction("Index", "Home");
 
             Course course;
             if (User.IsInRole(RoleName.student))
@@ -36,73 +30,40 @@ namespace Learny.Models
             {
                 course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
             }
-            var courseEntries = new List<OneScheduleEntry>();
 
-            var ScheduleVM = new ScheduleViewModel();
+            var scheduleViewModel = new ScheduleViewModel();
+            
+            scheduleViewModel.CourseId = course.Id;
+            scheduleViewModel.CourseName = course.Name;
+            scheduleViewModel.CourseCode = course.CourseCode;
 
-            // Populate the VM with Course infos
-            ScheduleVM.CourseId = course.Id;
-            ScheduleVM.CourseName = course.Name;
-            ScheduleVM.CourseCode = course.CourseCode;
+            var scheduleEntries = new List<OneScheduleEntry>();
 
-            // All modules for THIS Course
-            var courseModules = course.Modules.Where(m => m.Activities.Count != 0).OrderBy(m => m.StartDate).ToList();
+            var activities = db.Activities.Where(a => a.Module.CourseId == course.Id).OrderBy(a => a.StartDate).ThenBy(a => a.EndDate).ToList();
+            
+            var startDate = activities.Min(a => a.StartDate);
+            var endDate = activities.Max(a => a.EndDate);
+
+            TimeSpan dateDiff = endDate - startDate;
+            int schemaDays = (int)dateDiff.TotalDays;
             DateTime currentDate;
-            foreach (var module in courseModules)
+
+            for (int daycounter = 0; daycounter <= schemaDays; daycounter++)
             {
-                TimeSpan difference = module.EndDate - module.StartDate;
-                int moduleDays = (int)difference.TotalDays;
+                currentDate = startDate.AddDays(daycounter);
+                // For each date check if any activity is ACTIVE.
+                // If so, then save it in onecourseEntry otherwise skip it
+                var activeActivities = activities.Where(a => a.StartDate <= currentDate && a.EndDate >= currentDate).ToList().OrderBy(a => a.Module.Id).ToList();
 
-                // All activities for THIS module
-                var moduleActivities = module.Activities.ToList();
+                var oneScheduleEntry = new OneScheduleEntry();
+                oneScheduleEntry.CurrentDate = currentDate;
+                oneScheduleEntry.Activities = activeActivities;
 
-                // date counter
-                for (int daycounter = 0; daycounter < moduleDays; daycounter++)
-                {
-
-
-                    // Update the date counter
-                    currentDate = module.StartDate.AddDays(daycounter);
-
-
-
-                    // For each date check if any activity is ACTIVE.
-                    // If so, the save it in onecourseEntry otherwise skip it
-                    List<ModuleActivity> activities = new List<ModuleActivity>();
-                    foreach (var activity in moduleActivities)
-                    {
-                        var activityStart = activity.StartDate;
-                        var activityEnd = activity.EndDate;
-                        if (DateTime.Compare(currentDate, activityStart) >= 0 &&
-                            DateTime.Compare(currentDate, activityEnd) <= 0)
-                        {
-                            // the current activity is ACTIVE in currentDate
-                            // and can be stored in the "dayly schedule entry"
-                            activities.Add(activity);
-                        }
-                    }
-                    var oneCourseEntry = new OneScheduleEntry();
-                    oneCourseEntry.CurrentDate = currentDate;
-                    if (activities.Count != 0)
-                    {
-                        
-                        oneCourseEntry.ModuleName = module.Name;
-                        oneCourseEntry.ModuleId = module.Id;
-
-                        oneCourseEntry.Activities = activities;
-                        //foreach (var activity in activities)
-                        //{
-                        //    oneCourseEntry.ActivityNamesList.Add(activity.Name);
-                        //}
-                        
-                    }
-                    courseEntries.Add(oneCourseEntry);
-                    // save in the final data structure to be shown on the view
-
-                }
+                scheduleEntries.Add(oneScheduleEntry);
             }
-            ScheduleVM.ScheduleEntries = courseEntries;
-            return View(ScheduleVM);
+
+            scheduleViewModel.ScheduleEntries = scheduleEntries;
+            return View(scheduleViewModel);
         }
 
 
@@ -241,7 +202,7 @@ namespace Learny.Models
                         return View(courseView);
                     }
                 }
-                
+
                 var course = new Course
                 {
                     Id = courseView.Id,
