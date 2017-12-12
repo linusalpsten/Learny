@@ -137,23 +137,6 @@ namespace Learny.Controllers
 
             return PartialView("_StudentsPartial", students);
         }
-        
-        [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Index()
-        {
-            var students = new List<StudentViewModel>();
-            foreach (var student in AllStudents().OrderBy(s => s.Name))
-            {
-                students.Add(new StudentViewModel
-                {
-                    Name = student.Name,
-                    Email = student.Email,
-                    CourseName = student.Course.Name
-                });
-            }
-
-            return View(students);
-        }
 
         private List<ApplicationUser> AllStudents()
         {

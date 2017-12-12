@@ -14,14 +14,6 @@ namespace Learny.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: ModuleActivities
-        [Authorize(Roles = RoleName.teacher)]
-        public ActionResult Index()
-        {
-            var activities = db.Activities.Include(m => m.ActivityType);
-            return View(activities.ToList());
-        }
-
         public ActionResult Activities(int id, bool linkToEditInCreateView = false)
         {
             var modulesActivities = db.Activities.Where(m => m.CourseModuleId == id).OrderBy(m => m.StartDate).ToList();
