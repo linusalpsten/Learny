@@ -26,33 +26,52 @@
 
     @foreach (var item in Model.ScheduleEntries)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModuleName)
-            </td>
-            <td>
-                <ul>
-                    @*class="alert alert-success">*@
-                    @foreach (var activity in item.ActivityNamesList)
-                    {
-                        if (DateTime.Compare(DateTime.Today, item.CurrentDate.Date) == 0)
-                        {
-                            <li class="alert alert-success">@activity</li>
-                        }
-                        else
+        if (DateTime.Today == item.CurrentDate.Date)
+        {
+            <tr class="alert alert-success" id="today">
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModuleName)
+                </td>
+                <td>
+                    <ul>
+                        @*class="alert alert-success">*@
+                        @foreach (var activity in item.ActivityNamesList)
                         {
                             <li>@activity</li>
                         }
-                    }
-                </ul>
-            </td>
-        </tr>
+                    </ul>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModuleName)
+                </td>
+                <td>
+                    <ul>
+                        @*class="alert alert-success">*@
+                        @foreach (var activity in item.ActivityNamesList)
+                        {
+                            <li>@activity</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
     }
 </table>
 <p>
@@ -66,4 +85,9 @@
             margin-top: 0px;
         }
     </style>
+}
+@section scripts{
+    <script>
+            location.href = "#today";
+    </script>
     }
