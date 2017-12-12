@@ -254,6 +254,7 @@
     <Compile Include="ViewModels\TeacherViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Client Scripts\DropdownjQuery.js" />
     <Content Include="Client Scripts\mvcfoolproof.unobtrusive.js" />
     <Content Include="Client Scripts\mvcfoolproof.unobtrusive.min.js" />
     <Content Include="Client Scripts\MvcFoolproofJQueryValidation.js" />
@@ -263,6 +264,7 @@
     <Content Include="Content\blink.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Dropdown.css" />
     <Content Include="Content\Images\Stockholm_5616x3744.jpg" />
     <Content Include="Content\Images\Stockholm_backg.jpg" />
     <Content Include="Content\LoginStyle.css" />
