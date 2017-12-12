@@ -57,7 +57,7 @@ ul {
     color: #fff !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
 
     .navbar-nav > li > a {
         padding-top: 25px;
@@ -93,4 +93,11 @@ textarea {
 
 .logout {
     background: #202020;
+}
+
+@media (min-width: 992px) {
+    .navbar-nav {
+        float: left;
+        margin: 0;
+    }
 }
