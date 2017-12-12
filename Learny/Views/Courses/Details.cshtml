@@ -44,9 +44,9 @@
         <div class="col-sm-7">
 
 
-            <div class="header">
+            @*<div class="header">
                 <h2>Moduler</h2>
-            </div>
+            </div>*@
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
             {
                 @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
@@ -84,9 +84,9 @@
 
             @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
             {
-                <div class="header">
+                @*<div class="header">
                     <h2>Dokument</h2>
-                </div>
+                </div>*@
                 if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
                 {
                     <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)</p>
@@ -97,9 +97,9 @@
             }
 
 
-            <div class="header">
+            @*<div class="header">
                 <h2>Elever</h2>
-            </div>
+            </div>*@
             @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
             {
                 <p>@Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)</p>
