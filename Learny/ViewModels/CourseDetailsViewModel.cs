@@ -17,6 +17,7 @@ namespace Learny.ViewModels
         {
             Id = course.Id;
             Name = course.Name;
+            Description = course.Description;
             CourseCode = course.CourseCode;
             FullCourseName = course.FullCourseName;
             StartDate = course.StartDate;
