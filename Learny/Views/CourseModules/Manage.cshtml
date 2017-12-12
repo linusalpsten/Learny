@@ -9,26 +9,29 @@
     var actionName = "";
 }
 
-@if (Model.EditMode)
-{
-    actionName = "Edit";
 
-    <div class="header">
-        <h3>@Model.Name</h3>
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+        @if (Model.EditMode)
+        {
+            actionName = "Edit";
+            
+                <span class="panelHeader">@Model.Name</span>
+
+        }
+        else
+        {
+            actionName = "Create";
+            
+                <span class="panelHeader">Ny modul</span>
+
+        }
+
     </div>
 
-}
-else
-{
-    actionName = "Create";
-
-    <div class="header">
-        <h3>Ny modul</h3>
-    </div>
-
-}
-
-    <br />
+    <div class="panel-body">
         @using (Html.BeginForm(actionName, "CourseModules"))
         {
             @Html.AntiForgeryToken()
@@ -80,10 +83,12 @@ else
                         {
                             <input type="submit" value="Spara ändringar" class="btn btn-default" />
                             @:&nbsp;
-                            if(Model.ShowModuleList) { 
-                                @Html.ActionLink("Avbryt", "Create", new { id = Model.CourseId, ShowModuleList = Model.ShowModuleList },htmlAttributes: new { @class="btn btn-default"});
+                            if (Model.ShowModuleList)
+                            {
+                                @Html.ActionLink("Avbryt", "Create", new { id = Model.CourseId, ShowModuleList = Model.ShowModuleList }, htmlAttributes: new { @class = "btn btn-default" });
                             }
-                            else { 
+                            else
+                            {
                                 @Html.ActionLink("Avbryt", "Details", new { id = Model.CourseId }, htmlAttributes: new { @class = "btn btn-default" });
                             }
                             @:&nbsp;
@@ -117,20 +122,26 @@ else
                 <br /><br />
                 @if (!Model.EditMode)
                 {
-                    @Html.ActionLink("Ändra |", "Edit", new { id = msgObj.Id, ShowModuleList = Model.ShowModuleList });
-                    //|
+                    @Html.ActionLink("Ändra", "Edit", new { id = msgObj.Id, ShowModuleList = Model.ShowModuleList });
+                    @: | 
                 }
                 @Html.ActionLink("Till modulen", "Details", "CourseModules", new { id = msgObj.Id }, null)
                 <br /><br />
             </div>
                     }
 
-        
-@if(Model.ShowModuleList){
 
-        @*View partial view with modules*@
-        @Html.Action("Modules", "CourseModules", new { id = Model.CourseId, linkToEditInCreateView = true })
-}
+        @if (Model.ShowModuleList)
+        {
+
+            @*View partial view with modules*@
+            @Html.Action("Modules", "CourseModules", new { id = Model.CourseId, linkToEditInCreateView = true })
+        }
+
+
+    </div>
+
+</div>
 
         @section Scripts {
             @Scripts.Render("~/bundles/jqueryval")

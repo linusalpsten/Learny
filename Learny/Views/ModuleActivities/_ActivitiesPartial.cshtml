@@ -22,7 +22,7 @@
             <td>
                 @if (item.Edit) {
                 
-                    @Html.ActionLink(item.Name, "Edit", new { id = item.Id, listEdit = true})
+                    @Html.ActionLink(item.Name, "Edit", new { id = item.Id, ShowActivityList = true})
                 }
                 else
                 { 

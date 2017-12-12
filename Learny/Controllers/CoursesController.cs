@@ -1,14 +1,12 @@
 ﻿using Learny.Settings;
+using Learny.SharedClasses;
+using Learny.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Learny.SharedClasses;
-using Learny.ViewModels;
 
 namespace Learny.Models
 {
@@ -241,13 +239,7 @@ namespace Learny.Models
                         return View(courseView);
                     }
                 }
-
-                //if (db.Courses.Any(c => c.CourseCode == courseView.CourseCode))
-                //{
-                //    ModelState.AddModelError("CourseCode", "Kurskoden finns redan");
-                //    return View(courseView);
-                //}
-
+                
                 var course = new Course
                 {
                     Id = courseView.Id,
@@ -259,7 +251,13 @@ namespace Learny.Models
                 };
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", new { id = courseView.Id });
+
+                var changedCourse = db.Courses.Find(courseView.Id);
+
+                TempData["FeedbackMessage"] = "Kursen har ändrats";
+                TempData["FeedbackData"] = changedCourse;
+
+                //return RedirectToAction("Details", new { id = courseView.Id });
             }
             return View(courseView);
         }
