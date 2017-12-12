@@ -9,24 +9,32 @@
     <div class="row">
         <div class="col-sm-8">
 
-            <h2>@Html.DisplayFor(model => model.Name)</h2>
-            
-            <p>
-                @Html.DisplayNameFor(model => model.Name):
-                @Html.DisplayFor(model => model.Name)
-                <br />
-                @Html.DisplayNameFor(model => model.Email):
-                @Html.DisplayFor(model => model.Email)
-            </p>
-            
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-                <p>
-                    @Html.ActionLink("Visa alla lärare", "Create") |
-                    @Html.ActionLink("Ändra", "Edit", new { email = Model.Email })
-                </p>
-            }
-        </div>
+            <div class="panel panel-default">
 
+                <div class="panel-heading">
+                    <span class="panelHeader">@Html.DisplayFor(model => model.Name)</span>
+                </div>
+
+                <div class="panel-body">
+
+                    <p>
+                        @Html.DisplayNameFor(model => model.Name):
+                        @Html.DisplayFor(model => model.Name)
+                        <br />
+                        @Html.DisplayNameFor(model => model.Email):
+                        @Html.DisplayFor(model => model.Email)
+                    </p>
+
+                    @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                    {
+                        <p>
+                            @Html.ActionLink("Visa alla lärare", "Create") |
+                            @Html.ActionLink("Ändra", "Edit", new { email = Model.Email })
+                        </p>
+                    }
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
