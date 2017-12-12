@@ -11,7 +11,10 @@ ul {
 }
 
 a {
-    color: #b63b4d;
+    color: #428bca; /* #b63b4d;  This is the original color (dark red as in the dropdownlist) of the <a> which is also related to the "Create a Course Link on the page for Courses/Index".
+                       I set the color to the same used in the entire project so far.
+                       I think the original color should be the one used in the entire project to keep uniform with the colors used in the dropDown. ALternative, change the colors in the dropdown
+                       to get a blueish style as the one obtain from scaffolding   */
     text-decoration: none;
 }
 

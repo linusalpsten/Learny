@@ -10,6 +10,8 @@
     @Html.ActionLink("Lägg till kurs", "Create")
 </p>
 
+
+<!-- Egidio: I have left the dropdown below including the template for readability. It should be cleaned up and eventually filter the output according to the labels "Tidigare", "Pågående", "kommande"-->
 <ul id="accordion" class="accordion">
     <li>
         <div class="link"><i class="fa fa-database"></i>Tidigare<i class="fa fa-chevron-down"></i></div>
@@ -21,7 +23,7 @@
                 // the same calculation should be done for CourseCode, StartDate/EndDate. I this way I can allign the info in each fixed side column
                 // and the course info are better readable.
 
-                // NOTE! in the Dropdpwn.css at the end I ALLOW the browser to show blanks in this page for <a> and <span> under <li> !
+                // OBS!!! in the Dropdpwn.css at the end I ALLOW the browser to show blanks in this page for <a> and <span> under <li>. Therefore do not include spaces trying to indent the <li> rows, please
 
                 // Name
                 int currentNamelenght = item.Name.Length;
