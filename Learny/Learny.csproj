@@ -277,6 +277,7 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\FileSizeCheck.js" />
+    <Content Include="Scripts\FillEndDate.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -330,7 +331,6 @@
     <Content Include="Views\CourseModules\Details.cshtml" />
     <Content Include="Views\CourseModules\Edit.cshtml" />
     <Content Include="Views\CourseModules\Index.cshtml" />
-    <Content Include="Views\ModuleActivities\Create.cshtml" />
     <Content Include="Views\ModuleActivities\Delete.cshtml" />
     <Content Include="Views\ModuleActivities\Details.cshtml" />
     <Content Include="Views\ModuleActivities\Edit.cshtml" />
