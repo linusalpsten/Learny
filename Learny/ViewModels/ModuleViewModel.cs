@@ -37,10 +37,11 @@ namespace Learny.ViewModels
         [Display(Name = "Kurs")]
         public string FullCourseName { get; set; }
 
+        [Display(Name = "Aktivitet")]
         public virtual ICollection<ModuleActivity> Activities { get; set; }
 
-        public bool Edit { get; set; }
-        public bool ListEdit { get; set; }
+        public bool EditMode { get; set; }
+        public bool ShowModuleList { get; set; }
 
         public bool HaveDocuments { get; set; }
 

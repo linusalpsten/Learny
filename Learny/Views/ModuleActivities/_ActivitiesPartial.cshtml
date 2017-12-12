@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Learny.ViewModels.ModuleViewModel>
+﻿@model IEnumerable<Learny.ViewModels.ModuleActivityViewModel>
 
 <table class="table">
     <tr class="headerRow">
@@ -20,9 +20,9 @@
     {
         <tr>
             <td>
-                @if (item.EditMode) {
+                @if (item.Edit) {
                 
-                    @Html.ActionLink(item.Name, "Edit", new { id = item.Id, ShowModuleList = true})
+                    @Html.ActionLink(item.Name, "Edit", new { id = item.Id, listEdit = true})
                 }
                 else
                 { 

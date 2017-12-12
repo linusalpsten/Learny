@@ -9,18 +9,20 @@ namespace Learny.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Namn")]
+        [Display(Name = "Modul")]
         public string Name { get; set; }
 
         [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Start Datum")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
         [Required]
-        [Display(Name = "Slut Datum")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
         public int CourseId { get; set; }

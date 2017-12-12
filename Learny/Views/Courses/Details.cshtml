@@ -8,74 +8,116 @@
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-sm-12">
+        <div class="col-sm-8">
 
-            <h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
+            <div class="panel panel-default">
 
-            <p>
-                @Html.DisplayFor(model => model.Description)
-            </p>
+                <div class="panel-heading">
+                    @Html.DisplayFor(model => model.FullCourseName)
 
-            <p>
-                @Html.DisplayNameFor(model => model.StartDate):
-                @Html.DisplayFor(model => model.StartDate)
-                <br />
-                @Html.DisplayNameFor(model => model.EndDate):
-                @Html.DisplayFor(model => model.EndDate)
-            </p>
+                    @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                    {
+                        <span class="pull-right">
+                            @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
+                        </span>
+                    }
+                </div>
 
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-                <p>
-                    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
-                </p>
-            }
+                <div class="panel-body">
+                    <p>
+                        @Html.DisplayFor(model => model.Description)
+                    </p>
 
-            <p>@Html.ActionLink("Aktivitets schema", "ShowSchedule", "Courses", new { id = Model.Id }, null)</p>
+                    <p>
+                        @Html.DisplayNameFor(model => model.StartDate):
+                        @Html.DisplayFor(model => model.StartDate)
+                        <br />
+                        @Html.DisplayNameFor(model => model.EndDate):
+                        @Html.DisplayFor(model => model.EndDate)
+                    </p>
 
-        </div>
+                    <p>
+                        @Html.ActionLink("Aktivitets schema", "ShowSchedule", "Courses", new { id = Model.Id }, null)
 
-    </div>
-    <div class="row">
+                        @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                        {
+                            @: |
+                            @Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)
+                        }
 
-        <div class="col-sm-4">
-            <h2>Moduler</h2>
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-                <p>@Html.ActionLink("Lägg till modul", "Create", "CourseModules", new { id = Model.Id }, null)</p>
-            }
+                    </p>
+                   
+                </div>
 
-            <ul>
-                @foreach (var item in Model.Modules)
-                {
-                    <li>@Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null)</li>
-                }
-            </ul>
-        </div>
+                <table class="table">
+                    <tr>
+                        <th> @Html.DisplayNameFor(model => model.Modules)      </th>
+                        <th> @Html.DisplayNameFor(model => model.StartDate)    </th>
+                        <th> @Html.DisplayNameFor(model => model.EndDate)      </th>
+                        <th> @Html.DisplayNameFor(model => model.Description)  </th>
+                    </tr>
+                    
+                    @foreach (var item in Model.Modules)
+                    {
+                        <tr>
+                            <td> @Html.ActionLink(item.Name, "Details", "CourseModules", new { id = item.Id }, null) </td>
+                            <td> @Html.DisplayFor(modelItem => item.StartDate)   </td>
+                            <td> @Html.DisplayFor(modelItem => item.EndDate)     </td>
+                            <td> @Html.DisplayFor(modelItem => item.Description) </td>
+                        </tr>
+                    }
 
-
-        @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
-        {
-            <div class="col-sm-4">
-                <h2>Dokument</h2>
-                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-                {
-                <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)</p>
-                }
-                @Html.Action("Documents", "Document", new { courseId = Model.Id })
+                </table>
 
             </div>
-        }
 
+        </div>
+
+        <div class="col-sm-1">
+            //Empty column
+        </div>
 
         <div class="col-sm-4">
 
-            <h2>Elever</h2>
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+            @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
             {
-                <p>@Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)</p>
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        Dokument
+                        @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                        {
+                            <span class="pull-right">
+                                @Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)
+                            </span>
+                        }
+                    </div>
+
+                    <div class="panel-body">
+                        @Html.Action("Documents", "Document", new { courseId = Model.Id })
+                    </div>
+
+                </div>
             }
-            @Html.Action("Students", "Student", new { id = Model.Id })
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    Deltagare
+                    @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                    {
+                        <span class="pull-right">
+                            @Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)
+                        </span>
+                    }
+                </div>
+
+                <div class="panel-body">
+                    @Html.Action("Students", "Student", new { id = Model.Id })
+                </div>
+
+            </div>
+
         </div>
 
     </div>

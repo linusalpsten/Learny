@@ -53,6 +53,7 @@ namespace Learny.Models
         //Display name returns FileName if Name is null, else it returns Name
         public string Extension { get { return new Regex(@"\.[^.]+$").Match(FileName).Value; } } // takes the last characters after the last dot (including the dot)
         public string FileNameWithoutExtension { get { return new Regex(@"(^.+)(?:\.[^.]+$)").Match(FileName).Captures[0].Value; } } // takes the first characters before the last dot (excluding the last dot)
+
         [Display(Name = "Namn")]
         public string DisplayName { get { return Name ?? FileNameWithoutExtension; } }
     }

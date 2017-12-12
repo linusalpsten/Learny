@@ -5,7 +5,6 @@ using Learny.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 
 namespace Learny.ViewModels
@@ -39,7 +38,7 @@ namespace Learny.ViewModels
         public string ModuleName { get; set; }
 
         [Display(Name = "Kurs")]
-        public string CourseName { get; set; }
+        public string FullCourseName { get; set; }
 
         public int CourseModuleId { get; set; }
 
@@ -51,5 +50,26 @@ namespace Learny.ViewModels
         [Display(Name = "Aktivitetstyp")]
         public List<ActivityType> ActivityTypes { get; set; }
 
+        public bool EditMode { get; set; }
+        public bool ShowActivityList { get; set; }
+
+        public bool HaveDocuments { get; set; }
+
+        public ModuleActivityCreateViewModel() { }
+
+        public ModuleActivityCreateViewModel(ModuleActivity activity)
+        {
+            Id = activity.Id;
+            Name = activity.Name;
+            Description = activity.Description;
+            StartDate = activity.StartDate;
+            EndDate = activity.EndDate;
+            ActivityTypeId = activity.ActivityTypeId;
+            CourseModuleId = activity.CourseModuleId;
+            ModuleName = activity.Module.Name;
+            CourseId = activity.Module.CourseId;
+            FullCourseName = activity.Module.Course.FullCourseName;
+            HaveDocuments = activity.Documents.Count > 0;
+        }
     }
 }

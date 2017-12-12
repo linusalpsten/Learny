@@ -1,0 +1,164 @@
+﻿@model Learny.ViewModels.ModuleActivityCreateViewModel
+
+@{
+    ViewBag.Title = "Aktiviteter";
+}
+
+<h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null) Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+
+<h2>@ViewBag.Title</h2>
+
+
+@{
+    var actionName = "";
+}
+
+@if (Model.EditMode)
+{
+    actionName = "Edit";
+
+    <div class="header">
+        <h3>@Model.Name</h3>
+    </div>
+
+}
+else
+{
+    actionName = "Create";
+
+    <div class="header">
+        <h3>Lägg till aktivitet</h3>
+    </div>
+
+}
+
+
+
+@using (Html.BeginForm(actionName, "ModuleActivities"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group hidden">
+            @Html.LabelFor(model => model.CourseModuleId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CourseModuleId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CourseModuleId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActivityTypes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ActivityTypeId,
+                               new SelectList(Model.ActivityTypes, "Id", "Name"), "-- Välj aktivitetstyp --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ActivityTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.CourseId) @*Http post courseId to create controller*@
+        @Html.HiddenFor(model => model.FullCourseName)
+        @Html.HiddenFor(model => model.CourseModuleId)
+        @Html.HiddenFor(model => model.ModuleName)
+        @Html.HiddenFor(model => model.EditMode)
+        @Html.HiddenFor(model => model.ShowActivityList)
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @if (Model.EditMode)
+                {
+                    <input type="submit" value="Spara ändringar" class="btn btn-default" />
+                    @:&nbsp;
+                    if (Model.ShowActivityList)
+                    {
+                        @Html.ActionLink("Avbryt", "Create", new { id = Model.CourseModuleId, ShowActivityList = Model.ShowActivityList }, htmlAttributes: new { @class = "btn btn-default" });
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Avbryt", "Details", new { id = Model.CourseModuleId }, htmlAttributes: new { @class = "btn btn-default" });
+                    }
+                    @:&nbsp;
+                    @Html.ActionLink("Tag bort", "Delete", new { id = Model.Id }, new { @class = "btn btn-default" })
+
+                }
+                else
+                {
+                    <input type="submit" value="Lägg till" class="btn btn-default" />
+                }
+            </div>
+        </div>
+    </div>
+}
+<br />
+
+@if (TempData["FeedbackMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        @TempData["FeedbackMessage"]
+        @{var msgObj = (Learny.Models.ModuleActivity)@TempData["FeedbackData"];}
+        <br /><br />
+        @Html.LabelFor(m => msgObj.Name): @Html.DisplayFor(m => msgObj.Name)
+        <br />
+        @Html.LabelFor(m => msgObj.Description): @Html.DisplayFor(m => msgObj.Description)
+        <br />
+        @Html.LabelFor(m => msgObj.StartDate): @Html.DisplayFor(m => msgObj.StartDate)
+        <br />
+        @Html.LabelFor(m => msgObj.EndDate): @Html.DisplayFor(m => msgObj.EndDate)
+        <br /><br />
+        @if (!Model.EditMode)
+        {
+            @Html.ActionLink("Ändra |", "Edit", new { id = msgObj.Id, ShowActivityList = Model.ShowActivityList });
+            //|
+        }
+        @Html.ActionLink("Till aktiviteten", "Details", "ModuleActivities", new { id = msgObj.Id }, null)
+    </div>
+}
+
+@if (Model.ShowActivityList)
+{
+    @*View partial view with activities*@
+    @Html.Action("Activities", "ModuleActivities", new { id = Model.CourseModuleId, linkToEditInCreateView = true })
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Client Scripts/MvcFoolproofValidation.js"></script>
+}

@@ -1,6 +1,69 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 110px;
+    /*font: 400 15px Lato, sans-serif;*/
+    font-size: 15px;
+    line-height: 1.5;
+    color: #202020;
+}
+
+.header {
+    background-color: #d60000;
+    opacity: 0.8;
+    color: white;
+    padding: 8px;
+}
+
+.headerRow {
+    background-color: #d60000;
+    opacity: 0.5;
+    color: white;
+}
+
+ul {
+    display: block;
+    list-style-type: none;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0px;
+}
+
+
+.navbar {
+    margin-bottom: 0;
+    background: linear-gradient(#000000, #202020, #202020);
+    z-index: 9999;
+    /*background-color: #202020;*/
+    border: 0;
+    font-size: 18px !important;
+    letter-spacing: 3px;
+    border-radius: 0;
+    font-family: Montserrat, sans-serif;
+    padding: 15px 5px;
+    box-shadow: 0px 5px 20px #808080;
+}
+
+    .navbar li a, .navbar .navbar-brand {
+        color: #fff !important;
+    }
+
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: gray !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+}
+
+@media (min-width: 768px) {
+
+    .navbar-nav > li > a {
+        padding-top: 25px;
+        padding-bottom: 15px;
+        padding-left: 40px;
+    }
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -23,4 +86,11 @@ textarea {
     max-width: 280px;
 }
 
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: inherit;
+    background-color: inherit;
+}
 
+.logout {
+    background: #202020;
+}

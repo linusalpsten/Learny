@@ -16,19 +16,23 @@ namespace Learny.Models
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Start Datum")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
 
         [Required]
-        [Display(Name = "Slut Datum")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
+
+        public int ActivityTypeId { get; set; }
 
         public int CourseModuleId { get; set; }
 
         public int ActivityTypeId { get; set; }
 
         [Display(Name = "Modul")]
-        public virtual CourseModule CourseModule { get; set; }
+        public virtual CourseModule Module { get; set; }
 
         [Display(Name = "Aktivitets typ")]
         public virtual ActivityType ActivityType { get; set; }

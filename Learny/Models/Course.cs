@@ -9,7 +9,7 @@ namespace Learny.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Namn")]
+        [Display(Name = "Kurs")]
         public string Name { get; set; }
 
         [Required]
@@ -21,11 +21,13 @@ namespace Learny.Models
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Start Datum")]
+        [Display(Name = "Startdatum")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
         [Required]
-        [Display(Name = "Slut Datum")]
+        [Display(Name = "Slutdatum")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
 
         public string FullCourseName => (CourseCode + " - " + Name).Trim();
