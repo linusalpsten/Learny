@@ -167,6 +167,13 @@ namespace Learny.Controllers
         {
             var document = db.Documents.FirstOrDefault(d => d.Id == id);
             byte[] documentBytes = System.IO.File.ReadAllBytes(document.Path);
+            return File(documentBytes, document.ContentType, document.DisplayName + document.Extension);
+        }
+
+        public FileContentResult OpenDocument(int id)
+        {
+            var document = db.Documents.FirstOrDefault(d => d.Id == id);
+            byte[] documentBytes = System.IO.File.ReadAllBytes(document.Path);
             Response.AppendHeader("Content-Disposition", "inline; filename=" + document.FileName);
             return File(documentBytes, document.ContentType);
         }
