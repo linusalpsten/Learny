@@ -30,11 +30,34 @@
             }
         }
     }
+    int nrOfActivities = 0;
+    foreach (var item in Model.Modules)
+    {
+        nrOfActivities += item.Activities.Count;
+    }
+    int nrOfDocuments = 0;
+    if (!allowDelete)
+    {
+        nrOfDocuments += Model.Documents.Count;
+        foreach (var module in Model.Modules)
+        {
+            nrOfDocuments += module.Documents.Count;
+            foreach (var activity in module.Activities)
+            {
+                nrOfDocuments += activity.Documents.Count;
+            }
+        }
+    }
 }
 
 <h2>Ta bort</h2>
 
-<h3>Är du säker på att du vill ta bort den här kursen?</h3>
+<h3>
+    Är du säker på att du vill ta bort den här kursen?
+    <br />
+    Alla elever, moduler och aktiviteter kommer också tas bort.
+</h3>
+
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -77,10 +100,28 @@
         <dd>
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-
+        <dt>
+            Antal moduler
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Modules.Count)
+        </dd>
+        <dt>
+            Antal aktiviteter
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => nrOfActivities)
+        </dd>
+        <dt>
+            Antal elever
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Students.Count)
+        </dd>
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
@@ -97,7 +138,7 @@
             @if (!allowDelete)
             {
                 <br />
-                <span class="alert-danger">Den här kursen eller dens moduler och aktiviteter har dokument kopplade till dem.</span>
+                <span class="alert-danger">Den här kursen eller dens moduler och aktiviteter har @nrOfDocuments dokument.</span>
             }
         </div>
     }
