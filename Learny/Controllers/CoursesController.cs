@@ -83,18 +83,20 @@ namespace Learny.Models
                             activities.Add(activity);
                         }
                     }
+                    var oneCourseEntry = new OneScheduleEntry();
+                    oneCourseEntry.ActivityNamesList = new List<string>();
+                    oneCourseEntry.CurrentDate = currentDate;
                     if (activities.Count != 0)
                     {
-                        var oneCourseEntry = new OneScheduleEntry();
-                        oneCourseEntry.ActivityNamesList = new List<string>();
-                        oneCourseEntry.CurrentDate = currentDate;
+                        
                         oneCourseEntry.ModuleName = module.Name;
                         foreach (var activity in activities)
                         {
                             oneCourseEntry.ActivityNamesList.Add(activity.Name);
                         }
-                        courseEntries.Add(oneCourseEntry);
+                        
                     }
+                    courseEntries.Add(oneCourseEntry);
                     // save in the final data structure to be shown on the view
 
                 }

@@ -29,11 +29,11 @@ namespace Learny.Models
 
         public int CourseModuleId { get; set; }
 
-        [Display(Name = "Aktivitetstyp")]
-        public virtual ActivityType ActivityType { get; set; }
-
         [Display(Name = "Modul")]
         public virtual CourseModule Module { get; set; }
+
+        [Display(Name = "Aktivitetstyp")]
+        public virtual ActivityType ActivityType { get; set; }
 
         [Display(Name = "Dokument")]
         public virtual ICollection<Document> Documents { get; set; }

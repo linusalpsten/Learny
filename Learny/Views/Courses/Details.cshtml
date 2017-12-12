@@ -88,7 +88,7 @@
                         @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
                         {
                             <span class="pull-right">
-                                @Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { courseId = Model.Id }, null)
+                                @Html.ActionLink(" ", "UploadDocument", "Document", new { courseId = Model.Id }, new { @class = "glyphicon glyphicon-plus" })
                             </span>
                         }
                     </div>
@@ -107,7 +107,7 @@
                     @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
                     {
                         <span class="pull-right">
-                            @Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)
+                            @Html.ActionLink(" ", "Create", "Student", new { id = Model.Id }, new { @class = "glyphicon glyphicon-plus" })
                         </span>
                     }
                 </div>
