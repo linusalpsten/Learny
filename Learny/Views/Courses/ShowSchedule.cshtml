@@ -27,53 +27,68 @@
                 <th> <h4>Activitet Namn</h4>                </th>
             </tr>
 
-    @foreach (var item in Model.ScheduleEntries)
-    {
-        if (DateTime.Today == item.CurrentDate.Date)
-        {
-            <tr class="alert alert-success" id="today">
-                <td>
-                    @Html.DisplayFor(modelItem => item.CurrentDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CurrentDay)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModuleName)
-                </td>
-                <td>
-                    <ul>
-                        @*class="alert alert-success">*@
-                        @foreach (var activity in item.ActivityNamesList)
-                        {
-                            <li>@activity</li>
-                        }
-                    </ul>
-                </td>
-            </tr>
-        }
-        else
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.CurrentDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.CurrentDay)</td>
-                <td>@Html.DisplayFor(modelItem => item.ModuleName)</td>
-                <td>
-                    <ul>
-                        @*class="alert alert-success">*@
-                        @foreach (var activity in item.ActivityNamesList)
-                        {
-                            <li>@activity</li>
-                        }
-                    </ul>
-                </td>
-            </tr>
-        }
-    }
-</table>
-<p>
-    @Html.ActionLink("Tillbaka till kurs översikt", "Details", "Courses", new { id = Model.CourseId }, null)
-</p>
+            @foreach (var item in Model.ScheduleEntries)
+            {
+                if (DateTime.Today == item.CurrentDate.Date)
+                {
+                    <tr class="alert alert-success" id="today">
+                        <td> @Html.DisplayFor(modelItem => item.CurrentDate)  </td>
+                        <td> @Html.DisplayFor(modelItem => item.CurrentDay) </td>
+                        <td>
+                            @if (item.ModuleName != null)
+                    {
+                                @Html.ActionLink(item.ModuleName, "Details", "CourseModules", new { id = item.ModuleId }, null)
+                            }
+                        </td>
+                        <td>
+                            <ul>
+                                @if (item.Activities != null)
+                                {
+                                    foreach (var activity in item.Activities)
+                                    {
+                                        <li>
+                                            @Html.ActionLink(activity.Name, "Details", "ModuleActivities", new { id = activity.Id }, null)
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.CurrentDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CurrentDay)</td>
+                        <td>
+                            @if (item.ModuleName != null)
+                    {
+                                @Html.ActionLink(item.ModuleName, "Details", "CourseModules", new { id = item.ModuleId }, null)
+                            }
+                        </td>
+                        <td>
+                            <ul>
+                                @if (item.Activities != null)
+                                {
+                                    foreach (var activity in item.Activities)
+                                    {
+                                        <li>
+                                            @Html.ActionLink(activity.Name, "Details", "ModuleActivities", new { id = activity.Id }, null)
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+        <p>
+            @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { id = Model.CourseId }, null)
+        </p>
+
+    </div>
+</div>
 
 @section styles{
     <style>
