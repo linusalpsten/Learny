@@ -4,95 +4,104 @@
     ViewBag.Title = "Lägg till ny deltagare";
 }
 
-<h2>@ViewBag.Title</h2>
-
-@using (Html.BeginForm("Create", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-
-
-    if (Model.CourseSelected == true)
-    {
-        <h4> @Html.DisplayFor(model => model.AttendingCourse)</h4>
-        @Html.HiddenFor(model => model.CourseId) @*Http post courseId to create action *@
-        @Html.HiddenFor(model => model.CourseSelected)
-        @Html.HiddenFor(model => model.AttendingCourse)
-        <hr />
-
-    }
-    else
-    {
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(model => model.Courses, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.Courses, "Id", "Name"), "---- välj en kurs från listan ----", new { @class = "form-control" })
-            </div>
-        </div>
-
-    }
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Spara" />
-            </div>
-        </div>
-}
-
-@if (TempData["Feedback"] != null)
-{
-    <div class="alert alert-success alert-dismissable fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        @TempData["Feedback"]
-    </div>
-}
-
 @if (Model.CourseSelected == true)
 {
-    <hr />
-    <h4>Deltagare</h4>
-    @Html.Action("Students", "Student", new { id = Model.CourseId })
-
-}
-@if (Model.CourseSelected == false)
-{
-
+    <h5>Kurs: @Html.ActionLink(Model.AttendingCourse, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
 }
 
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+
+        <span class="panelHeader">@ViewBag.Title</span>
+
+    </div>
+
+    <div class="panel-body">
+
+        @using (Html.BeginForm("Create", "Student", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+
+            if (Model.CourseSelected == true)
+            {
+                @Html.HiddenFor(model => model.CourseId) @*Http post courseId to create action *@
+                @Html.HiddenFor(model => model.CourseSelected)
+                @Html.HiddenFor(model => model.AttendingCourse)
+            }
+            else
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Courses, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.Courses, "Id", "Name"), "---- välj en kurs från listan ----", new { @class = "form-control" })
+                    </div>
+                </div>
+
+            }
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Lägg till" />
+                </div>
+            </div>
+        }
+
+        @if (TempData["Feedback"] != null)
+        {
+            <div class="alert alert-success alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @TempData["Feedback"]
+            </div>
+        }
+
+        <br /><br />
+        @if (Model.CourseSelected == true)
+        {
+            @Html.Action("StudentsTable", "Student", new { id = Model.CourseId })
+        }
+        @if (Model.CourseSelected == false)
+        {
+
+        }
+
+    </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

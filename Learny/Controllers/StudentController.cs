@@ -128,7 +128,13 @@ namespace Learny.Controllers
             return View("Create", model);
         }
 
+        public ActionResult StudentsTable(int id)
+        {
+            var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+            var students = course.Students.OrderBy(s => s.Name).ToList();
 
+            return PartialView("_StudentsTablePartial", students);
+        }
 
         public ActionResult Students(int id)
         {
