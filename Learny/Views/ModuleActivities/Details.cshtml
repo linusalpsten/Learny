@@ -1,56 +1,76 @@
 ﻿@model Learny.ViewModels.ModuleActivityViewModel
 @using Learny.Settings
 
-
 @{
     ViewBag.Title = "Aktivitet";
 }
+
+<h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)  Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-sm-12">
+        <div class="col-sm-8">
 
-            <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)  Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.CourseModuleId }, null)</h5>
+            <div class="panel panel-default">
 
-            <div class="header">
-                <h2>@Html.DisplayFor(model => model.Name)</h2>
+                <div class="panel-heading">
+                    @Html.DisplayFor(model => model.Name)
+
+                    @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                    {
+                        <span class="pull-right">
+                            @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
+                        </span>
+                    }
+                </div>
+
+                <div class="panel-body">
+
+                    <h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
+
+                    <p>@Html.DisplayFor(model => model.Description)</p>
+
+                    <p>
+                        @Html.DisplayNameFor(model => model.StartDate):
+                        @Html.DisplayFor(model => model.StartDate)
+                        <br />
+                        @Html.DisplayNameFor(model => model.EndDate):
+                        @Html.DisplayFor(model => model.EndDate)
+                    </p>
+
+                </div>
+
             </div>
-                <h5>@Html.DisplayFor(model => model.ActivityTypeName)</h5>
-
-                <p>@Model.Description</p>
-
-                <p>
-                    @Html.DisplayNameFor(model => model.StartDate):
-                    @Html.DisplayFor(model => model.StartDate)
-                    <br />
-                    @Html.DisplayNameFor(model => model.EndDate):
-                    @Html.DisplayFor(model => model.EndDate)
-                </p>
-
-                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-        {
-            <p>
-                @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
-            </p>
-}
-
-
-            </div>
-
-        </div>
-    <div class="row">
-
-        <div class="col-sm-4">
-
-            <div class="header">
-                <h2>Dokument</h2>
-            </div>
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-    {
-        <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { activityId = Model.Id }, null)</p>
-}
-            @Html.Action("Documents", "Document", new { activityId = Model.Id })
         </div>
 
+            <div class="col-sm-1">
+                @*Empty column*@
+            </div>
+
+            @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
+            {
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading">
+                            Dokument
+                            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                            {
+                                <span class="pull-right">
+                                    @Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { activityId = Model.Id }, null)
+                                </span>
+                            }
+                        </div>
+
+                        <div class="panel-body">
+                            @Html.Action("Documents", "Document", new { activityId = Model.Id })
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
     </div>
 </div>

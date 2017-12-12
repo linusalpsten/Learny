@@ -9,110 +9,95 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12">
-            <div class="header">
-                <h2>@Html.DisplayFor(model => model.Name)</h2>
-            </div>
 
-            <p>
-                @Html.DisplayFor(model => model.Description)
-            </p>
+        <div class="col-sm-8">
 
-            <p>
-                @Html.DisplayNameFor(model => model.StartDate):
-                @Html.DisplayFor(model => model.StartDate)
-                <br />
-                @Html.DisplayNameFor(model => model.EndDate):
-                @Html.DisplayFor(model => model.EndDate)
-            </p>
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-                <p>
-                    @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
-                </p>
-            }
-        </div>
+            <div class="panel panel-default">
 
+                <div class="panel-heading">
+                    @Html.DisplayFor(model => model.Name)
 
-
-
-    </div>
-    <div class="row">
-
-        <div class="col-sm-7">
-            <div class="header">
-                <h2>Aktiviteter</h2>
-            </div>
-
-            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-            {
-                <p>@Html.ActionLink("Lägg till aktivitet", "Create", "ModuleActivities", new { Id = Model.Id }, null)</p>
-            }
-
-            <table class="table">
-                <tr class="headerRow">
-                    <th>
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Activities)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.StartDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EndDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                </tr>
-
-                @foreach (var item in Model.Activities)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ActivityType.ShortName)
-                        </td>
-                        <td>
-                            @Html.ActionLink(item.Name, "Details", "ModuleActivities", new { id = item.Id }, null)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                    </tr>
-                }
-
-            </table>
-
-        </div>
-        <div class="col-sm-1">
-
-        </div>
-
-
-        @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
-        {
-            <div class="col-sm-4">
-
-                <div class="header">
-                    <h2>Dokument</h2>
+                    @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                    {
+                        <span class="pull-right">
+                            @Html.ActionLink("Ändra", "Edit", new { id = Model.Id })
+                        </span>
+                    }
                 </div>
 
-                @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
-                {
-                    <p>@Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { moduleId = Model.Id }, null)</p>
-                }
+                <div class="panel-body">
+                    <p>
+                        @Html.DisplayFor(model => model.Description)
+                    </p>
 
-                @Html.Action("Documents", "Document", new { moduleId = Model.Id })
+                    <p>
+                        @Html.DisplayNameFor(model => model.StartDate):
+                        @Html.DisplayFor(model => model.StartDate)
+                        <br />
+                        @Html.DisplayNameFor(model => model.EndDate):
+                        @Html.DisplayFor(model => model.EndDate)
+                    </p>
+
+                    @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                    {
+                        <p>@Html.ActionLink("Lägg till aktivitet", "Create", "ModuleActivities", new { Id = Model.Id }, null)</p>
+                    }
+
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th> @Html.DisplayNameFor(model => model.Activities)   </th>
+                        <th> @Html.DisplayNameFor(model => model.StartDate)    </th>
+                        <th> @Html.DisplayNameFor(model => model.EndDate)      </th>
+                        <th> @Html.DisplayNameFor(model => model.Description)  </th>
+                    </tr>
+
+                    @foreach (var item in Model.Activities)
+                    {
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => item.ActivityType.ShortName)    </td>
+                            <td> @Html.ActionLink(item.Name, "Details", "ModuleActivities", new { id = item.Id }, null)  </td>
+                            <td> @Html.DisplayFor(modelItem => item.StartDate)       </td>
+                            <td> @Html.DisplayFor(modelItem => item.EndDate)         </td>
+                            <td> @Html.DisplayFor(modelItem => item.Description)     </td>
+                        </tr>
+                    }
+
+                </table>
+
             </div>
-        }
+        </div>
+
+            <div class="col-sm-1">
+                @*Empty column*@
+            </div>
+
+            @if (Model.HaveDocuments || User.IsInRole(RoleName.teacher))
+            {
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading">
+                            Dokument
+                            @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
+                            {
+                                <span class="pull-right">
+                                    @Html.ActionLink("Lägg till dokument", "UploadDocument", "Document", new { moduleId = Model.Id }, null)
+                                </span>
+                            }
+                        </div>
+
+                        <div class="panel-body">
+                            @Html.Action("Documents", "Document", new { moduleId = Model.Id })
+                        </div>
+
+                    </div>
+                </div>
+            }
 
 
-    </div>
+        </div>
+
 </div>
