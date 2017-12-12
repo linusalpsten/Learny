@@ -14,9 +14,12 @@
 }
 
 .tHeader {
-    font-weight: inherit;
+    font-weight: normal;
 }
 
+.panelHeader {
+    font-weight: bold;
+}
 ul {
     display: block;
     list-style-type: none;

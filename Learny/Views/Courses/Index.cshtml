@@ -16,7 +16,7 @@
 
 <table class="table">
     <thead>
-        <tr data-toggle="collapse" data-target="#tidigare">
+        <tr data-toggle="collapse" data-target="#earlier">
             <th>Tidigare</th>
             @*<th>
                     @Html.DisplayNameFor(model => model.Name)
@@ -33,7 +33,7 @@
                 <th></th>*@
         </tr>
     </thead>
-    <tbody id="tidigare" class="collapse">
+    <tbody id="earlier" class="collapse">
         @foreach (var item in oldCourses)
             {
 
@@ -57,8 +57,8 @@
 
 
 <table class="table">
-    <thead>
-        <tr data-toggle="collapse" data-target="#aktiva">
+    <thead >
+        <tr data-toggle="collapse" data-target="#active">
             <th>Aktiva</th>
             @*<th>
                     @Html.DisplayNameFor(model => model.Name)
@@ -75,7 +75,7 @@
                 <th></th>*@
         </tr>
     </thead>
-    <tbody id="aktiva">
+    <tbody id="active">
         @foreach (var item in activeCourses)
         {
 
@@ -98,7 +98,7 @@
 </table>
 <table class="table">
     <thead>
-        <tr data-toggle="collapse" data-target="#senare">
+        <tr data-toggle="collapse" data-target="#later">
             <th>Kommande</th>
             @*<th>
                     @Html.DisplayNameFor(model => model.Name)
@@ -115,7 +115,7 @@
                 <th></th>*@
         </tr>
     </thead>
-    <tbody id="senare" class="collapse">
+    <tbody id="later" class="collapse">
         @foreach (var item in commingCourses)
         {
 
