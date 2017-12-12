@@ -9,18 +9,23 @@ namespace Learny.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Namn")]
         public string Name { get; set; }
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Kurs kod")]
         public string CourseCode { get; set; }
 
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
 
         [Required]
+        [Display(Name = "Start Datum")]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [Display(Name = "Slut Datum")]
         public DateTime EndDate { get; set; }
 
         public string FullCourseName => (CourseCode + " - " + Name).Trim();
