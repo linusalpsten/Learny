@@ -7,6 +7,11 @@
     {
         allowDelete = false;
     }
+    int nrOfDocuments = 0;
+    if (!allowDelete)
+    {
+        nrOfDocuments += Model.Documents.Count;
+    }
 }
 
 <h2>Ta bort</h2>
@@ -68,7 +73,8 @@
         </dd>
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
@@ -85,7 +91,9 @@
             @if (!allowDelete)
             {
                 <br />
-                <span class="alert-danger">Den här aktiviteten har dokument kopplat till den.</span>
+                <div class="alert alert-danger">
+                    <span>Den här aktiviteten har @nrOfDocuments dokument.</span>
+                </div>
             }
         </div>
     }

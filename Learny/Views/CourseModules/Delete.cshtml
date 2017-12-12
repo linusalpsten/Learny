@@ -18,6 +18,15 @@
             }
         }
     }
+    int nrOfDocuments = 0;
+    if (!allowDelete)
+    {
+        nrOfDocuments += Model.Documents.Count;
+        foreach (var activity in Model.Activities)
+        {
+            nrOfDocuments += activity.Documents.Count;
+        }
+    }
 }
 
 <h2>Ta bort</h2>
@@ -83,7 +92,9 @@
             @if (!allowDelete)
             {
                 <br />
-                <span class="alert-danger">Den här modulen eller dens aktiviteter har dokument kopplade till dem.</span>
+                <div class="alert alert-danger">
+                    <span>Den här modulen eller dens aktiviteter har @nrOfDocuments dokument.</span>
+                </div>
             }
         </div>
     }
