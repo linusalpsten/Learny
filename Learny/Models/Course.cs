@@ -14,6 +14,7 @@ namespace Learny.Models
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Kurskod")]
         public string CourseCode { get; set; }
 
         [Display(Name = "Beskrivning")]
