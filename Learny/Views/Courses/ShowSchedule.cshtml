@@ -5,59 +5,56 @@
 
 }
 
-<h2>Schedule</h2>
-<h2>@Html.DisplayFor(model => model.FullCourseName)</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            <h4>Datum</h4>
-        </th>
-        <th>
-            <h4>Dag</h4>
-        </th>
-        <th>
-            <h4>Modul Namn</h4>
-        </th>
-        <th>
-            <h4>Activitet Namn</h4>
-        </th>
-    </tr>
 
-    @foreach (var item in Model.ScheduleEntries)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModuleName)
-            </td>
-            <td>
-                <ul>
-                    @*class="alert alert-success">*@
-                    @foreach (var activity in item.ActivityNamesList)
-                    {
-                        if (DateTime.Compare(DateTime.Today, item.CurrentDate.Date) == 0)
-                        {
-                            <li class="alert alert-success">@activity</li>
-                        }
-                        else
-                        {
-                            <li>@activity</li>
-                        }
-                    }
-                </ul>
-            </td>
-        </tr>
-    }
-</table>
-<p>
-    @Html.ActionLink("Tillbaka till kurs översikt", "Details", "Courses", new { id = Model.CourseId }, null)
-</p>
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <h3>@Html.DisplayFor(model => model.FullCourseName)</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <p>
+            @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { id = Model.CourseId }, null)
+        </p>
+
+        <table class="table">
+            <tr>
+                <th> <h4>Datum</h4>                </th>
+                <th> <h4>Dag</h4>                </th>
+                <th> <h4>Modul Namn</h4>                </th>
+                <th> <h4>Activitet Namn</h4>                </th>
+            </tr>
+
+            @foreach (var item in Model.ScheduleEntries)
+            {
+                <tr>
+                    <td> @Html.DisplayFor(modelItem => item.CurrentDate)                    </td>
+                    <td> @Html.DisplayFor(modelItem => item.CurrentDay)                    </td>
+                    <td> @Html.DisplayFor(modelItem => item.ModuleName)                    </td>
+                    <td>
+                        <ul>
+                            @*class="alert alert-success">*@
+                            @foreach (var activity in item.ActivityNamesList)
+                            {
+                                if (DateTime.Compare(DateTime.Today, item.CurrentDate.Date) == 0)
+                                {
+                                    <li class="alert alert-success">@activity</li>
+                                }
+                                else
+                                {
+                                    <li>@activity</li>
+                                }
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>
 
 @section styles{
     <style>
@@ -66,4 +63,4 @@
             margin-top: 0px;
         }
     </style>
-    }
+}

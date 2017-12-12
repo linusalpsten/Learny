@@ -15,7 +15,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    @Html.DisplayFor(model => model.Name)
+                    <h3>@Html.DisplayFor(model => model.Name)</h3>
 
                     @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
                     {
@@ -47,11 +47,10 @@
 
                 <table class="table">
                     <tr>
-                        <th></th>
-                        <th> @Html.DisplayNameFor(model => model.Activities)   </th>
-                        <th> @Html.DisplayNameFor(model => model.StartDate)    </th>
-                        <th> @Html.DisplayNameFor(model => model.EndDate)      </th>
-                        <th> @Html.DisplayNameFor(model => model.Description)  </th>
+                        <th class="tHeader"> Typ   </th>
+                        <th class="tHeader"> @Html.DisplayNameFor(model => model.Activities)   </th>
+                        <th class="tHeader"> @Html.DisplayNameFor(model => model.StartDate)    </th>
+                        <th class="tHeader"> @Html.DisplayNameFor(model => model.EndDate)      </th>
                     </tr>
 
                     @foreach (var item in Model.Activities)
@@ -61,7 +60,6 @@
                             <td> @Html.ActionLink(item.Name, "Details", "ModuleActivities", new { id = item.Id }, null)  </td>
                             <td> @Html.DisplayFor(modelItem => item.StartDate)       </td>
                             <td> @Html.DisplayFor(modelItem => item.EndDate)         </td>
-                            <td> @Html.DisplayFor(modelItem => item.Description)     </td>
                         </tr>
                     }
 

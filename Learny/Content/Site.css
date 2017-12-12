@@ -13,10 +13,8 @@
     padding: 8px;
 }
 
-.headerRow {
-    background-color: #d60000;
-    opacity: 0.5;
-    color: white;
+.tHeader {
+    font-weight: inherit;
 }
 
 ul {
