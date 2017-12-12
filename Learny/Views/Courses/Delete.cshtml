@@ -50,70 +50,74 @@
     }
 }
 
-<h2>Ta bort</h2>
 
-<h3>
-    Är du säker på att du vill ta bort den här kursen?
-    <br />
-    Alla elever, moduler och aktiviteter kommer också tas bort.
-</h3>
+<div class="panel panel-default">
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>            @Html.DisplayNameFor(model => model.Name)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Name)        </dd>
+    <div class="panel-heading">
+        <h3>
+            Är du säker på att du vill ta bort den här kursen?
+            <br />
+            Alla elever, moduler och aktiviteter kommer också tas bort.
+        </h3>
+    </div>
 
-        <dt>            @Html.DisplayNameFor(model => model.CourseCode)        </dt>
-        <dd>            @Html.DisplayFor(model => model.CourseCode)        </dd>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>            @Html.DisplayNameFor(model => model.Name)        </dt>
+            <dd>            @Html.DisplayFor(model => model.Name)        </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.Description)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Description)        </dd>
+            <dt>            @Html.DisplayNameFor(model => model.CourseCode)        </dt>
+            <dd>            @Html.DisplayFor(model => model.CourseCode)        </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.StartDate)        </dt>
-        <dd>            @Html.DisplayFor(model => model.StartDate)        </dd>
+            <dt>            @Html.DisplayNameFor(model => model.Description)        </dt>
+            <dd>            @Html.DisplayFor(model => model.Description)        </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.EndDate)        </dt>
-        <dd>            @Html.DisplayFor(model => model.EndDate)        </dd>
+            <dt>            @Html.DisplayNameFor(model => model.StartDate)        </dt>
+            <dd>            @Html.DisplayFor(model => model.StartDate)        </dd>
 
-        <dt>&nbsp;</dt>
-        <dd></dd>
+            <dt>            @Html.DisplayNameFor(model => model.EndDate)        </dt>
+            <dd>            @Html.DisplayFor(model => model.EndDate)        </dd>
 
-        <dt>            Antal moduler        </dt>
-        <dd>            @Html.DisplayFor(model => model.Modules.Count)        </dd>
+            <dt>&nbsp;</dt>
+            <dd></dd>
 
-        <dt>            Antal aktiviteter        </dt>
-        <dd>            @Html.DisplayFor(model => nrOfActivities)        </dd>
+            <dt>            Antal moduler        </dt>
+            <dd>            @Html.DisplayFor(model => model.Modules.Count)        </dd>
 
-        <dt>            Antal elever        </dt>
-        <dd>            @Html.DisplayFor(model => model.Students.Count)        </dd>
+            <dt>            Antal aktiviteter        </dt>
+            <dd>            @Html.DisplayFor(model => nrOfActivities)        </dd>
 
-        <dt>            Antal dokument        </dt>
-        <dd>            @Html.DisplayFor(model => model.Documents.Count)        </dd>
-    </dl>
+            <dt>            Antal elever        </dt>
+            <dd>            @Html.DisplayFor(model => model.Students.Count)        </dd>
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+            <dt>            Antal dokument        </dt>
+            <dd>            @nrOfDocuments       </dd>
+        </dl>
 
-        <div class="form-actions no-color">
-            @if (allowDelete)
-            {
-                <input type="submit" value="Delete" class="btn btn-default" />
-            }
-            else
-            {
-                <input type="submit" value="Ta bort" class="btn btn-default" disabled />
-            }
-            |
-            @Html.ActionLink("Tillbaka", "Details", new { id = Model.Id })
-            @if (!allowDelete)
-            {
-                <br /><br />
-                <div class="alert alert-danger">
-                    <span>Den här kursen eller dess moduler och aktiviteter har @nrOfDocuments dokument.</span>
-                </div>
-            }
-        </div>
-    }
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                @if (allowDelete)
+                {
+                    <input type="submit" value="Delete" class="btn btn-default" />
+                }
+                else
+                {
+                    <input type="submit" value="Ta bort" class="btn btn-default" disabled />
+                }
+                |
+                @Html.ActionLink("Tillbaka", "Details", new { id = Model.Id })
+                @if (!allowDelete)
+                {
+                    <br /><br />
+                    <div class="alert alert-danger">
+                        <span>Den här kursen eller dess moduler och aktiviteter har @nrOfDocuments dokument.</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
 </div>

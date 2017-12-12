@@ -14,65 +14,69 @@
     }
 }
 
-<h2>Ta bort</h2>
 
-<h3>Är du säker på att du vill ta bort den här aktiviteten?</h3>
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>            @Html.DisplayNameFor(model => model.Module.Course)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Module.Course.Name)        </dd>
+<div class="panel panel-default">
 
-        <dt>            @Html.DisplayNameFor(model => model.Module)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Module.Name)        </dd>
+    <div class="panel-heading">
+        <h3>Är du säker på att du vill ta bort den här aktiviteten?</h3>
+    </div>
 
-        <dt>&nbsp;</dt>
-        <dd></dd>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>            @Html.DisplayNameFor(model => model.Module.Course)        </dt>
+            <dd>            @Html.DisplayFor(model => model.Module.Course.Name)        </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.ActivityType)        </dt>
-        <dd>            @Html.DisplayFor(model => model.ActivityType.Name)        </dd>
+            <dt>            @Html.DisplayNameFor(model => model.Module)        </dt>
+            <dd>            @Html.DisplayFor(model => model.Module.Name)        </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.Name)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Name)        </dd>
+            <dt>&nbsp;</dt>
+            <dd></dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.Description)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Description)        </dd>
+            <dt>            @Html.DisplayNameFor(model => model.ActivityType)        </dt>
+            <dd>            @Html.DisplayFor(model => model.ActivityType.Name)        </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.StartDate)        </dt>
-        <dd>            @Html.DisplayFor(model => model.StartDate)        </dd>
+            <dt>            @Html.DisplayNameFor(model => model.Name)        </dt>
+            <dd>            @Html.DisplayFor(model => model.Name)        </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.EndDate)        </dt>
-        <dd>            @Html.DisplayFor(model => model.EndDate)        </dd>
+            <dt>            @Html.DisplayNameFor(model => model.Description)        </dt>
+            <dd>            @Html.DisplayFor(model => model.Description)        </dd>
 
-        <dt>&nbsp;</dt>
-        <dd></dd>
+            <dt>            @Html.DisplayNameFor(model => model.StartDate)        </dt>
+            <dd>            @Html.DisplayFor(model => model.StartDate)        </dd>
 
-        <dt>            Antal dokument        </dt>
-        <dd>            @Html.DisplayFor(model => model.Documents.Count)        </dd>
-    </dl>
+            <dt>            @Html.DisplayNameFor(model => model.EndDate)        </dt>
+            <dd>            @Html.DisplayFor(model => model.EndDate)        </dd>
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+            <dt>&nbsp;</dt>
+            <dd></dd>
 
-        <div class="form-actions no-color">
-            @if (allowDelete)
-            {
-                <input type="submit" value="Delete" class="btn btn-default" />
-            }
-            else
-            {
-                <input type="submit" value="Ta bort" class="btn btn-default" disabled />
-            }
-            |
-            @Html.ActionLink("Tillbaka", "Details", new { id = Model.Id })
-            @if (!allowDelete)
-            {
-                <br /><br />
-                <div class="alert alert-danger">
-                    <span>Den här aktiviteten har @nrOfDocuments dokument.</span>
-                </div>
-            }
-        </div>
-    }
+            <dt>            Antal dokument        </dt>
+            <dd>            @nrOfDocuments        </dd>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                @if (allowDelete)
+                {
+                    <input type="submit" value="Delete" class="btn btn-default" />
+                }
+                else
+                {
+                    <input type="submit" value="Ta bort" class="btn btn-default" disabled />
+                }
+                |
+                @Html.ActionLink("Tillbaka", "Details", new { id = Model.Id })
+                @if (!allowDelete)
+                {
+                    <br /><br />
+                    <div class="alert alert-danger">
+                        <span>Den här aktiviteten har @nrOfDocuments dokument.</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
 </div>
