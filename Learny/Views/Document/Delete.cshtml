@@ -38,19 +38,19 @@
         @if (Model.ModuleActivityId != null)
         {
             <dt>
-                @Html.DisplayNameFor(model => model.Activity.CourseModule.Course)
+                @Html.DisplayNameFor(model => model.Activity.Module.Course)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Activity.CourseModule.Course.Name)
+                @Html.DisplayFor(model => model.Activity.Module.Course.Name)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.Activity.CourseModule)
+                @Html.DisplayNameFor(model => model.Activity.Module)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Activity.CourseModule.Name)
+                @Html.DisplayFor(model => model.Activity.Module.Name)
             </dd>
 
             <dt>
