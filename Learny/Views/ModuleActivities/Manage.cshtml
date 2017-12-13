@@ -17,16 +17,14 @@
         @if (Model.EditMode)
         {
             actionName = "Edit";
-            
-                <span class="panelHeader">@Model.Name</span>
 
+            <span class="panelHeader">@Model.Name</span>
         }
         else
         {
             actionName = "Create";
-            
-                <span class="panelHeader">Ny aktivitet</span>
 
+            <span class="panelHeader">Ny aktivitet</span>
         }
 
     </div>
@@ -101,17 +99,17 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         @if (Model.EditMode)
-                {
+                        {
                             <input type="submit" value="Spara ändringar" class="btn btn-default" />
                             @:&nbsp;
-                    if (Model.ShowActivityList)
-                    {
+                            if (Model.ShowActivityList)
+                            {
                                 @Html.ActionLink("Avbryt", "Create", new { id = Model.CourseModuleId, ShowActivityList = Model.ShowActivityList }, htmlAttributes: new { @class = "btn btn-default" });
-                    }
-                    else
-                    {
+                            }
+                            else
+                            {
                                 @Html.ActionLink("Avbryt", "Details", new { id = Model.CourseModuleId }, htmlAttributes: new { @class = "btn btn-default" });
-                    }
+                            }
                             @:&nbsp;
                             @Html.ActionLink("Ta bort", "Delete", new { id = Model.Id }, new { @class = "btn btn-default" })
 
@@ -133,6 +131,8 @@
                 @TempData["FeedbackMessage"]
                 @{var msgObj = (Learny.Models.ModuleActivity)@TempData["FeedbackData"];}
                 <br /><br />
+                @Html.LabelFor(m => msgObj.ActivityType): @Html.DisplayFor(m => msgObj.ActivityType.Name)
+                <br />
                 @Html.LabelFor(m => msgObj.Name): @Html.DisplayFor(m => msgObj.Name)
                 <br />
                 @Html.LabelFor(m => msgObj.Description): @Html.DisplayFor(m => msgObj.Description)
@@ -144,7 +144,7 @@
                 @if (!Model.EditMode)
                 {
                     @Html.ActionLink("Ändra", "Edit", new { id = msgObj.Id, ShowActivityList = Model.ShowActivityList });
-                    @: | 
+                    @: |
                 }
                 @Html.ActionLink("Till aktiviteten", "Details", "ModuleActivities", new { id = msgObj.Id }, null)
             </div>
@@ -161,5 +161,5 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Client Scripts/MvcFoolproofValidation.js"></script>
-<script src="~/Scripts/FillEndDate.js"></script>
+    <script src="~/Scripts/FillEndDate.js"></script>
 }
