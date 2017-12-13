@@ -1,0 +1,11 @@
+﻿@model Learny.ViewModels.NavigationalLinksViewModel
+
+@if(Model.ActivityId == null) { 
+    <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null) Modul: @Html.ActionLink(Model.ModuleName, "Details", "CourseModules", new { id = Model.ModuleId }, null)</h5>
+}
+
+@if (Model.ModuleId == null)
+{
+    <h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
+}
+
