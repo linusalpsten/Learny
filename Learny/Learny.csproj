@@ -246,7 +246,7 @@
     <Compile Include="ViewModels\ModuleAcivityCreateViewModel.cs" />
     <Compile Include="ViewModels\ModuleActivityViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
-    <Compile Include="ViewModels\NavigationalLinksViewModel.cs" />
+    <Compile Include="ViewModels\NavigationLinksViewModel.cs" />
     <Compile Include="ViewModels\ScheduleViewModel.cs" />
     <Compile Include="ViewModels\StudentListViewModel.cs" />
     <Compile Include="ViewModels\StudentCreateViewModel.cs" />
@@ -350,7 +350,7 @@
     <Content Include="Views\ModuleActivities\Manage.cshtml" />
     <Content Include="Views\ModuleActivities\_ActivitiesPartial.cshtml" />
     <Content Include="Views\Student\_StudentsTablePartial.cshtml" />
-    <Content Include="Views\Home\_NavigationalLinksViewModel.cshtml" />
+    <Content Include="Views\Home\_NavigationLinksPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

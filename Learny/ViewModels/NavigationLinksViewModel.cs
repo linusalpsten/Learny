@@ -1,6 +1,6 @@
 ﻿namespace Learny.ViewModels
 {
-    public class NavigationalLinksViewModel
+    public class NavigationLinksViewModel
     {
         public int? CourseId { get; set; }
         public string FullCourseName { get; set; }

@@ -36,34 +36,37 @@ namespace Learny.Controllers
             if (courseId != null)
             {
                 var course = db.Courses.Where(c => c.Id == courseId).FirstOrDefault();
-                if(course==null) return PartialView("_NavigationalLinksViewModel", new NavigationalLinksViewModel());
-
-                courseName = course.FullCourseName;
+                if (course != null)
+                {
+                    courseName = course.FullCourseName;
+                }
             }
             if (moduleId != null)
             {
                 var module = db.Modules.Where(m => m.Id == moduleId).FirstOrDefault();
-                if (module == null) return PartialView("_NavigationalLinksViewModel", new NavigationalLinksViewModel());
+                if (module != null)
+                {
+                    moduleName = module.Name;
+                    courseName = module.Course.FullCourseName;
 
-                moduleName = module.Name;
-                courseName = module.Course.FullCourseName;
-                
-                courseId = module.Course.Id;
+                    courseId = module.Course.Id;
+                }
             }
             if (activityId != null)
             {
                 var activity = db.Activities.Where(a => a.Id == activityId).FirstOrDefault();
-                if (activity == null) return PartialView("_NavigationalLinksViewModel", new NavigationalLinksViewModel());
+                if (activity != null)
+                {
+                    activityName = activity.Name;
+                    moduleName = activity.Module.Name;
+                    courseName = activity.Module.Course.FullCourseName;
 
-                activityName = activity.Name;
-                moduleName = activity.Module.Name;
-                courseName = activity.Module.Course.FullCourseName;
-
-                moduleId = activity.Module.Id;
-                courseId = activity.Module.Course.Id;
+                    moduleId = activity.Module.Id;
+                    courseId = activity.Module.Course.Id;
+                }
             }
             
-            var linkData = new NavigationalLinksViewModel()
+            var linkData = new NavigationLinksViewModel()
             {
                 CourseId = courseId,
                 FullCourseName = courseName,
@@ -73,7 +76,7 @@ namespace Learny.Controllers
                 ActivityName = activityName,
             };
 
-            return PartialView("_NavigationalLinksViewModel", linkData);
+            return PartialView("_NavigationLinksPartial", linkData);
         }
 
     }
