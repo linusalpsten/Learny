@@ -32,6 +32,25 @@ ul {
     padding-left: 0px;
 }
 
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
 
 .navbar {
     margin-bottom: 0;
@@ -55,17 +74,20 @@ ul {
     color: gray !important;
 }
 
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: inherit;
+    background-color: inherit;
+}
+
 .navbar-default .navbar-toggle {
     border-color: transparent;
     color: #fff !important;
 }
 
 @media (min-width: 992px) {
-
-    .navbar-nav > li > a {
-        padding-top: 25px;
-        padding-bottom: 15px;
-        padding-left: 40px;
+    .navbar-nav {
+        float: left;
+        margin: 0;
     }
 }
 
@@ -99,42 +121,5 @@ ul {
     .navbar-nav > li > a {
         padding-top: 10px;
         padding-bottom: 10px;
-    }
-}
-
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
-}
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
-.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
-    color: inherit;
-    background-color: inherit;
-}
-
-.logout {
-    background: #202020;
-}
-
-@media (min-width: 992px) {
-    .navbar-nav {
-        float: left;
-        margin: 0;
     }
 }
