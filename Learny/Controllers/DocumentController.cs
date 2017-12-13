@@ -96,15 +96,18 @@ namespace Learny.Controllers
             };
             if (courseId != null)
             {
-                viewModel.UploadTo = db.Courses.FirstOrDefault(c => c.Id == courseId).FullCourseName;
+                viewModel.UploadTo = "courseId";
+                viewModel.UploadToId = db.Courses.FirstOrDefault(c => c.Id == courseId).Id;
             }
             else if (moduleId != null)
             {
-                viewModel.UploadTo = db.Modules.FirstOrDefault(m => m.Id == moduleId).Name;
+                viewModel.UploadTo = "moduleId";
+                viewModel.UploadToId = db.Modules.FirstOrDefault(m => m.Id == moduleId).Id;
             }
             else if (activityId != null)
             {
-                viewModel.UploadTo = db.Activities.FirstOrDefault(a => a.Id == activityId).Name;
+                viewModel.UploadTo = "activityId";
+                viewModel.UploadToId = db.Activities.FirstOrDefault(a => a.Id == activityId).Id;
             }
             return View(viewModel);
         }

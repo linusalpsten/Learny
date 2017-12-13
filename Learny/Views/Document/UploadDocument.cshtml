@@ -4,7 +4,7 @@
     ViewBag.Title = "Lägg till dokument";
 }
 
-@Model.UploadTo
+@Html.Action("NavigationLinks", "Home", new { idType = Model.UploadTo, id=Model.UploadToId })
 
 <div class="panel panel-default">
 
@@ -65,7 +65,7 @@
     </div>
 </div>
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-            <script src="~/Scripts/FileSizeCheck.js"></script>
-        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/FileSizeCheck.js"></script>
+}

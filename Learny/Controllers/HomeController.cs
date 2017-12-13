@@ -28,39 +28,46 @@ namespace Learny.Controllers
             return RedirectToAction("Login", "AccountController");
         }
 
-        public ActionResult NavigationLinks(int? courseId = null, int? moduleId = null, int? activityId = null)
+        public ActionResult NavigationLinks(string idType, int id)
         {
+            int? courseId=null;
+            int? moduleId=null;
+            int? activityId=null;
             string courseName="";
             string moduleName="";
             string activityName="";
-            if (courseId != null)
+            if (idType == "courseId")
             {
-                var course = db.Courses.Where(c => c.Id == courseId).FirstOrDefault();
+                var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
                 if (course != null)
                 {
                     courseName = course.FullCourseName;
+
+                    courseId = id;
                 }
             }
-            if (moduleId != null)
+            if (idType == "moduleId")
             {
-                var module = db.Modules.Where(m => m.Id == moduleId).FirstOrDefault();
+                var module = db.Modules.Where(m => m.Id == id).FirstOrDefault();
                 if (module != null)
                 {
                     moduleName = module.Name;
                     courseName = module.Course.FullCourseName;
 
+                    moduleId = id;
                     courseId = module.Course.Id;
                 }
             }
-            if (activityId != null)
+            if (idType == "activityId")
             {
-                var activity = db.Activities.Where(a => a.Id == activityId).FirstOrDefault();
+                var activity = db.Activities.Where(a => a.Id == id).FirstOrDefault();
                 if (activity != null)
                 {
                     activityName = activity.Name;
                     moduleName = activity.Module.Name;
                     courseName = activity.Module.Course.FullCourseName;
 
+                    activityId = id;
                     moduleId = activity.Module.Id;
                     courseId = activity.Module.Course.Id;
                 }
