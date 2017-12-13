@@ -7,10 +7,10 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle UserDropDown" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @User.Identity.GetUserName()
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <div class="dropdown-menu logout" aria-labelledby="navbarDropdownMenuLink">
                 <ul class="nav navbar-nav">
                     <li><a href="javascript:document.getElementById('logoutForm').submit()">Logga ut</a></li>
                 </ul>
