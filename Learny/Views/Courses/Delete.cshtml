@@ -87,11 +87,11 @@
             <dt>            Antal aktiviteter        </dt>
             <dd>            @Html.DisplayFor(model => nrOfActivities)        </dd>
 
-            <dt>            Antal elever        </dt>
-            <dd>            @Html.DisplayFor(model => model.Students.Count)        </dd>
-
             <dt>            Antal dokument        </dt>
             <dd>            @nrOfDocuments       </dd>
+
+            <dt>            Antal elever        </dt>
+            <dd>            @Html.DisplayFor(model => model.Students.Count)        </dd>
         </dl>
 
         @using (Html.BeginForm())
