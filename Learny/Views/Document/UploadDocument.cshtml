@@ -5,64 +5,67 @@
 }
 
 @Model.UploadTo
-<h2>Lägg till dokument</h2>
 
+<div class="panel panel-default">
 
-@using (Html.BeginForm("UploadDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" })) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <hr />
-        @Html.HiddenFor(model => model.MaxFileSize, new { id = "maxFileSize" })
-
-        @Html.HiddenFor(model => model.MaxFileSizeKB, new { id = "maxFileSizeKB" })
-
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        @Html.HiddenFor(model => model.CourseId)
-
-        @Html.HiddenFor(model => model.CourseModuleId)
-
-        @Html.HiddenFor(model => model.ModuleActivityId)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Document, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="file" name="Document" id="Document" />
-                <span id="fileErrorMessage" class="field-validation-valid text-danger"></span>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Spara" class="btn btn-default" id="submit" />
-            </div>
-        </div>
+    <div class="panel-heading">
+        <span class="panelHeader">Lägg till dokument</span>
     </div>
-}
+    <div class="panel-body">
 
-<div>
-    @*@Html.ActionLink("Back to List", "Index")*@
+        @using (Html.BeginForm("UploadDocument", "Document", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.HiddenFor(model => model.MaxFileSize, new { id = "maxFileSize" })
+
+                @Html.HiddenFor(model => model.MaxFileSizeKB, new { id = "maxFileSizeKB" })
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(model => model.CourseId)
+
+                @Html.HiddenFor(model => model.CourseModuleId)
+
+                @Html.HiddenFor(model => model.ModuleActivityId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Document, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input type="file" name="Document" id="Document" />
+                        <span id="fileErrorMessage" class="field-validation-valid text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Spara" class="btn btn-default" id="submit" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/FileSizeCheck.js"></script>
-}
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+            <script src="~/Scripts/FileSizeCheck.js"></script>
+        }
