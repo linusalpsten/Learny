@@ -5,6 +5,8 @@
 
 }
 
+@Html.Action("NavigationLinks", "Home", new { idType = Learny.Controllers.HomeController.IdType.Course, id = Model.CourseId })
+
 <div class="panel panel-default">
 
     <div class="panel-heading">
@@ -12,10 +14,6 @@
     </div>
 
     <div class="panel-body">
-
-        <p>
-            @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { id = Model.CourseId }, null)
-        </p>
 
         <table class="table">
             <tr>

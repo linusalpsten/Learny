@@ -9,7 +9,7 @@ namespace Learny.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Kurs")]
+        [Display(Name = "Kursnamn")]
         public string Name { get; set; }
 
         [Required]

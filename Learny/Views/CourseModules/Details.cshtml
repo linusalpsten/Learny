@@ -5,7 +5,7 @@
     ViewBag.Title = "Details";
 }
 
-<h5>Kurs: @Html.ActionLink(Model.FullCourseName, "Details", "Courses", new { id = Model.CourseId }, null)</h5>
+@Html.Action("NavigationLinks", "Home", new { idType = Learny.Controllers.HomeController.IdType.Course, id = Model.CourseId })
 
 <div class="container-fluid">
     <div class="row">

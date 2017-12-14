@@ -137,6 +137,7 @@ namespace Learny.Controllers
                 db.SaveChanges();
 
                 TempData["FeedbackMessage"] = "Aktiviteten har lagts till";
+                createdActivity.ActivityType = db.ActivityTypes.Find(createdActivity.ActivityTypeId);
                 TempData["FeedbackData"] = createdActivity;
 
                 return RedirectToAction("Create", new { id = activityViewModel.CourseModuleId });
