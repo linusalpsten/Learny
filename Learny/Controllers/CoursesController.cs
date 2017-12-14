@@ -15,7 +15,7 @@ namespace Learny.Models
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        
+
         [Authorize(Roles = RoleName.teacher + "," + RoleName.student)]
         public ActionResult ShowSchedule(int? id)
         {
@@ -33,7 +33,7 @@ namespace Learny.Models
             }
 
             var scheduleViewModel = new ScheduleViewModel();
-            
+
             scheduleViewModel.CourseId = course.Id;
             scheduleViewModel.CourseName = course.Name;
             scheduleViewModel.CourseCode = course.CourseCode;
@@ -41,26 +41,29 @@ namespace Learny.Models
             var scheduleEntries = new List<OneScheduleEntry>();
 
             var activities = db.Activities.Where(a => a.Module.CourseId == course.Id).OrderBy(a => a.StartDate).ThenBy(a => a.EndDate).ToList();
-            
-            var startDate = activities.Min(a => a.StartDate);
-            var endDate = activities.Max(a => a.EndDate);
 
-            TimeSpan dateDiff = endDate - startDate;
-            int schemaDays = (int)dateDiff.TotalDays;
-            DateTime currentDate;
-
-            for (int daycounter = 0; daycounter <= schemaDays; daycounter++)
+            if (activities != null && activities.Count > 0)
             {
-                currentDate = startDate.AddDays(daycounter);
-                // For each date check if any activity is ACTIVE.
-                // If so, then save it in onecourseEntry otherwise skip it
-                var activeActivities = activities.Where(a => a.StartDate <= currentDate && a.EndDate >= currentDate).ToList().OrderBy(a => a.Module.Id).ToList();
+                DateTime startDate = activities.Min(a => a.StartDate);
+                DateTime endDate = activities.Max(a => a.EndDate);
 
-                var oneScheduleEntry = new OneScheduleEntry();
-                oneScheduleEntry.CurrentDate = currentDate;
-                oneScheduleEntry.Activities = activeActivities;
+                TimeSpan dateDiff = endDate - startDate;
+                int schemaDays = (int)dateDiff.TotalDays;
+                DateTime currentDate;
 
-                scheduleEntries.Add(oneScheduleEntry);
+                for (int daycounter = 0; daycounter <= schemaDays; daycounter++)
+                {
+                    currentDate = startDate.AddDays(daycounter);
+                    // For each date check if any activity is ACTIVE.
+                    // If so, then save it in onecourseEntry otherwise skip it
+                    var activeActivities = activities.Where(a => a.StartDate <= currentDate && a.EndDate >= currentDate).ToList().OrderBy(a => a.Module.Id).ToList();
+
+                    var oneScheduleEntry = new OneScheduleEntry();
+                    oneScheduleEntry.CurrentDate = currentDate;
+                    oneScheduleEntry.Activities = activeActivities;
+
+                    scheduleEntries.Add(oneScheduleEntry);
+                }
             }
 
             scheduleViewModel.ScheduleEntries = scheduleEntries;

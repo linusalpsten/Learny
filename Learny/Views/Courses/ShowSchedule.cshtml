@@ -128,7 +128,7 @@
                 }
             }
         </table>
-        <p>
+        <p id="end">
             @Html.ActionLink("Tillbaka till kursen", "Details", "Courses", new { id = Model.CourseId }, null)
         </p>
 
@@ -145,6 +145,12 @@
 }
 @section scripts{
     <script>
-        location.href = "#today";
+        if (document.getElementById("today") != null)
+        {
+            location.href = "#today";
+        } else
+        {
+            location.href = "#end";
+        }
     </script>
 }
