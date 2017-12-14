@@ -4,6 +4,8 @@
     ViewBag.Title = "Ändra kurs";
 }
 
+@Html.Action("NavigationLinks", "Home", new { idType = Learny.Controllers.HomeController.IdType.Course, id = Model.Id })
+
 <div class="panel panel-default">
 
     <div class="panel-heading">

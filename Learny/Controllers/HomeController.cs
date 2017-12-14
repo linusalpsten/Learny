@@ -1,10 +1,7 @@
 ﻿using Learny.Models;
 using Learny.Settings;
 using Learny.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Learny.Controllers
@@ -28,7 +25,9 @@ namespace Learny.Controllers
             return RedirectToAction("Login", "AccountController");
         }
 
-        public ActionResult NavigationLinks(string idType, int id)
+        public enum IdType { Course, Module, Activity };
+
+        public ActionResult NavigationLinks(IdType idType, int id)
         {
             int? courseId=null;
             int? moduleId=null;
@@ -36,7 +35,7 @@ namespace Learny.Controllers
             string courseName="";
             string moduleName="";
             string activityName="";
-            if (idType == "courseId")
+            if (idType == IdType.Course)
             {
                 var course = db.Courses.Where(c => c.Id == id).FirstOrDefault();
                 if (course != null)
@@ -46,7 +45,7 @@ namespace Learny.Controllers
                     courseId = id;
                 }
             }
-            if (idType == "moduleId")
+            if (idType == IdType.Module)
             {
                 var module = db.Modules.Where(m => m.Id == id).FirstOrDefault();
                 if (module != null)
@@ -58,7 +57,7 @@ namespace Learny.Controllers
                     courseId = module.Course.Id;
                 }
             }
-            if (idType == "activityId")
+            if (idType == IdType.Activity)
             {
                 var activity = db.Activities.Where(a => a.Id == id).FirstOrDefault();
                 if (activity != null)

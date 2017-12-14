@@ -96,18 +96,30 @@ namespace Learny.Controllers
             };
             if (courseId != null)
             {
-                viewModel.UploadTo = "courseId";
-                viewModel.UploadToId = db.Courses.FirstOrDefault(c => c.Id == courseId).Id;
+                var course = db.Courses.FirstOrDefault(c => c.Id == courseId);
+                if (course != null) { 
+                    viewModel.UploadTo = " till kurs " + course.FullCourseName;
+                    viewModel.UploadToId = course.Id;
+                    viewModel.UploadToIdType = HomeController.IdType.Course;
+                }
             }
             else if (moduleId != null)
             {
-                viewModel.UploadTo = "moduleId";
-                viewModel.UploadToId = db.Modules.FirstOrDefault(m => m.Id == moduleId).Id;
+                var module = db.Modules.FirstOrDefault(m => m.Id == moduleId);
+                if (module != null) { 
+                    viewModel.UploadTo = " till modul " + module.Name;
+                    viewModel.UploadToId = module.Id;
+                    viewModel.UploadToIdType = HomeController.IdType.Module;
+                }
             }
             else if (activityId != null)
             {
-                viewModel.UploadTo = "activityId";
-                viewModel.UploadToId = db.Activities.FirstOrDefault(a => a.Id == activityId).Id;
+                var activity = db.Activities.FirstOrDefault(a => a.Id == activityId);
+                if (activity != null) { 
+                    viewModel.UploadTo = " till aktivitet " + activity.Name;
+                    viewModel.UploadToId = activity.Id;
+                    viewModel.UploadToIdType = HomeController.IdType.Activity;
+                }
             }
             return View(viewModel);
         }

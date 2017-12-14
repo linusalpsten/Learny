@@ -1,4 +1,7 @@
 ﻿@model Learny.Models.CourseModule
+   
+@Html.Action("NavigationLinks", "Home", new { idType = Learny.Controllers.HomeController.IdType.Module, id = Model.Id })
+
 
 @{
     ViewBag.Title = "Ta bort";

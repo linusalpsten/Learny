@@ -4,12 +4,12 @@
     ViewBag.Title = "Lägg till dokument";
 }
 
-@Html.Action("NavigationLinks", "Home", new { idType = Model.UploadTo, id=Model.UploadToId })
+@Html.Action("NavigationLinks", "Home", new { idType = Model.UploadToIdType, id=Model.UploadToId })
 
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <span class="panelHeader">Lägg till dokument</span>
+        <span class="panelHeader">Lägg till dokument @Model.UploadTo</span>
     </div>
     <div class="panel-body">
 

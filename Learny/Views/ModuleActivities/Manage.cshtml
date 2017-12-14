@@ -4,7 +4,7 @@
     ViewBag.Title = "Aktiviteter";
 }
 
-@Html.Action("NavigationLinks", "Home", new { idType = "moduleId", id = Model.CourseModuleId })
+@Html.Action("NavigationLinks", "Home", new { idType = Learny.Controllers.HomeController.IdType.Module, id = Model.CourseModuleId })
 
 @{
     var actionName = "";
