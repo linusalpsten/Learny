@@ -21,111 +21,119 @@
     }
 }
 
-<h2>Ta bort</h2>
 
-<h3>Är du säker på att du vill ta bort den här filen?</h3>
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DisplayName)
-        </dt>
+<div class="panel panel-default">
 
-        <dd>
-            @Html.DisplayFor(model => model.DisplayName)
-        </dd>
+    <div class="panel-heading">
 
-        @if (Model.ModuleActivityId != null)
-        {
+        <span class="panelHeader">Är du säker på att du vill ta bort det här dokumentet?</span>
+
+    </div>
+
+    <div class="panel-body">
+
+        <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Activity.Module.Course)
+                Dokument
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Activity.Module.Course.Name)
+                @Html.DisplayFor(model => model.DisplayName)
             </dd>
 
+            @if (Model.ModuleActivityId != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Activity.Module.Course)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Activity.Module.Course.FullCourseName)
+                </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Activity.Module)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Activity.Module.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Activity)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Activity.Name)
+                    </dd>
+            }
+            else if (Model.CourseModuleId != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Module.Course)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Module.Course.FullCourseName)
+                </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Module)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Module.Name)
+                    </dd>
+            }
+            else if (Model.CourseId != null)
+            {
+                <dt>
+                    Kurs
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Course.FullCourseName)
+                </dd>
+            }
+
             <dt>
-                @Html.DisplayNameFor(model => model.Activity.Module)
+                @Html.DisplayNameFor(model => model.User)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Activity.Module.Name)
+                @Html.DisplayFor(model => model.User.Name)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.Activity)
+                @Html.DisplayNameFor(model => model.TimeStamp)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Activity.Name)
+                @Html.DisplayFor(model => model.TimeStamp)
             </dd>
+
+            @if (Model.Description != null && Model.Description != string.Empty)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            }
+
+        </dl>
+
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Ta bort" class="btn btn-default" /> |
+                @Html.ActionLink("Tillbaka", "Details", controller, new { id = entityId }, null)
+            </div>
         }
-        else if (Model.CourseModuleId != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Module.Course)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Module.Course.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Module)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Module.Name)
-            </dd>
-        }
-        else if (Model.CourseId != null)
-        {
-            <dt>
-                Kurs
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Course.Name)
-            </dd>
-        }
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeStamp)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeStamp)
-        </dd>
-
-        @if (Model.Description != null && Model.Description != string.Empty)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-        }
-
-    </dl>
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Ta bort" class="btn btn-default" /> |
-            @Html.ActionLink("Tillbaka", "Details", controller, new { id = entityId }, null)
-        </div>
-    }
+    </div>
 </div>
+

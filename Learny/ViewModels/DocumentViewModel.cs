@@ -21,6 +21,8 @@ namespace Learny.ViewModels
         public HttpPostedFileBase Document { get; set; }
 
         public string UploadTo { get; set; }
+        public int UploadToId { get; set; }
+        public Learny.Controllers.HomeController.IdType UploadToIdType { get; set; }
 
         public string MaxFileSize { get; set; }
 
