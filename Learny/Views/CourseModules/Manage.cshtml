@@ -17,15 +17,15 @@
         @if (Model.EditMode)
         {
             actionName = "Edit";
-            
-                <span class="panelHeader">@Model.Name</span>
+
+            <span class="panelHeader">@Model.Name</span>
 
         }
         else
         {
             actionName = "Create";
-            
-                <span class="panelHeader">Ny modul</span>
+
+            <span class="panelHeader">Ny modul</span>
 
         }
 
@@ -105,30 +105,30 @@
         }
         <br />
 
-        @if (TempData["FeedbackMessage"] != null)
+        @if (TempData["FeedbackMessage"] != null && TempData["FeedbackData"] != null)
         {
             <div class="alert alert-success alert-dismissable fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @TempData["FeedbackMessage"]
-                @{var msgObj = (Learny.Models.CourseModule)@TempData["FeedbackData"];}
+                @{var feedbackObject = (Learny.Models.CourseModule)@TempData["FeedbackData"];}
                 <br /><br />
-                @Html.LabelFor(m => msgObj.Name): @Html.DisplayFor(m => msgObj.Name)
+                @Html.LabelFor(m => feedbackObject.Name): @Html.DisplayFor(m => feedbackObject.Name)
                 <br />
-                @Html.LabelFor(m => msgObj.Description): @Html.DisplayFor(m => msgObj.Description)
+                @Html.LabelFor(m => feedbackObject.Description): @Html.DisplayFor(m => feedbackObject.Description)
                 <br />
-                @Html.LabelFor(m => msgObj.StartDate): @Html.DisplayFor(m => msgObj.StartDate)
+                @Html.LabelFor(m => feedbackObject.StartDate): @Html.DisplayFor(m => feedbackObject.StartDate)
                 <br />
-                @Html.LabelFor(m => msgObj.EndDate): @Html.DisplayFor(m => msgObj.EndDate)
+                @Html.LabelFor(m => feedbackObject.EndDate): @Html.DisplayFor(m => feedbackObject.EndDate)
                 <br /><br />
                 @if (!Model.EditMode)
                 {
-                    @Html.ActionLink("Ändra", "Edit", new { id = msgObj.Id, ShowModuleList = Model.ShowModuleList });
-                    @: | 
+                    @Html.ActionLink("Ändra", "Edit", new { id = feedbackObject.Id, ShowModuleList = Model.ShowModuleList });
+                    @: |
                 }
-                @Html.ActionLink("Till modulen", "Details", "CourseModules", new { id = msgObj.Id }, null)
+                @Html.ActionLink("Till modulen", "Details", "CourseModules", new { id = feedbackObject.Id }, null)
                 <br /><br />
             </div>
-                    }
+         }
 
 
         @if (Model.ShowModuleList)
@@ -143,7 +143,7 @@
 
 </div>
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-            <script src="~/Scripts/FillEndDate.js"></script>
-        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/FillEndDate.js"></script>
+}

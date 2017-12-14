@@ -59,17 +59,16 @@
 
         }
 
-        @if (TempData["FeedbackMessage"] != null)
+        @if (TempData["FeedbackMessage"] != null && TempData["FeedbackData"] != null)
         {
             <div class="alert alert-success alert-dismissable fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 @TempData["FeedbackMessage"]
-                @{var msgObj = (Learny.ViewModels.TeacherViewModel)@TempData["FeedbackData"];}
+                @{var feedbackObject = (Learny.ViewModels.TeacherViewModel)@TempData["FeedbackData"];}
                 <br /><br />
-                @Html.LabelFor(m => msgObj.Name) @Html.DisplayFor(m => msgObj.Name)
+                @Html.LabelFor(m => feedbackObject.Name) @Html.DisplayFor(m => feedbackObject.Name)
                 <br />
-                @Html.LabelFor(m => msgObj.Email) @Html.DisplayFor(m => msgObj.Email)
-
+                @Html.LabelFor(m => feedbackObject.Email) @Html.DisplayFor(m => feedbackObject.Email)
             </div>
         }
 
