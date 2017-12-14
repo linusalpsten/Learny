@@ -301,7 +301,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -329,10 +328,8 @@
     <Content Include="Views\CourseModules\Manage.cshtml" />
     <Content Include="Views\CourseModules\Delete.cshtml" />
     <Content Include="Views\CourseModules\Details.cshtml" />
-    <Content Include="Views\CourseModules\Edit.cshtml" />
     <Content Include="Views\ModuleActivities\Delete.cshtml" />
     <Content Include="Views\ModuleActivities\Details.cshtml" />
-    <Content Include="Views\ModuleActivities\Edit.cshtml" />
     <Content Include="Views\Document\UploadDocument.cshtml" />
     <Content Include="Views\Student\_StudentsPartial.cshtml" />
     <Content Include="Views\Student\Create.cshtml" />

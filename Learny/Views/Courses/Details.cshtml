@@ -102,12 +102,12 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    Deltagare
+                    Elever
                     @if (Request.IsAuthenticated && User.IsInRole(RoleName.teacher))
                     {
                     <span class="pull-right">
                         @*@Html.ActionLink(" ", "Create", "Student", new { id = Model.Id }, new { @class = "glyphicon glyphicon-plus" })*@
-                        @Html.ActionLink("Lägg till deltagare", "Create", "Student", new { id = Model.Id }, null)
+                        @Html.ActionLink("Lägg till elev", "Create", "Student", new { id = Model.Id }, null)
                     </span>
                     }
                 </div>
