@@ -55,19 +55,21 @@ namespace Learny.Controllers
             Course course = db.Courses.Find(module.CourseId);
             if (course == null) return RedirectToAction("Index", "Home");
 
-            var activity = new ModuleActivityViewModel
-            {
-                Id = moduleActivity.Id,
-                Name = moduleActivity.Name,
-                Description = moduleActivity.Description,
-                StartDate = moduleActivity.StartDate,
-                EndDate = moduleActivity.EndDate,
-                CourseModuleId = moduleActivity.CourseModuleId,
-                ActivityTypeName = moduleActivity.ActivityType.Name,
-                ModuleName = module.Name,
-                FullCourseName = course.Name,
-                CourseId = course.Id
-            };
+            var activity = new ModuleActivityViewModel(moduleActivity);
+
+            //var activity = new ModuleActivityViewModel
+            //{
+            //    Id = moduleActivity.Id,
+            //    Name = moduleActivity.Name,
+            //    Description = moduleActivity.Description,
+            //    StartDate = moduleActivity.StartDate,
+            //    EndDate = moduleActivity.EndDate,
+            //    CourseModuleId = moduleActivity.CourseModuleId,
+            //    ActivityTypeName = moduleActivity.ActivityType.Name,
+            //    ModuleName = module.Name,
+            //    FullCourseName = course.Name,
+            //    CourseId = course.Id
+            //};
             return View(activity);
         }
 

@@ -52,6 +52,9 @@ namespace Learny.ViewModels
             EndDate = activity.EndDate;
             ActivityTypeName = activity.ActivityType.Name;
             CourseId = activity.Module.CourseId;
+            CourseModuleId = activity.CourseModuleId;
+            ActivityTypeName = activity.ActivityType.Name;
+            ModuleName = activity.Module.Name;
             FullCourseName = activity.Module.Course.FullCourseName;
             HaveDocuments = activity.Documents.Count() > 0;
         }
