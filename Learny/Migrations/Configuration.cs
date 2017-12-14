@@ -96,7 +96,7 @@ namespace Learny.Migrations
                     Description="",
                     StartDate = startDate, EndDate = startDate.AddMonths(4) },
 
-                new Course { CourseCode = "113544-1", Name = "Certifierad programerare",
+                new Course { CourseCode = "CP17-1", Name = "Certifierad programerare",
                     Description="Utbildingen leder till at bli Certifierad programmerare. Programmeringsutbildningen gör att deltagare ska kunna upprätta program- och databasstrukturer samt programmera, implementera och underhålla system inom affärssystem, säljstödssystem, statistiksystem, bokningssystem, mm. Den studerande skall även inneha förutsättningarna för att kunna certifiera sig till MCSD: Microsoft Certified Solutions Developer.",
                     StartDate = new DateTime(2017, 07, 31), EndDate = new DateTime(2017, 09, 29) },
 
@@ -112,15 +112,15 @@ namespace Learny.Migrations
                     Description="",
                     StartDate = new DateTime(2017, 09, 04), EndDate = new DateTime(2018, 01, 12) },
 
-                new Course { CourseCode = "113544-2", Name = "Certifierad programerare",
+                new Course { CourseCode = "CP17-2", Name = "Certifierad programerare",
                     Description="",
                     StartDate = new DateTime(2017, 08, 28), EndDate = new DateTime(2017, 10, 27) },
 
-                new Course { CourseCode = "109522-1", Name = "IT-tekniker SharePoint/Dynamics",
+                new Course { CourseCode = "IT17", Name = "IT-tekniker SharePoint/Dynamics",
                     Description="",
                     StartDate = new DateTime(2017, 12, 18), EndDate = new DateTime(2018, 03, 14) },
 
-                new Course { CourseCode = "109522-2", Name = "IT-tekniker SharePoint/Dynamics",
+                new Course { CourseCode = "IT18", Name = "IT-tekniker SharePoint/Dynamics",
                     Description="",
                     StartDate = new DateTime(2018, 01, 22), EndDate = new DateTime(2018, 04, 17) },
             };
