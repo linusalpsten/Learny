@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "Index";
+    var today = DateTime.Today;
+    var oldCourses = Model.Where(c => c.EndDate < today);
+    var activeCourses = Model.Where(c => c.StartDate < today && c.EndDate > today);
+    var commingCourses = Model.Where(c => c.StartDate > today);
 }
 
 <h2>Kurser</h2>
@@ -15,11 +19,15 @@
 @* THE CODE BELOW IS FOR TEStING ACCORDION DROPDOWN LIST
 
 <ul id="accordion" class="accordion">
-    @foreach (var item in Model)
-    {
-        // I tried to add some "blanks" at the end of the name dynamically, assuming a 100+5 chars width column available for the Name of the course
-        // the same calculation should be done for CourseCode, StartDate/EndDate. I this way I can allign the info in each fixed side column
-        // and the course info are better readable.
+    <li>
+        <div class="link"><i class="fa fa-database"></i>Tidigare<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+            @foreach (var item in oldCourses)
+            {
+
+                // I tried to add some "blanks" at the end of the name dynamically, assuming a 100+5 chars width column available for the Name of the course
+                // the same calculation should be done for CourseCode, StartDate/EndDate. I this way I can allign the info in each fixed side column
+                // and the course info are better readable.
 
         // OBS!!! in the Dropdpwn.css at the end I ALLOW the browser to show blanks in this page for <a> and <span> under <li>. Therefore do not include spaces trying to indent the <li> rows, please
 
@@ -33,57 +41,95 @@
         // Course
         int dynamicPaddingForCourse = 100 + 4 - item.CourseCode.Length;
 
-        // Date
-        // For date the PadRight() method applied after conversion to string does not seem to work !? I added spaces manually
-        // int dynamicPaddingForDate = 4;  // This is obvously fixed since date size is always known :-)
-        <li>
-            <div class="link"><i class="fa fa-database"></i>Tidigare<i class="fa fa-chevron-down"></i></div>
-            <ul class="submenu">
+                // Date
+                // For date the PadRight() method applied after conversion to string does not seem to work !? I added spaces manually
+                // int dynamicPaddingForDate = 4;  // This is obvously fixed since date size is always known :-)
 
-                @if (DateTime.Compare(DateTime.Today, item.EndDate.Date) > 0)
-                {
-                    <li><a href="@Url.Action("Details", "Courses", new { id = item.Id })">@item.Name.PadRight(dynamicPaddingforName, ' ')<span>@Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')</span><span>@Html.DisplayFor(modelItem => item.StartDate)     </span><span>@Html.DisplayFor(modelItem => item.EndDate)</span></a></li>
-                }
-                else
-                {
-                    <li><a href="#"></a></li>
-                }
-                }
-            </ul>
-        </li>
-        <li>
-            <div class="link"><i class="fa fa-code"></i>Pågående<i class="fa fa-chevron-down"></i></div>
+                <li><a href="@Url.Action("Details","Courses", new { id = item.Id })">@item.Name.PadRight(dynamicPaddingforName, ' ')<span>@Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')</span><span>@Html.DisplayFor(modelItem => item.StartDate)     </span><span>@Html.DisplayFor(modelItem => item.EndDate)</span></a></li>
+                @*<li>
+                    <a href="@Url.Action("Details","Courses", new { id = item.Id })">
+                        @item.Name.PadRight(dynamicPaddingforName, ' ')
+                        <span>
+                            @Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')
+                        </span>
+                        <span>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </span>
+                        <span>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </span>
+                    </a>
+                </li>*@
+
+            }
+        </ul>
+    </li>
+    <li class="open">
+        <div class="link"><i class="fa fa-code"></i>Pågående<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu" style="display:block;">
+            @foreach (var item in activeCourses)
+            {
+                int currentNamelenght = item.Name.Length;
+                int maxColumnNameLength = 100;
+                int extraSpacesAfterName = 4;
+                int maxNameLengthWithSpaces = maxColumnNameLength + extraSpacesAfterName;
+                int dynamicPaddingforName = maxNameLengthWithSpaces - currentNamelenght;
+                int dynamicPaddingForCourse = 100 + 4 - item.CourseCode.Length;
+
+                <li><a href="@Url.Action("Details","Courses", new { id = item.Id })">@item.Name.PadRight(dynamicPaddingforName, ' ')<span>@Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')</span><span>@Html.DisplayFor(modelItem => item.StartDate)     </span><span>@Html.DisplayFor(modelItem => item.EndDate)</span></a></li>
+                @*<li>
+                    <a href="@Url.Action("Details","Courses", new { id = item.Id })">
+                        @item.Name.PadRight(dynamicPaddingforName, ' ')
+                        <span>
+                            @Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')
+                        </span>
+                        <span>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </span>
+                        <span>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </span>
+                    </a>
+                </li>*@
+            }
+            @*<li><a href="#">Javascript</a></li>
+                <li><a href="#">jQuery</a></li>
+                <li><a href="#">Ruby</a></li>*@
+        </ul>
+    </li>
+    <li>
+        <div class="link"><i class="fa fa-mobile"></i>Kommande<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+            @foreach (var item in commingCourses)
+            {
+                int currentNamelenght = item.Name.Length;
+                int maxColumnNameLength = 100;
+                int extraSpacesAfterName = 4;
+                int maxNameLengthWithSpaces = maxColumnNameLength + extraSpacesAfterName;
+                int dynamicPaddingforName = maxNameLengthWithSpaces - currentNamelenght;
+                int dynamicPaddingForCourse = 100 + 4 - item.CourseCode.Length;
+
+                <li><a href="@Url.Action("Details","Courses", new { id = item.Id })">@item.Name.PadRight(dynamicPaddingforName, ' ')<span>@Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')</span><span>@Html.DisplayFor(modelItem => item.StartDate)     </span><span>@Html.DisplayFor(modelItem => item.EndDate)</span></a></li>
+            }
+            @*<li><a href="#">Tablet</a></li>
+            <li><a href="#">Mobile</a></li>
+            <li><a href="#">Desktop</a></li>*@
+        </ul>
+    </li>
+    @*<li>
+            <div class="link"><i class="fa fa-globe"></i>Global<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
-                @if (DateTime.Compare(DateTime.Today, item.StartDate.Date) >= 0 && DateTime.Compare(DateTime.Today, item.EndDate.Date) <= 0)
-                {
-                    <li><a href="@Url.Action("Details", "Courses", new { id = item.Id })">@item.Name.PadRight(dynamicPaddingforName, ' ')<span>@Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')</span><span>@Html.DisplayFor(modelItem => item.StartDate)     </span><span>@Html.DisplayFor(modelItem => item.EndDate)</span></a></li>
-                }
-                else
-                {
-                    <li><a href="#"></a></li>
-                }
+                <li><a href="#">Google</a></li>
+                <li><a href="#">Bing</a></li>
+                <li><a href="#">Yahoo</a></li>
             </ul>
-        </li>
-        <li>
-            <div class="link"><i class="fa fa-mobile"></i>Kommande<i class="fa fa-chevron-down"></i></div>
-            <ul class="submenu">
-                @if (DateTime.Compare(DateTime.Today, item.StartDate.Date) < 0)
-                {
-                    <li><a href="@Url.Action("Details", "Courses", new { id = item.Id })">@item.Name.PadRight(dynamicPaddingforName, ' ')<span>@Html.DisplayFor(modelItem => item.CourseCode).ToString().PadRight(dynamicPaddingForCourse, ' ')</span><span>@Html.DisplayFor(modelItem => item.StartDate)     </span><span>@Html.DisplayFor(modelItem => item.EndDate)</span></a></li>
-                }
-                else
-                {
-                    <li><a href="#"></a></li>
-                }
-            </ul>
-        </li>
-    }
+        </li>*@
 </ul>
-*@
+
 
 
 <!--    OLD SESSION HERE   -->
-<table class="table">
+@*<table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -119,7 +165,7 @@
             </tr>
         }
 
-    </table>
+    </table>*@
 
 @section styles {
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
